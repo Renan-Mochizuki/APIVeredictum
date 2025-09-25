@@ -1,5 +1,5 @@
 {
-  "name": "apifilmes",
+  "name": "apiveredictum",
   "version": "1.0.0",
   "scripts": {
     "start": "npx nodemon index.js"
@@ -16,6 +16,9 @@
     "pg": "^8.16.3",
     "serve-favicon": "^2.5.1",
     "vercel": "^48.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
   },
   "private": true
 }
