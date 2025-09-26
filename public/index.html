@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>API Veredictum</title>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" type="image/png" href="favicon.png" />
   </head>
 
   <body>
@@ -14,25 +15,21 @@
     <div class="message">
       <p>Interface temporária para agilizar consultas no banco de dados</p>
     </div>
-    
     <div class="box">
       <h2 class="title">Selects:</h2>
       <div class="buttons">
         <a href="/usuarios">Usuarios</a>
-        <a href="/obras">Obras</a>
       </div>
     </div>
-    
     <div class="box">
       <h2 class="title">Selects por id:</h2>
       <div class="buttons">
         <div class="subbox">
-          <input type="text" data-input="usuario" placeholder="Digite o ID do usuário" />
+          <input type="text" data-input="usuario" placeholder="Digite o id do usuário" />
           <a href="#" data-route="/usuarios" data-input="usuario" data-method="get">UsuarioId</a>
         </div>
       </div>
     </div>
-    
     <div class="box">
       <h2 class="title">Inserir:</h2>
       <div class="buttons">
@@ -41,176 +38,35 @@
           <input type="email" data-field="email" placeholder="Digite o email" />
           <input type="password" data-field="senha" placeholder="Digite a senha" />
           <button data-route="/usuarios" data-method="post" data-fields="apelido,email,senha">Criar Usuário</button>
+          <p>Resposta:</p>
+          <div class="responseArea"></div>
         </div>
       </div>
     </div>
-
-    <!-- Área para mostrar respostas -->
-    <div id="responseArea"></div>
-
-    <script>
-      document.addEventListener('click', (e) => {
-        const button = e.target;
-
-        // Limpa mensagens anteriores
-        clearMessages();
-
-        // GET requests (buscar por ID)
-        if (button.hasAttribute('data-route') && button.getAttribute('data-method') === 'get') {
-          e.preventDefault();
-          
-          const route = button.getAttribute('data-route');
-          const inputName = button.getAttribute('data-input');
-          const input = document.querySelector(`input[data-input="${inputName}"]`);
-          
-          if (input) {
-            const value = input.value.trim();
-            
-            if (value) {
-              window.location.href = route + '/' + value;
-            } else {
-              showError(button, 'Por favor, digite um ID válido');
-            }
-          }
-        }
-
-        // POST requests (criar/inserir)
-        if (button.hasAttribute('data-route') && button.getAttribute('data-method') === 'post') {
-          e.preventDefault();
-          
-          const route = button.getAttribute('data-route');
-          const fields = button.getAttribute('data-fields').split(',');
-          const data = {};
-          let hasError = false;
-
-          // Coleta dados dos campos
-          fields.forEach(field => {
-            const input = document.querySelector(`input[data-field="${field}"]`);
-            if (input) {
-              const value = input.value.trim();
-              if (value) {
-                data[field] = value;
-              } else {
-                showError(button, `Campo ${field} é obrigatório`);
-                hasError = true;
-              }
-            }
-          });
-
-          if (!hasError) {
-            // Fazer requisição POST
-            makePostRequest(route, data, button);
-          }
-        }
-      });
-
-      // Permite usar Enter nos inputs
-      document.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-          if (e.target.hasAttribute('data-input')) {
-            const inputName = e.target.getAttribute('data-input');
-            const button = document.querySelector(`a[data-input="${inputName}"]`);
-            if (button) {
-              button.click();
-            }
-          } else if (e.target.hasAttribute('data-field')) {
-            // Para campos de POST, encontra o botão correspondente
-            const container = e.target.closest('.subbox');
-            if (container) {
-              const button = container.querySelector('button[data-method="post"]');
-              if (button) {
-                button.click();
-              }
-            }
-          }
-        }
-      });
-
-      async function makePostRequest(route, data, button) {
-        try {
-          showLoading(button);
-          
-          const response = await fetch(route, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data)
-          });
-
-          const result = await response.json();
-          
-          if (response.ok) {
-            showSuccess(button, 'Usuário criado com sucesso!');
-            showResponse(result, 'success');
-            clearInputs(button);
-          } else {
-            showError(button, result.error || 'Erro ao criar usuário');
-            showResponse(result, 'error');
-          }
-        } catch (error) {
-          showError(button, 'Erro de conexão: ' + error.message);
-          showResponse({ error: error.message }, 'error');
-        }
-      }
-
-      function showError(button, message) {
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'error';
-        errorDiv.textContent = message;
-        button.parentElement.appendChild(errorDiv);
-      }
-
-      function showSuccess(button, message) {
-        const successDiv = document.createElement('div');
-        successDiv.className = 'success';
-        successDiv.textContent = message;
-        button.parentElement.appendChild(successDiv);
-      }
-
-      function showLoading(button) {
-        button.textContent = 'Carregando...';
-        button.disabled = true;
-      }
-
-      function showResponse(data, type) {
-        const responseArea = document.getElementById('responseArea');
-        const responseDiv = document.createElement('div');
-        responseDiv.className = 'response';
-        responseDiv.style.borderColor = type === 'success' ? 'green' : 'red';
-        responseDiv.textContent = JSON.stringify(data, null, 2);
-        
-        // Adiciona título
-        const title = document.createElement('h3');
-        title.textContent = type === 'success' ? 'Resposta (Sucesso):' : 'Resposta (Erro):';
-        title.style.color = type === 'success' ? 'green' : 'red';
-        title.style.marginBottom = '0.5rem';
-        
-        responseArea.innerHTML = '';
-        responseArea.appendChild(title);
-        responseArea.appendChild(responseDiv);
-      }
-
-      function clearMessages() {
-        document.querySelectorAll('.error, .success').forEach(el => el.remove());
-        
-        // Restaura texto dos botões
-        document.querySelectorAll('button[data-method="post"]').forEach(btn => {
-          if (btn.textContent === 'Carregando...') {
-            btn.textContent = 'Criar Usuário';
-            btn.disabled = false;
-          }
-        });
-      }
-
-      function clearInputs(button) {
-        const container = button.closest('.subbox');
-        if (container) {
-          container.querySelectorAll('input[data-field]').forEach(input => {
-            input.value = '';
-          });
-        }
-      }
-    </script>
+    <div class="box">
+      <h2 class="title">Alterar:</h2>
+      <div class="buttons">
+        <div class="subbox">
+          <input type="text" data-field="id" placeholder="Digite o id" />
+          <input type="text" data-field="apelido" placeholder="Digite o apelido" />
+          <input type="email" data-field="email" placeholder="Digite o email" />
+          <button data-route="/usuarios" data-method="put" data-fields="apelido,email">Alterar Usuário</button>
+          <p>Resposta:</p>
+          <div class="responseArea"></div>
+        </div>
+      </div>
+    </div>
+    <div class="box">
+      <h2 class="title">Excluir:</h2>
+      <div class="buttons">
+        <div class="subbox">
+          <input type="text" data-field="id" placeholder="Digite o id" />
+          <button data-route="/usuarios" data-method="delete" data-fields="id">Excluir Usuário</button>
+          <p>Resposta:</p>
+          <div class="responseArea"></div>
+        </div>
+      </div>
+    </div>
+    <script src="script.js"></script>
   </body>
 </html>

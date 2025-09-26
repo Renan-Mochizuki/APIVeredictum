@@ -77,27 +77,26 @@ input[type='password'] {
   gap: 0.5rem;
   align-items: center;
 }
-.error {
-  color: red;
-  font-size: 0.8rem;
-  margin-top: 0.2rem;
+.subbox > a,
+button {
+  padding-top: 0.4rem;
+  padding-bottom: 0.4rem;
+  padding-left: 0.4rem;
+  padding-right: 0.4rem;
 }
-.success {
-  color: green;
-  font-size: 0.8rem;
-  margin-top: 0.2rem;
-}
-.response {
-  background-color: #f5f5f5;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  padding: 1rem;
-  margin-top: 1rem;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
+.responseArea {
+  width: 25rem;
+  max-width: 25rem;
+  min-height: 10rem;
+  background-color: rgb(74, 74, 74);
+  color: white;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
   white-space: pre-wrap;
-  font-family: monospace;
-  max-height: 300px;
+  font-family: 'Courier New', monospace;
+  padding: 0.5rem;
+  border-radius: 5px;
+  font-size: 0.9rem;
   overflow-y: auto;
 }
