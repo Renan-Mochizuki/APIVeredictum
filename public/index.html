@@ -4,80 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>API Veredictum</title>
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        font-family: Verdana, Geneva, Tahoma, sans-serif;
-      }
-      body {
-        background-color: #ffdada;
-      }
-      a {
-        text-decoration: none;
-        background-color: #ffffff;
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-        padding-left: 1rem;
-        padding-right: 1rem;
-        color: rgb(0, 0, 0);
-        border-radius: 15px;
-        border: 1px solid rgb(0, 0, 0);
-        cursor: pointer;
-      }
-      a:hover {
-        background-color: #f0f0f0;
-      }
-      .header {
-        display: flex;
-        width: 100%;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-      }
-      .box {
-        margin-top: 1rem;
-        margin-bottom: 1rem;
-      }
-      .buttons {
-        display: flex;
-        width: 70%;
-        justify-content: center;
-        align-items: center;
-        margin: auto;
-        margin-top: 1rem;
-        flex-wrap: wrap;
-        row-gap: 1rem;
-        column-gap: 1rem;
-      }
-      .title {
-        text-align: center;
-        margin: auto;
-        margin-bottom: 1rem;
-      }
-      .message {
-        text-align: center;
-        margin-top: 1rem;
-        margin-bottom: 1rem;
-      }
-      input[type='text'] {
-        display: block;
-        margin: auto;
-        padding: 0.5rem;
-        border-radius: 10px;
-        border: 1px solid rgb(0, 0, 0);
-        width: 200px;
-        text-align: center;
-      }
-      .subbox {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        align-items: center;
-      }
-    </style>
+    <link rel="stylesheet" href="styles.css" />
   </head>
 
   <body>
@@ -87,6 +14,7 @@
     <div class="message">
       <p>Interface temporária para agilizar consultas no banco de dados</p>
     </div>
+    
     <div class="box">
       <h2 class="title">Selects:</h2>
       <div class="buttons">
@@ -94,36 +22,195 @@
         <a href="/obras">Obras</a>
       </div>
     </div>
+    
     <div class="box">
       <h2 class="title">Selects por id:</h2>
       <div class="buttons">
         <div class="subbox">
           <input type="text" data-input="usuario" placeholder="Digite o ID do usuário" />
-          <a href="#" data-route="/usuarios" data-input="usuario">UsuarioId</a>
+          <a href="#" data-route="/usuarios" data-input="usuario" data-method="get">UsuarioId</a>
         </div>
       </div>
     </div>
+    
+    <div class="box">
+      <h2 class="title">Inserir:</h2>
+      <div class="buttons">
+        <div class="subbox">
+          <input type="text" data-field="apelido" placeholder="Digite o apelido" />
+          <input type="email" data-field="email" placeholder="Digite o email" />
+          <input type="password" data-field="senha" placeholder="Digite a senha" />
+          <button data-route="/usuarios" data-method="post" data-fields="apelido,email,senha">Criar Usuário</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Área para mostrar respostas -->
+    <div id="responseArea"></div>
 
     <script>
       document.addEventListener('click', (e) => {
         const button = e.target;
 
-        // Verifica se o elemento clicado tem data-route
-        if (button.hasAttribute('data-route') && button.hasAttribute('data-input')) {
-          e.preventDefault();
+        // Limpa mensagens anteriores
+        clearMessages();
 
+        // GET requests (buscar por ID)
+        if (button.hasAttribute('data-route') && button.getAttribute('data-method') === 'get') {
+          e.preventDefault();
+          
           const route = button.getAttribute('data-route');
           const inputName = button.getAttribute('data-input');
           const input = document.querySelector(`input[data-input="${inputName}"]`);
-
+          
           if (input) {
             const value = input.value.trim();
+            
             if (value) {
               window.location.href = route + '/' + value;
+            } else {
+              showError(button, 'Por favor, digite um ID válido');
+            }
+          }
+        }
+
+        // POST requests (criar/inserir)
+        if (button.hasAttribute('data-route') && button.getAttribute('data-method') === 'post') {
+          e.preventDefault();
+          
+          const route = button.getAttribute('data-route');
+          const fields = button.getAttribute('data-fields').split(',');
+          const data = {};
+          let hasError = false;
+
+          // Coleta dados dos campos
+          fields.forEach(field => {
+            const input = document.querySelector(`input[data-field="${field}"]`);
+            if (input) {
+              const value = input.value.trim();
+              if (value) {
+                data[field] = value;
+              } else {
+                showError(button, `Campo ${field} é obrigatório`);
+                hasError = true;
+              }
+            }
+          });
+
+          if (!hasError) {
+            // Fazer requisição POST
+            makePostRequest(route, data, button);
+          }
+        }
+      });
+
+      // Permite usar Enter nos inputs
+      document.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          if (e.target.hasAttribute('data-input')) {
+            const inputName = e.target.getAttribute('data-input');
+            const button = document.querySelector(`a[data-input="${inputName}"]`);
+            if (button) {
+              button.click();
+            }
+          } else if (e.target.hasAttribute('data-field')) {
+            // Para campos de POST, encontra o botão correspondente
+            const container = e.target.closest('.subbox');
+            if (container) {
+              const button = container.querySelector('button[data-method="post"]');
+              if (button) {
+                button.click();
+              }
             }
           }
         }
       });
+
+      async function makePostRequest(route, data, button) {
+        try {
+          showLoading(button);
+          
+          const response = await fetch(route, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+          });
+
+          const result = await response.json();
+          
+          if (response.ok) {
+            showSuccess(button, 'Usuário criado com sucesso!');
+            showResponse(result, 'success');
+            clearInputs(button);
+          } else {
+            showError(button, result.error || 'Erro ao criar usuário');
+            showResponse(result, 'error');
+          }
+        } catch (error) {
+          showError(button, 'Erro de conexão: ' + error.message);
+          showResponse({ error: error.message }, 'error');
+        }
+      }
+
+      function showError(button, message) {
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error';
+        errorDiv.textContent = message;
+        button.parentElement.appendChild(errorDiv);
+      }
+
+      function showSuccess(button, message) {
+        const successDiv = document.createElement('div');
+        successDiv.className = 'success';
+        successDiv.textContent = message;
+        button.parentElement.appendChild(successDiv);
+      }
+
+      function showLoading(button) {
+        button.textContent = 'Carregando...';
+        button.disabled = true;
+      }
+
+      function showResponse(data, type) {
+        const responseArea = document.getElementById('responseArea');
+        const responseDiv = document.createElement('div');
+        responseDiv.className = 'response';
+        responseDiv.style.borderColor = type === 'success' ? 'green' : 'red';
+        responseDiv.textContent = JSON.stringify(data, null, 2);
+        
+        // Adiciona título
+        const title = document.createElement('h3');
+        title.textContent = type === 'success' ? 'Resposta (Sucesso):' : 'Resposta (Erro):';
+        title.style.color = type === 'success' ? 'green' : 'red';
+        title.style.marginBottom = '0.5rem';
+        
+        responseArea.innerHTML = '';
+        responseArea.appendChild(title);
+        responseArea.appendChild(responseDiv);
+      }
+
+      function clearMessages() {
+        document.querySelectorAll('.error, .success').forEach(el => el.remove());
+        
+        // Restaura texto dos botões
+        document.querySelectorAll('button[data-method="post"]').forEach(btn => {
+          if (btn.textContent === 'Carregando...') {
+            btn.textContent = 'Criar Usuário';
+            btn.disabled = false;
+          }
+        });
+      }
+
+      function clearInputs(button) {
+        const container = button.closest('.subbox');
+        if (container) {
+          container.querySelectorAll('input[data-field]').forEach(input => {
+            input.value = '';
+          });
+        }
+      }
     </script>
   </body>
 </html>
