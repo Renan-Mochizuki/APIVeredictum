@@ -147,8 +147,3 @@ async function makeRequest(method, route, data, responseArea) {
     }
   }
 }
-
-// Mantém a função específica para compatibilidade (pode remover se quiser)
-async function makePostRequest(route, data, responseArea) {
-  return makeRequest('POST', route, data, responseArea);
-}
