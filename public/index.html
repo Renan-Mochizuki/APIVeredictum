@@ -19,6 +19,13 @@
       <h2 class="title">Selects:</h2>
       <div class="buttons">
         <a href="/usuarios">Usuarios</a>
+        <a href="/obras">Obras</a>
+        <a href="/temporadas">Temporadas</a>
+        <a href="/episodios">Episodios</a>
+        <a href="/avaliacoes">Avaliações</a>
+        <a href="/categorias">Categorias</a>
+        <a href="/tipoobras">Tipo de Obras</a>
+        <a href="/paises">Paises</a>
       </div>
     </div>
     <div class="box">
@@ -27,6 +34,22 @@
         <div class="subbox">
           <input type="text" data-input="usuario" placeholder="Digite o id do usuário" />
           <a href="#" data-route="/usuarios" data-input="usuario" data-method="get">UsuarioId</a>
+        </div>
+        <div class="subbox">
+          <input type="text" data-input="temporada" placeholder="Digite o id da temporada" />
+          <a href="#" data-route="/temporadas" data-input="temporada" data-method="get">TemporadaId</a>
+        </div>
+        <div class="subbox">
+          <input type="text" data-input="obra" placeholder="Digite o id da obra" />
+          <a href="#" data-route="/obras" data-input="obra" data-method="get">ObraId</a>
+        </div>
+        <div class="subbox">
+          <input type="text" data-input="episodio" placeholder="Digite o id do episódio" />
+          <a href="#" data-route="/episodios" data-input="episodio" data-method="get">EpisodioId</a>
+        </div>
+        <div class="subbox">
+          <input type="text" data-input="avaliacao" placeholder="Digite o id da avaliação" />
+          <a href="#" data-route="/avaliacoes" data-input="avaliacao" data-method="get">AvaliacaoId</a>
         </div>
       </div>
     </div>
@@ -44,7 +67,20 @@
       </div>
     </div>
     <div class="box">
-      <h2 class="title">Alterar:</h2>
+      <h2 class="title">Inserir Obra:</h2>
+      <div class="buttons">
+        <div class="subbox">
+          <input type="text" data-field="titulo" placeholder="Digite o título" />
+          <input type="text" data-field="autor" placeholder="Digite o autor" />
+          <input type="number" data-field="ano" placeholder="Digite o ano (opcional)" />
+          <button data-route="/obras" data-method="post" data-fields="titulo,autor,ano">Criar Obra</button>
+          <p>Resposta:</p>
+          <div class="responseArea"></div>
+        </div>
+      </div>
+    </div>
+    <div class="box">
+      <h2 class="title">Alterar Usuário:</h2>
       <div class="buttons">
         <div class="subbox">
           <input type="text" data-field="id" placeholder="Digite o id" />
@@ -57,7 +93,7 @@
       </div>
     </div>
     <div class="box">
-      <h2 class="title">Excluir:</h2>
+      <h2 class="title">Excluir Usuário:</h2>
       <div class="buttons">
         <div class="subbox">
           <input type="text" data-field="id" placeholder="Digite o id" />

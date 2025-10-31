@@ -36,7 +36,7 @@ async function createUsuario(req, res) {
     const { isValid, errors } = validateUserData(req.body);
 
     if (!isValid) {
-      return res.status(400).json({ error: `Dados do usuário inválidos: ${errors.join(', ')}` });
+      return res.status(400).json({ error: `Dados inválidos: ${errors.join(', ')}` });
     }
 
     // Normaliza campos

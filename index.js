@@ -5,6 +5,13 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const config = require('./config');
 const usuarioRoutes = require('./routes/usuario');
+const obraRoutes = require('./routes/obra');
+const categoriasRoutes = require('./routes/categoria');
+const tipoobrasRoutes = require('./routes/tipoobra');
+const paisesRoutes = require('./routes/pais');
+const temporadaRoutes = require('./routes/temporada');
+const episodioRoutes = require('./routes/episodio');
+const avaliacaoRoutes = require('./routes/avaliacao');
 
 // Configuração do Express
 const app = express();
@@ -19,6 +26,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Rotas
 app.use('/usuarios', usuarioRoutes);
+app.use('/obras', obraRoutes);
+app.use('/categorias', categoriasRoutes);
+app.use('/tipoobras', tipoobrasRoutes);
+app.use('/paises', paisesRoutes);
+app.use('/temporadas', temporadaRoutes);
+app.use('/episodios', episodioRoutes);
+app.use('/avaliacoes', avaliacaoRoutes);
 
 // Iniciando servidor
 const port = config.port || 3000;
