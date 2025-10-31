@@ -106,4 +106,9 @@ button {
   justify-content: center;
   align-items: center;
   flex-direction: row;
+  flex-wrap: wrap;
+  row-gap: 2rem;
+}
+.boxarea .buttons {
+  width: 30rem;
 }

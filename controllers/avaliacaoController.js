@@ -26,6 +26,25 @@ async function getAvaliacaoById(req, res) {
   }
 }
 
+async function getAvaliacoesObras(req, res){
+  try {
+    const result = await pool.query(`
+      SELECT 
+        u.usuaApelido AS Usuario,
+        o.obraTitulo AS Obra,
+        a.avalNota AS Nota,
+        a.avalComentario AS Comentario
+      FROM Avaliacao a
+      JOIN Usuario u ON a.avalUsuarioId = u.usuaId
+      JOIN Obra o ON a.avalObraId = o.obraId;
+    `);
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Erro ao buscar avaliações de obras:', error);
+    res.status(500).json({ error: 'Erro ao buscar avaliações de obras' });
+  }
+}
+
 async function createAvaliacao(req, res) {
   // expected fields: usuarioId, obraId (optional), episodioId (optional), nota, comentario
   const { usuarioId, obraId, episodioId, nota, comentario } = req.body;
@@ -100,4 +119,4 @@ async function deleteAvaliacao(req, res) {
   }
 }
 
-module.exports = { getAvaliacoes, getAvaliacaoById, createAvaliacao, updateAvaliacao, deleteAvaliacao };
+module.exports = { getAvaliacoes, getAvaliacaoById, createAvaliacao, updateAvaliacao, deleteAvaliacao, getAvaliacoesObras };
