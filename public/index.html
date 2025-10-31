@@ -55,32 +55,33 @@
     </div>
     <div class="box">
       <h2 class="title">Inserir:</h2>
-      <div class="buttons">
-        <div class="subbox">
-          <input type="text" data-field="apelido" placeholder="Digite o apelido" />
-          <input type="email" data-field="email" placeholder="Digite o email" />
-          <input type="password" data-field="senha" placeholder="Digite a senha" />
-          <button data-route="/usuarios" data-method="post" data-fields="apelido,email,senha">Criar Usuário</button>
-          <p>Resposta:</p>
-          <div class="responseArea"></div>
+      <div class="boxarea">
+        <div class="buttons">
+          <div class="subbox">
+            <h3>Usuário</h3>
+            <input type="text" data-field="apelido" placeholder="Digite o apelido" />
+            <input type="email" data-field="email" placeholder="Digite o email" />
+            <input type="password" data-field="senha" placeholder="Digite a senha" />
+            <button data-route="/usuarios" data-method="post" data-fields="apelido,email,senha">Criar Usuário</button>
+            <p>Resposta:</p>
+            <div class="responseArea"></div>
+          </div>
+        </div>
+        <div class="buttons">
+          <div class="subbox">
+            <h3>Obra</h3>
+            <input type="text" data-field="titulo" placeholder="Digite o título" />
+            <input type="text" data-field="descricao" placeholder="Digite a descrição" />
+            <input type="text" data-field="tipoObraNome" placeholder="Digite o tipo da obra" />
+            <button data-route="/obras" data-method="post" data-fields="titulo,descricao,tipoObraNome">Criar Obra</button>
+            <p>Resposta:</p>
+            <div class="responseArea"></div>
+          </div>
         </div>
       </div>
     </div>
     <div class="box">
-      <h2 class="title">Inserir Obra:</h2>
-      <div class="buttons">
-        <div class="subbox">
-          <input type="text" data-field="titulo" placeholder="Digite o título" />
-          <input type="text" data-field="autor" placeholder="Digite o autor" />
-          <input type="number" data-field="ano" placeholder="Digite o ano (opcional)" />
-          <button data-route="/obras" data-method="post" data-fields="titulo,autor,ano">Criar Obra</button>
-          <p>Resposta:</p>
-          <div class="responseArea"></div>
-        </div>
-      </div>
-    </div>
-    <div class="box">
-      <h2 class="title">Alterar Usuário:</h2>
+      <h2 class="title">Alterar:</h2>
       <div class="buttons">
         <div class="subbox">
           <input type="text" data-field="id" placeholder="Digite o id" />
@@ -93,7 +94,7 @@
       </div>
     </div>
     <div class="box">
-      <h2 class="title">Excluir Usuário:</h2>
+      <h2 class="title">Excluir:</h2>
       <div class="buttons">
         <div class="subbox">
           <input type="text" data-field="id" placeholder="Digite o id" />

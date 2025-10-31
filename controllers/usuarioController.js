@@ -17,7 +17,7 @@ async function getUsuarios(req, res) {
 async function getUsuarioById(req, res) {
   const { id } = req.params;
   try {
-    const result = await pool.query('SELECT * FROM Usuario WHERE id = $1', [id]);
+    const result = await pool.query('SELECT * FROM Usuario WHERE usuaId = $1', [id]);
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'Usuário não encontrado' });
     }
@@ -47,7 +47,7 @@ async function createUsuario(req, res) {
     // Gera o hash da senha usando PBKDF2 com SHA-256
     const hash = crypto.pbkdf2Sync(senha, salt, 1000, 32, 'sha256').toString('hex');
 
-    const result = await pool.query('INSERT INTO Usuario (apelido, email, hash, salt) VALUES ($1, $2, $3, $4) RETURNING *', [apelido, email, hash, salt]);
+    const result = await pool.query('INSERT INTO Usuario (usuaApelido, usuaEmail, usuaHash, usuaSalt) VALUES ($1, $2, $3, $4) RETURNING *', [apelido, email, hash, salt]);
     res.status(201).json(result.rows[0]);
   } catch (error) {
     console.error('Erro ao criar usuário:', error);
@@ -91,13 +91,13 @@ async function updateUsuario(req, res) {
     // Escrevendo valores do update
     const updates = [];
     if (apelido) {
-      updates.push(`apelido = '${apelido}'`);
+      updates.push(`usuaApelido = '${apelido}'`);
     }
     if (email) {
-      updates.push(`email = '${email}'`);
+      updates.push(`usuaEmail = '${email}'`);
     }
 
-    const result = await pool.query(`UPDATE Usuario SET ${updates.join(', ')} WHERE id = ${id} RETURNING *`);
+    const result = await pool.query(`UPDATE Usuario SET ${updates.join(', ')} WHERE usuaId = ${id} RETURNING *`);
 
     // Se não for retornado nenhuma linha, o usuário não foi encontrado
     if (result.rowCount === 0) {
@@ -122,7 +122,7 @@ async function deleteUsuario(req, res) {
   const { id } = req.params;
 
   try {
-    const result = await pool.query('DELETE FROM Usuario WHERE id = $1 RETURNING *', [id]);
+    const result = await pool.query('DELETE FROM Usuario WHERE usuaId = $1 RETURNING *', [id]);
     
     // Se não for retornado nenhuma linha, o usuário não foi encontrado
     if (result.rowCount === 0) {

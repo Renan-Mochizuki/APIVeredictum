@@ -52,6 +52,7 @@ button:hover {
 .title {
   text-align: center;
   margin: auto;
+  margin-top: 1rem;
   margin-bottom: 1rem;
 }
 .message {
@@ -99,4 +100,10 @@ button {
   border-radius: 5px;
   font-size: 0.9rem;
   overflow-y: auto;
+}
+.boxarea {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
 }

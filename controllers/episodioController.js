@@ -14,7 +14,7 @@ async function getEpisodios(req, res) {
 async function getEpisodioById(req, res) {
   const { id } = req.params;
   try {
-    const result = await pool.query('SELECT * FROM Episodio WHERE id = $1', [id]);
+    const result = await pool.query('SELECT * FROM Episodio WHERE episId = $1', [id]);
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'Episódio não encontrado' });
     }
