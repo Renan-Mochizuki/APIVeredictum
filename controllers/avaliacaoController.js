@@ -27,9 +27,16 @@ async function getAvaliacaoById(req, res) {
 }
 
 async function createAvaliacao(req, res) {
-  const { usuario_id, obra_id, nota, comentario } = req.body;
+  // expected fields: usuarioId, obraId (optional), episodioId (optional), nota, comentario
+  const { usuarioId, obraId, episodioId, nota, comentario } = req.body;
   try {
-    const result = await pool.query('INSERT INTO Avaliacao (usuario_id, obra_id, nota, comentario) VALUES ($1, $2, $3, $4) RETURNING *', [usuario_id, obra_id, nota, comentario]);
+    const result = await pool.query('INSERT INTO Avaliacao (avalUsuarioId, avalObraId, avalEpisodioId, avalNota, avalComentario) VALUES ($1, $2, $3, $4, $5) RETURNING *', [
+      usuarioId,
+      obraId || null,
+      episodioId || null,
+      nota,
+      comentario || null,
+    ]);
     res.status(201).json(result.rows[0]);
   } catch (error) {
     console.error('Erro ao criar avaliação:', error);
@@ -37,4 +44,60 @@ async function createAvaliacao(req, res) {
   }
 }
 
-module.exports = { getAvaliacoes, getAvaliacaoById, createAvaliacao };
+async function updateAvaliacao(req, res) {
+  const { id } = req.params;
+  const { usuarioId, obraId, episodioId, nota, comentario } = req.body;
+
+  if (!usuarioId && !obraId && !episodioId && nota === undefined && comentario === undefined) {
+    return res.status(400).json({ error: 'Nenhum dado para atualizar' });
+  }
+
+  try {
+    const updates = [];
+    const values = [];
+    let idx = 1;
+    if (usuarioId !== undefined) {
+      updates.push(`avalUsuarioId = $${idx++}`);
+      values.push(usuarioId);
+    }
+    if (obraId !== undefined) {
+      updates.push(`avalObraId = $${idx++}`);
+      values.push(obraId);
+    }
+    if (episodioId !== undefined) {
+      updates.push(`avalEpisodioId = $${idx++}`);
+      values.push(episodioId);
+    }
+    if (nota !== undefined) {
+      updates.push(`avalNota = $${idx++}`);
+      values.push(nota);
+    }
+    if (comentario !== undefined) {
+      updates.push(`avalComentario = $${idx++}`);
+      values.push(comentario);
+    }
+
+    values.push(id);
+    const query = `UPDATE Avaliacao SET ${updates.join(', ')} WHERE avalId = $${idx} RETURNING *`;
+    const result = await pool.query(query, values);
+    if (result.rowCount === 0) return res.status(404).json({ error: 'Avaliação não encontrada' });
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error('Erro ao atualizar avaliação:', error);
+    res.status(500).json({ error: 'Erro ao atualizar avaliação' });
+  }
+}
+
+async function deleteAvaliacao(req, res) {
+  const { id } = req.params;
+  try {
+    const result = await pool.query('DELETE FROM Avaliacao WHERE avalId = $1 RETURNING *', [id]);
+    if (result.rowCount === 0) return res.status(404).json({ error: 'Avaliação não encontrada' });
+    res.json({ message: 'Avaliação deletada com sucesso' });
+  } catch (error) {
+    console.error('Erro ao deletar avaliação:', error);
+    res.status(500).json({ error: 'Erro ao deletar avaliação' });
+  }
+}
+
+module.exports = { getAvaliacoes, getAvaliacaoById, createAvaliacao, updateAvaliacao, deleteAvaliacao };

@@ -29,6 +29,12 @@
       </div>
     </div>
     <div class="box">
+      <h2 class="title">Selects com join:</h2>
+      <div class="buttons">
+        <a href="/avaliacoesobras">Avaliações de obras</a>
+      </div>
+    </div>
+    <div class="box">
       <h2 class="title">Selects por id:</h2>
       <div class="buttons">
         <div class="subbox">
@@ -88,6 +94,153 @@
           <input type="text" data-field="apelido" placeholder="Digite o apelido" />
           <input type="email" data-field="email" placeholder="Digite o email" />
           <button data-route="/usuarios" data-method="put" data-fields="apelido,email">Alterar Usuário</button>
+          <p>Resposta:</p>
+          <div class="responseArea"></div>
+        </div>
+      </div>
+    </div>
+    <div class="box">
+      <h2 class="title">Alterar Obra:</h2>
+      <div class="buttons">
+        <div class="subbox">
+          <input type="text" data-field="id" placeholder="Digite o id da obra" />
+          <input type="text" data-field="titulo" placeholder="Digite o título" />
+          <input type="text" data-field="descricao" placeholder="Digite a descrição" />
+          <input type="text" data-field="tipoObraNome" placeholder="Digite o tipo da obra" />
+          <button data-route="/obras" data-method="put" data-fields="titulo,descricao,tipoObraNome">Alterar Obra</button>
+          <p>Resposta:</p>
+          <div class="responseArea"></div>
+        </div>
+      </div>
+    </div>
+    <div class="box">
+      <h2 class="title">Excluir Obra:</h2>
+      <div class="buttons">
+        <div class="subbox">
+          <input type="text" data-field="id" placeholder="Digite o id da obra" />
+          <button data-route="/obras" data-method="delete">Excluir Obra</button>
+          <p>Resposta:</p>
+          <div class="responseArea"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="box">
+      <h2 class="title">Temporada (Inserir / Alterar / Excluir):</h2>
+      <div class="buttons">
+        <div class="subbox">
+          <h3>Criar Temporada</h3>
+          <input type="number" data-field="numero" placeholder="Número" />
+          <input type="text" data-field="titulo" placeholder="Título (opcional)" />
+          <input type="date" data-field="dataInicio" placeholder="Data início" />
+          <input type="date" data-field="dataFim" placeholder="Data fim" />
+          <input type="text" data-field="descricao" placeholder="Descrição (opcional)" />
+          <input type="text" data-field="obraId" placeholder="ID da Obra" />
+          <button data-route="/temporadas" data-method="post" data-fields="numero,titulo,dataInicio,dataFim,descricao,obraId">Criar Temporada</button>
+          <p>Resposta:</p>
+          <div class="responseArea"></div>
+        </div>
+      </div>
+      <div class="buttons">
+        <div class="subbox">
+          <h3>Alterar Temporada</h3>
+          <input type="text" data-field="id" placeholder="ID da Temporada" />
+          <input type="number" data-field="numero" placeholder="Número" />
+          <input type="text" data-field="titulo" placeholder="Título" />
+          <input type="date" data-field="dataInicio" placeholder="Data início" />
+          <input type="date" data-field="dataFim" placeholder="Data fim" />
+          <input type="text" data-field="descricao" placeholder="Descrição" />
+          <input type="text" data-field="obraId" placeholder="ID da Obra" />
+          <button data-route="/temporadas" data-method="put" data-fields="numero,titulo,dataInicio,dataFim,descricao,obraId">Alterar Temporada</button>
+          <p>Resposta:</p>
+          <div class="responseArea"></div>
+        </div>
+      </div>
+      <div class="buttons">
+        <div class="subbox">
+          <h3>Excluir Temporada</h3>
+          <input type="text" data-field="id" placeholder="ID da Temporada" />
+          <button data-route="/temporadas" data-method="delete">Excluir Temporada</button>
+          <p>Resposta:</p>
+          <div class="responseArea"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="box">
+      <h2 class="title">Episódio (Inserir / Alterar / Excluir):</h2>
+      <div class="buttons">
+        <div class="subbox">
+          <h3>Criar Episódio</h3>
+          <input type="number" data-field="numero" placeholder="Número" />
+          <input type="date" data-field="dataLancamento" placeholder="Data de lançamento" />
+          <input type="text" data-field="titulo" placeholder="Título" />
+          <input type="text" data-field="descricao" placeholder="Descrição" />
+          <input type="text" data-field="temporadaId" placeholder="ID da Temporada" />
+          <button data-route="/episodios" data-method="post" data-fields="numero,dataLancamento,titulo,descricao,temporadaId">Criar Episódio</button>
+          <p>Resposta:</p>
+          <div class="responseArea"></div>
+        </div>
+      </div>
+      <div class="buttons">
+        <div class="subbox">
+          <h3>Alterar Episódio</h3>
+          <input type="text" data-field="id" placeholder="ID do Episódio" />
+          <input type="number" data-field="numero" placeholder="Número" />
+          <input type="date" data-field="dataLancamento" placeholder="Data de lançamento" />
+          <input type="text" data-field="titulo" placeholder="Título" />
+          <input type="text" data-field="descricao" placeholder="Descrição" />
+          <input type="text" data-field="temporadaId" placeholder="ID da Temporada" />
+          <button data-route="/episodios" data-method="put" data-fields="numero,dataLancamento,titulo,descricao,temporadaId">Alterar Episódio</button>
+          <p>Resposta:</p>
+          <div class="responseArea"></div>
+        </div>
+      </div>
+      <div class="buttons">
+        <div class="subbox">
+          <h3>Excluir Episódio</h3>
+          <input type="text" data-field="id" placeholder="ID do Episódio" />
+          <button data-route="/episodios" data-method="delete">Excluir Episódio</button>
+          <p>Resposta:</p>
+          <div class="responseArea"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="box">
+      <h2 class="title">Avaliação (Inserir / Alterar / Excluir):</h2>
+      <div class="buttons">
+        <div class="subbox">
+          <h3>Criar Avaliação</h3>
+          <input type="text" data-field="usuarioId" placeholder="ID do Usuário" />
+          <input type="text" data-field="obraId" placeholder="ID da Obra (opcional)" />
+          <input type="text" data-field="episodioId" placeholder="ID do Episódio (opcional)" />
+          <input type="number" data-field="nota" placeholder="Nota (0+)" />
+          <input type="text" data-field="comentario" placeholder="Comentário (opcional)" />
+          <button data-route="/avaliacoes" data-method="post" data-fields="usuarioId,obraId,episodioId,nota,comentario">Criar Avaliação</button>
+          <p>Resposta:</p>
+          <div class="responseArea"></div>
+        </div>
+      </div>
+      <div class="buttons">
+        <div class="subbox">
+          <h3>Alterar Avaliação</h3>
+          <input type="text" data-field="id" placeholder="ID da Avaliação" />
+          <input type="text" data-field="usuarioId" placeholder="ID do Usuário" />
+          <input type="text" data-field="obraId" placeholder="ID da Obra" />
+          <input type="text" data-field="episodioId" placeholder="ID do Episódio" />
+          <input type="number" data-field="nota" placeholder="Nota" />
+          <input type="text" data-field="comentario" placeholder="Comentário" />
+          <button data-route="/avaliacoes" data-method="put" data-fields="usuarioId,obraId,episodioId,nota,comentario">Alterar Avaliação</button>
+          <p>Resposta:</p>
+          <div class="responseArea"></div>
+        </div>
+      </div>
+      <div class="buttons">
+        <div class="subbox">
+          <h3>Excluir Avaliação</h3>
+          <input type="text" data-field="id" placeholder="ID da Avaliação" />
+          <button data-route="/avaliacoes" data-method="delete">Excluir Avaliação</button>
           <p>Resposta:</p>
           <div class="responseArea"></div>
         </div>
