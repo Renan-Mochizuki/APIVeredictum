@@ -90,19 +90,25 @@ async function updateUsuario(req, res) {
 
     // Escrevendo valores do update
     const updates = [];
+    const values = [];
+    let idx = 1;
+
     if (apelido) {
-      updates.push(`usuaApelido = '${apelido}'`);
+      updates.push(`usuaApelido = $${idx++}`);
+      values.push(apelido);
     }
     if (email) {
-      updates.push(`usuaEmail = '${email}'`);
+      updates.push(`usuaEmail = $${idx++}`);
+      values.push(email);
     }
 
-    const result = await pool.query(`UPDATE Usuario SET ${updates.join(', ')} WHERE usuaId = ${id} RETURNING *`);
+    values.push(id);
+
+    const query = `UPDATE Usuario SET ${updates.join(', ')} WHERE usuaId = $${idx} RETURNING *`;
+    const result = await pool.query(query, values);
 
     // Se não for retornado nenhuma linha, o usuário não foi encontrado
-    if (result.rowCount === 0) {
-      return res.status(404).json({ error: 'Usuário não encontrado' });
-    }
+    if (result.rowCount === 0) return res.status(404).json({ error: 'Usuário não encontrado' });
 
     res.json(result.rows[0]);
   } catch (error) {
@@ -123,12 +129,10 @@ async function deleteUsuario(req, res) {
 
   try {
     const result = await pool.query('DELETE FROM Usuario WHERE usuaId = $1 RETURNING *', [id]);
-    
+
     // Se não for retornado nenhuma linha, o usuário não foi encontrado
-    if (result.rowCount === 0) {
-      return res.status(404).json({ error: 'Usuário não encontrado' });
-    }
-    
+    if (result.rowCount === 0) return res.status(404).json({ error: 'Usuário não encontrado' });
+
     res.json({ message: 'Usuário deletado com sucesso' });
   } catch (error) {
     console.error('Erro ao deletar usuário:', error);

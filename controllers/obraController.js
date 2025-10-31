@@ -1,12 +1,6 @@
 const pool = require('../config/db');
 const { validateData } = require('../utils/validation');
 
-const obraValidationRules = {
-  titulo: { required: true, type: 'string', maxLength: 150 },
-  descricao: { required: false, type: 'string', maxLength: 200 },
-  tipoObraNome: { required: true, type: 'string', maxLength: 12 },
-};
-
 async function getObra(req, res) {
   try {
     const result = await pool.query('SELECT * FROM Obra');
@@ -32,13 +26,25 @@ async function getObraById(req, res) {
 }
 
 async function createObra(req, res) {
+  let { titulo, descricao, tipoObraNome } = req.body;
+
+  const validationRules = {
+    titulo: { required: true, type: 'string', minLength: 2, maxLength: 150 },
+    descricao: { required: false, type: 'string', maxLength: 200 },
+    tipoObraNome: { required: true, type: 'string', minLength: 4, maxLength: 12 },
+  };
+
   try {
-    const { isValid, errors } = validateData(req.body, obraValidationRules);
+    const { isValid, errors } = validateData(req.body, validationRules);
+
     if (!isValid) {
       return res.status(400).json({ error: `Dados inválidos: ${errors.join(', ')}` });
     }
 
-    const { titulo, descricao, tipoObraNome } = req.body;
+    // Verificando se o tipo de obra existe para retornar uma mensagem de erro ao usuário
+    const tipoObraNomeExiste = await pool.query('SELECT * FROM TipoObra WHERE tipoObraNome = $1', [tipoObraNome]);
+
+    if (tipoObraNomeExiste.rows.length === 0) return res.status(400).json({ error: 'Tipo de obra inválido' });
 
     const result = await pool.query('INSERT INTO Obra (obraTitulo, obraDescricao, obraTipoObraNome) VALUES ($1, $2, $3) RETURNING *', [titulo, descricao, tipoObraNome]);
 
@@ -51,13 +57,25 @@ async function createObra(req, res) {
 
 async function updateObra(req, res) {
   const { id } = req.params;
-  const { titulo, descricao, tipoObraNome } = req.body;
+  let { titulo, descricao, tipoObraNome } = req.body;
+
+  const validationRules = {
+    titulo: { required: false, type: 'string', minLength: 2, maxLength: 150 },
+    descricao: { required: false, type: 'string', maxLength: 200 },
+    tipoObraNome: { required: false, type: 'string', minLength: 4, maxLength: 12 },
+  };
 
   if (!titulo && !descricao && !tipoObraNome) {
     return res.status(400).json({ error: 'Nenhum dado para atualizar' });
   }
 
   try {
+    const { isValid, errors } = validateData(req.body, validationRules);
+
+    if (!isValid) {
+      return res.status(400).json({ error: `Dados inválidos: ${errors.join(', ')}` });
+    }
+
     const updates = [];
     const values = [];
     let idx = 1;
@@ -80,9 +98,7 @@ async function updateObra(req, res) {
     const query = `UPDATE Obra SET ${updates.join(', ')} WHERE obraId = $${idx} RETURNING *`;
     const result = await pool.query(query, values);
 
-    if (result.rowCount === 0) {
-      return res.status(404).json({ error: 'Obra não encontrada' });
-    }
+    if (result.rowCount === 0) return res.status(404).json({ error: 'Obra não encontrada' });
 
     res.json(result.rows[0]);
   } catch (error) {
@@ -93,11 +109,12 @@ async function updateObra(req, res) {
 
 async function deleteObra(req, res) {
   const { id } = req.params;
+
   try {
     const result = await pool.query('DELETE FROM Obra WHERE obraId = $1 RETURNING *', [id]);
-    if (result.rowCount === 0) {
-      return res.status(404).json({ error: 'Obra não encontrada' });
-    }
+
+    if (result.rowCount === 0) return res.status(404).json({ error: 'Obra não encontrada' });
+
     res.json({ message: 'Obra deletada com sucesso' });
   } catch (error) {
     console.error('Erro ao deletar obra:', error);

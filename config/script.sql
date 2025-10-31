@@ -225,3 +225,26 @@ ALTER TABLE Obra_ListaUsuario ADD CONSTRAINT FK_Obra_ListaUsuario_2
     FOREIGN KEY (obraId)
     REFERENCES Obra (obraId)
     ON DELETE SET NULL;
+
+ALTER TABLE Participacao ALTER COLUMN partObraId DROP DEFAULT;
+ALTER TABLE Participacao ALTER COLUMN partObraId TYPE integer;
+ALTER TABLE ListaUsuario ALTER COLUMN listUsuarioId DROP DEFAULT;
+ALTER TABLE ListaUsuario ALTER COLUMN listUsuarioId TYPE integer;
+ALTER TABLE Temporada ALTER COLUMN tempObraId DROP DEFAULT;
+ALTER TABLE Temporada ALTER COLUMN tempObraId TYPE integer;
+ALTER TABLE Episodio ALTER COLUMN episTemporadaId DROP DEFAULT;
+ALTER TABLE Episodio ALTER COLUMN episTemporadaId TYPE integer;
+ALTER TABLE Avaliacao ALTER COLUMN avalUsuarioId DROP DEFAULT;
+ALTER TABLE Avaliacao ALTER COLUMN avalUsuarioId TYPE integer;
+ALTER TABLE Avaliacao ALTER COLUMN avalObraId DROP DEFAULT;
+ALTER TABLE Avaliacao ALTER COLUMN avalObraId TYPE integer;
+ALTER TABLE Avaliacao ALTER COLUMN avalEpisodioId DROP DEFAULT;
+ALTER TABLE Avaliacao ALTER COLUMN avalEpisodioId TYPE integer;
+ALTER TABLE Obra_Categoria ALTER COLUMN obraId DROP DEFAULT;
+ALTER TABLE Obra_Categoria ALTER COLUMN obraId TYPE integer;
+ALTER TABLE Obra_PaisOrigem ALTER COLUMN obraId DROP DEFAULT;
+ALTER TABLE Obra_PaisOrigem ALTER COLUMN obraId TYPE integer;
+ALTER TABLE Obra_ListaUsuario ALTER COLUMN obraId DROP DEFAULT;
+ALTER TABLE Obra_ListaUsuario ALTER COLUMN obraId TYPE integer;
+ALTER TABLE Obra_ListaUsuario ALTER COLUMN listaUsuarioId DROP DEFAULT;
+ALTER TABLE Obra_ListaUsuario ALTER COLUMN listaUsuarioId TYPE integer;
