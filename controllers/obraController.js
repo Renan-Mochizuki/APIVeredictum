@@ -42,7 +42,7 @@ async function createObra(req, res) {
     }
 
     // Verificando se o tipo de obra existe para retornar uma mensagem de erro ao usuário
-    const tipoObraNomeExiste = await pool.query('SELECT * FROM TipoObra WHERE tipoObraNome = $1', [tipoObraNome]);
+    const tipoObraNomeExiste = await pool.query('SELECT * FROM TipoObra WHERE tipoNome = $1', [tipoObraNome]);
 
     if (tipoObraNomeExiste.rows.length === 0) return res.status(400).json({ error: 'Tipo de obra inválido' });
 

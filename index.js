@@ -4,14 +4,15 @@ const favicon = require('serve-favicon');
 const path = require('path');
 const bodyParser = require('body-parser');
 const config = require('./config');
-const usuarioRoutes = require('./routes/usuario');
-const obraRoutes = require('./routes/obra');
-const categoriasRoutes = require('./routes/categoria');
-const tipoobrasRoutes = require('./routes/tipoobra');
-const paisesRoutes = require('./routes/pais');
-const temporadaRoutes = require('./routes/temporada');
-const episodioRoutes = require('./routes/episodio');
-const avaliacaoRoutes = require('./routes/avaliacao');
+const usuarioRoutes = require('./routes/usuarioRoute');
+const obraRoutes = require('./routes/obraRoute');
+const categoriasRoutes = require('./routes/categoriaRoute');
+const tipoobrasRoutes = require('./routes/tipoobraRoute');
+const paisesRoutes = require('./routes/paisRoute');
+const temporadaRoutes = require('./routes/temporadaRoute');
+const episodioRoutes = require('./routes/episodioRoute');
+const avaliacaoRoutes = require('./routes/avaliacaoRoute');
+const funcaoRoutes = require('./routes/funcaoRoute');
 
 // Configuração do Express
 const app = express();
@@ -33,6 +34,7 @@ app.use('/paises', paisesRoutes);
 app.use('/temporadas', temporadaRoutes);
 app.use('/episodios', episodioRoutes);
 app.use('/avaliacoes', avaliacaoRoutes);
+app.use('/funcoes', funcaoRoutes);
 
 // Iniciando servidor
 const port = config.port || 3000;
