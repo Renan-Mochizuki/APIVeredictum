@@ -1,6 +1,3 @@
-
-CREATE TYPE tipoUsuario AS ENUM ('comum', 'critico', 'moderador');
-
 CREATE TABLE Obra (
     obraId serial PRIMARY KEY,
     obraTitulo varchar(150) not null,
@@ -224,3 +221,56 @@ ALTER TABLE Obra_ListaUsuario ADD CONSTRAINT FK_Obra_ListaUsuario_2
     FOREIGN KEY (obraId)
     REFERENCES Obra (obraId)
     ON DELETE SET NULL;
+
+-- Função trigger que define o campo updatedAt apropriado por tabela
+CREATE OR REPLACE FUNCTION set_updated_timestamp()
+RETURNS trigger AS $$
+BEGIN=
+  IF TG_TABLE_NAME = 'obra' THEN
+    NEW.obraupdatedat := now();
+  ELSIF TG_TABLE_NAME = 'listausuario' THEN
+    NEW.listupdatedat := now();
+  ELSIF TG_TABLE_NAME = 'usuario' THEN
+    NEW.usuaupdatedat := now();
+  ELSIF TG_TABLE_NAME = 'temporada' THEN
+    NEW.tempupdatedat := now();
+  ELSIF TG_TABLE_NAME = 'episodio' THEN
+    NEW.episupdatedat := now();
+  ELSIF TG_TABLE_NAME = 'avaliacao' THEN
+    NEW.avalupdatedat := now();
+  END IF;
+
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Triggers por tabela updatedAt
+CREATE TRIGGER trg_obra_updated_at
+BEFORE UPDATE ON obra
+FOR EACH ROW
+EXECUTE FUNCTION set_updated_timestamp();
+
+CREATE TRIGGER trg_listausuario_updated_at
+BEFORE UPDATE ON listausuario
+FOR EACH ROW
+EXECUTE FUNCTION set_updated_timestamp();
+
+CREATE TRIGGER trg_usuario_updated_at
+BEFORE UPDATE ON usuario
+FOR EACH ROW
+EXECUTE FUNCTION set_updated_timestamp();
+
+CREATE TRIGGER trg_temporada_updated_at
+BEFORE UPDATE ON temporada
+FOR EACH ROW
+EXECUTE FUNCTION set_updated_timestamp();
+
+CREATE TRIGGER trg_episodio_updated_at
+BEFORE UPDATE ON episodio
+FOR EACH ROW
+EXECUTE FUNCTION set_updated_timestamp();
+
+CREATE TRIGGER trg_avaliacao_updated_at
+BEFORE UPDATE ON avaliacao
+FOR EACH ROW
+EXECUTE FUNCTION set_updated_timestamp();

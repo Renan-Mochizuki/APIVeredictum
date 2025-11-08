@@ -41,10 +41,20 @@ function basicCrudController({ table, idCol, itemName, itemNamePlural, fieldsCre
         const reqKey = typeof f === 'string' ? f : f.req;
         const col = typeof f === 'string' ? f : f.col;
         const val = req.body[reqKey];
-        if (typeof val !== 'undefined') {
+        const isEmptyString = typeof val === 'string' && val.toString().trim() === '';
+
+        if (typeof val !== 'undefined' && val !== null && !isEmptyString) {
+          const rule = validationRulesCreate[reqKey];
+          let toPush = val;
+          if (rule && rule.type === 'number') {
+            const num = Number(val);
+            if (Number.isNaN(num)) return res.status(400).json({ error: `Campo '${reqKey}' deve ser um número` });
+            toPush = num;
+          }
+
           cols.push(col);
           placeholders.push(`$${values.length + 1}`);
-          values.push(val);
+          values.push(toPush);
         }
       });
 
@@ -82,9 +92,19 @@ function basicCrudController({ table, idCol, itemName, itemNamePlural, fieldsCre
         const reqKey = typeof f === 'string' ? f : f.req;
         const col = typeof f === 'string' ? f : f.col;
         const val = req.body[reqKey];
-        if (typeof val !== 'undefined') {
+        const isEmptyString = typeof val === 'string' && val.toString().trim() === '';
+        if (typeof val !== 'undefined' && val !== null && !isEmptyString) {
+          // Coerce numbers when validation rule says so
+          const rule = validationRulesUpdate[reqKey];
+          let toPush = val;
+          if (rule && rule.type === 'number') {
+            const num = Number(val);
+            if (Number.isNaN(num)) return res.status(400).json({ error: `Campo '${reqKey}' deve ser um número` });
+            toPush = num;
+          }
+
           updates.push(`${col} = $${values.length + 1}`);
-          values.push(val);
+          values.push(toPush);
         }
       });
 
