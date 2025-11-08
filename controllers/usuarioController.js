@@ -3,35 +3,19 @@ const crypto = require('crypto');
 const { validateUserData, validateData } = require('../utils/validation');
 const { constraintUser } = require('../utils/constraint');
 const { normalizeData } = require('../utils/normalize');
+const { basicCrudController } = require('./factory');
 
 const itemName = 'usuário';
 const itemNamePlural = 'usuários';
 
-async function getUsuarios(req, res) {
-  try {
-    const result = await pool.query('SELECT * FROM Usuario');
-    res.json(result.rows);
-  } catch (error) {
-    console.error('Erro ao buscar ' + itemNamePlural + ':', error);
-    res.status(500).json({ error: 'Erro ao buscar ' + itemNamePlural });
-  }
-}
+const { getAll, getById, deleteItem } = basicCrudController({
+  table: 'Usuario',
+  idCol: 'usuaId',
+  itemName,
+  itemNamePlural,
+});
 
-async function getUsuarioById(req, res) {
-  const { id } = req.params;
-  try {
-    const result = await pool.query('SELECT * FROM Usuario WHERE usuaId = $1', [id]);
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: itemName + ' não encontrado' });
-    }
-    res.json(result.rows[0]);
-  } catch (error) {
-    console.error('Erro ao buscar ' + itemName + ':', error);
-    res.status(500).json({ error: 'Erro ao buscar ' + itemName });
-  }
-}
-
-async function createUsuario(req, res) {
+async function createItem(req, res) {
   let { apelido, email, senha } = req.body;
 
   try {
@@ -65,7 +49,7 @@ async function createUsuario(req, res) {
   }
 }
 
-async function updateUsuario(req, res) {
+async function updateItem(req, res) {
   const { id } = req.params;
   let { apelido, email } = req.body;
   // TODO: Implementar envio do perfilImg
@@ -127,20 +111,4 @@ async function updateUsuario(req, res) {
   }
 }
 
-async function deleteUsuario(req, res) {
-  const { id } = req.params;
-
-  try {
-    const result = await pool.query('DELETE FROM Usuario WHERE usuaId = $1 RETURNING *', [id]);
-
-    // Se não for retornado nenhuma linha, o usuário não foi encontrado
-    if (result.rowCount === 0) return res.status(404).json({ error: itemName + ' não encontrado' });
-
-    res.json({ message: itemName + ' deletado com sucesso' });
-  } catch (error) {
-    console.error('Erro ao deletar ' + itemName + ':', error);
-    res.status(500).json({ error: 'Erro ao deletar ' + itemName });
-  }
-}
-
-module.exports = { getUsuarios, getUsuarioById, createUsuario, updateUsuario, deleteUsuario };
+module.exports = { getAll, getById, createItem, updateItem, deleteItem };

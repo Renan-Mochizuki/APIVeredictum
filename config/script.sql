@@ -274,3 +274,10 @@ CREATE TRIGGER trg_avaliacao_updated_at
 BEFORE UPDATE ON avaliacao
 FOR EACH ROW
 EXECUTE FUNCTION set_updated_timestamp();
+
+-- Remove a constraint atual se existir
+ALTER TABLE Usuario DROP CONSTRAINT IF EXISTS usuario_apelido_key;
+
+-- Cria um índice único usando LOWER()
+CREATE UNIQUE INDEX idx_usuario_apelido_unique 
+ON Usuario (LOWER(usuaApelido));

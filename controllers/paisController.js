@@ -1,16 +1,14 @@
 const pool = require('../config/db');
+const { basicCrudController } = require('./factory');
 
 const itemName = 'pais';
 const itemNamePlural = 'paises';
 
-async function getPaises(req, res) {
-  try {
-    const result = await pool.query('SELECT * FROM PaisOrigem');
-    res.json(result.rows);
-  } catch (error) {
-    console.error('Erro ao buscar ' + itemNamePlural + ':', error);
-    res.status(500).json({ error: 'Erro ao buscar ' + itemNamePlural });
-  }
-}
+const { getAll } = basicCrudController({
+  table: 'PaisOrigem',
+  idCol: 'paisId',
+  itemName,
+  itemNamePlural,
+});
 
-module.exports = { getPaises };
+module.exports = { getAll };
