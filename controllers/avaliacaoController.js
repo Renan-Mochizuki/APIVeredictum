@@ -1,13 +1,16 @@
 const pool = require('../config/db');
 const { validateData } = require('../utils/validation');
 
+const itemName = 'avaliação';
+const itemNamePlural = 'avaliações';
+
 async function getAvaliacoes(req, res) {
   try {
     const result = await pool.query('SELECT * FROM Avaliacao');
     res.json(result.rows);
   } catch (error) {
-    console.error('Erro ao buscar avaliações:', error);
-    res.status(500).json({ error: 'Erro ao buscar avaliações' });
+    console.error('Erro ao buscar ' + itemNamePlural + ':', error);
+    res.status(500).json({ error: 'Erro ao buscar ' + itemNamePlural });
   }
 }
 
@@ -16,12 +19,12 @@ async function getAvaliacaoById(req, res) {
   try {
     const result = await pool.query('SELECT * FROM Avaliacao WHERE avalId = $1', [id]);
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Avaliação não encontrada' });
+      return res.status(404).json({ error: itemName + ' não encontrada' });
     }
     res.json(result.rows[0]);
   } catch (error) {
-    console.error('Erro ao buscar avaliação:', error);
-    res.status(500).json({ error: 'Erro ao buscar avaliação' });
+    console.error('Erro ao buscar ' + itemName + ':', error);
+    res.status(500).json({ error: 'Erro ao buscar ' + itemName });
   }
 }
 
@@ -39,8 +42,8 @@ async function getAvaliacoesObras(req, res) {
     `);
     res.json(result.rows);
   } catch (error) {
-    console.error('Erro ao buscar avaliações de obras:', error);
-    res.status(500).json({ error: 'Erro ao buscar avaliações de obras' });
+    console.error('Erro ao buscar ' + itemNamePlural + ' de obras:', error);
+    res.status(500).json({ error: 'Erro ao buscar ' + itemNamePlural + ' de obras' });
   }
 }
 
@@ -79,8 +82,8 @@ async function createAvaliacao(req, res) {
 
     res.status(201).json(result.rows[0]);
   } catch (error) {
-    console.error('Erro ao criar avaliação:', error);
-    res.status(500).json({ error: 'Erro ao criar avaliação' });
+    console.error('Erro ao criar ' + itemName + ':', error);
+    res.status(500).json({ error: 'Erro ao criar ' + itemName });
   }
 }
 
@@ -136,12 +139,12 @@ async function updateAvaliacao(req, res) {
     const query = `UPDATE Avaliacao SET ${updates.join(', ')} WHERE avalId = $${idx} RETURNING *`;
     const result = await pool.query(query, values);
 
-    if (result.rowCount === 0) return res.status(404).json({ error: 'Avaliação não encontrada' });
+    if (result.rowCount === 0) return res.status(404).json({ error: itemName + ' não encontrada' });
 
     res.json(result.rows[0]);
   } catch (error) {
-    console.error('Erro ao atualizar avaliação:', error);
-    res.status(500).json({ error: 'Erro ao atualizar avaliação' });
+    console.error('Erro ao atualizar ' + itemName + ':', error);
+    res.status(500).json({ error: 'Erro ao atualizar ' + itemName });
   }
 }
 
@@ -149,13 +152,13 @@ async function deleteAvaliacao(req, res) {
   const { id } = req.params;
   try {
     const result = await pool.query('DELETE FROM Avaliacao WHERE avalId = $1 RETURNING *', [id]);
-    
-    if (result.rowCount === 0) return res.status(404).json({ error: 'Avaliação não encontrada' });
 
-    res.json({ message: 'Avaliação deletada com sucesso' });
+    if (result.rowCount === 0) return res.status(404).json({ error: itemName + ' não encontrada' });
+
+    res.json({ message: itemName + ' deletada com sucesso' });
   } catch (error) {
-    console.error('Erro ao deletar avaliação:', error);
-    res.status(500).json({ error: 'Erro ao deletar avaliação' });
+    console.error('Erro ao deletar ' + itemName + ':', error);
+    res.status(500).json({ error: 'Erro ao deletar ' + itemName });
   }
 }
 

@@ -2,13 +2,16 @@ const pool = require('../config/db');
 const { constraintUnique } = require('../utils/constraint');
 const { validateData } = require('../utils/validation');
 
+const itemName = 'função';
+const itemNamePlural = 'funções';
+
 async function getFuncoes(req, res) {
   try {
     const result = await pool.query('SELECT * FROM Funcao');
     res.json(result.rows);
   } catch (error) {
-    console.error('Erro ao buscar funções:', error);
-    res.status(500).json({ error: 'Erro ao buscar funções' });
+    console.error('Erro ao buscar ' + itemNamePlural + ':', error);
+    res.status(500).json({ error: 'Erro ao buscar ' + itemNamePlural });
   }
 }
 
@@ -34,8 +37,8 @@ async function createFuncao(req, res) {
       return res.status(constraintError.status).json({ error: constraintError.message });
     }
 
-    console.error('Erro ao criar função:', error);
-    res.status(500).json({ error: 'Erro ao criar função' });
+    console.error('Erro ao criar ' + itemName + ':', error);
+    res.status(500).json({ error: 'Erro ao criar ' + itemName });
   }
 }
 

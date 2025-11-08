@@ -1,13 +1,16 @@
 const pool = require('../config/db');
 const { validateData } = require('../utils/validation');
 
+const itemName = 'episódio';
+const itemNamePlural = 'episódios';
+
 async function getEpisodios(req, res) {
   try {
     const result = await pool.query('SELECT * FROM Episodio');
     res.json(result.rows);
   } catch (error) {
-    console.error('Erro ao buscar episódios:', error);
-    res.status(500).json({ error: 'Erro ao buscar episódios' });
+    console.error('Erro ao buscar ' + itemNamePlural + ':', error);
+    res.status(500).json({ error: 'Erro ao buscar ' + itemNamePlural });
   }
 }
 
@@ -16,12 +19,12 @@ async function getEpisodioById(req, res) {
   try {
     const result = await pool.query('SELECT * FROM Episodio WHERE episId = $1', [id]);
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Episódio não encontrado' });
+      return res.status(404).json({ error: itemName + ' não encontrado' });
     }
     res.json(result.rows[0]);
   } catch (error) {
-    console.error('Erro ao buscar episódio:', error);
-    res.status(500).json({ error: 'Erro ao buscar episódio' });
+    console.error('Erro ao buscar ' + itemName + ':', error);
+    res.status(500).json({ error: 'Erro ao buscar ' + itemName });
   }
 }
 
@@ -52,8 +55,8 @@ async function createEpisodio(req, res) {
     ]);
     res.status(201).json(result.rows[0]);
   } catch (error) {
-    console.error('Erro ao criar episódio:', error);
-    res.status(500).json({ error: 'Erro ao criar episódio' });
+    console.error('Erro ao criar ' + itemName + ':', error);
+    res.status(500).json({ error: 'Erro ao criar ' + itemName });
   }
 }
 
@@ -110,12 +113,12 @@ async function updateEpisodio(req, res) {
     const query = `UPDATE Episodio SET ${updates.join(', ')} WHERE episId = $${idx} RETURNING *`;
     const result = await pool.query(query, values);
 
-    if (result.rowCount === 0) return res.status(404).json({ error: 'Episódio não encontrado' });
+    if (result.rowCount === 0) return res.status(404).json({ error: itemName + ' não encontrado' });
 
     res.json(result.rows[0]);
   } catch (error) {
-    console.error('Erro ao atualizar episódio:', error);
-    res.status(500).json({ error: 'Erro ao atualizar episódio' });
+    console.error('Erro ao atualizar ' + itemName + ':', error);
+    res.status(500).json({ error: 'Erro ao atualizar ' + itemName });
   }
 }
 
@@ -125,12 +128,12 @@ async function deleteEpisodio(req, res) {
   try {
     const result = await pool.query('DELETE FROM Episodio WHERE episId = $1 RETURNING *', [id]);
 
-    if (result.rowCount === 0) return res.status(404).json({ error: 'Episódio não encontrado' });
+    if (result.rowCount === 0) return res.status(404).json({ error: itemName + ' não encontrado' });
 
-    res.json({ message: 'Episódio deletado com sucesso' });
+    res.json({ message: itemName + ' deletado com sucesso' });
   } catch (error) {
-    console.error('Erro ao deletar episódio:', error);
-    res.status(500).json({ error: 'Erro ao deletar episódio' });
+    console.error('Erro ao deletar ' + itemName + ':', error);
+    res.status(500).json({ error: 'Erro ao deletar ' + itemName });
   }
 }
 
