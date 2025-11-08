@@ -13,6 +13,12 @@ const temporadaRoutes = require('./routes/temporadaRoute');
 const episodioRoutes = require('./routes/episodioRoute');
 const avaliacaoRoutes = require('./routes/avaliacaoRoute');
 const funcaoRoutes = require('./routes/funcaoRoute');
+const profissionalRoutes = require('./routes/profissionalRoute');
+const criticoRoutes = require('./routes/criticoRoute');
+const moderadorRoutes = require('./routes/moderadorRoute');
+const participacaoRoutes = require('./routes/participacaoRoute');
+const organizacaoRoutes = require('./routes/organizacaoRoute');
+const listausuarioRoutes = require('./routes/listausuarioRoute');
 
 // Configuração do Express
 const app = express();
@@ -35,6 +41,12 @@ app.use('/temporadas', temporadaRoutes);
 app.use('/episodios', episodioRoutes);
 app.use('/avaliacoes', avaliacaoRoutes);
 app.use('/funcoes', funcaoRoutes);
+app.use('/profissionais', profissionalRoutes);
+app.use('/criticos', criticoRoutes);
+app.use('/moderadores', moderadorRoutes);
+app.use('/participacoes', participacaoRoutes);
+app.use('/organizacoes', organizacaoRoutes);
+app.use('/listasusuario', listausuarioRoutes);
 
 // Iniciando servidor
 const port = config.port || 3000;

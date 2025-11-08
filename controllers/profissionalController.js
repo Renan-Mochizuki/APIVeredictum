@@ -1,18 +1,18 @@
 const pool = require('../config/db');
 const { basicCrudController } = require('./factory');
 
-const itemName = 'função';
-const itemNamePlural = 'funções';
+const itemName = 'profissional';
+const itemNamePlural = 'profissionais';
 
-const fields = [{ req: 'tipo', col: 'funcTipo' }];
+const fields = [{ req: 'nome', col: 'profNome' }];
 
 const validationRules = {
-  tipo: { required: true, type: 'string', minLength: 2, maxLength: 100 },
+  nome: { required: true, type: 'string', minLength: 2, maxLength: 100 },
 };
 
 const { getAll, createItem, deleteItem } = basicCrudController({
-  table: 'Funcao',
-  idCol: 'funcTipo',
+  table: 'Profissional',
+  idCol: 'profNome',
   itemName,
   itemNamePlural,
   fieldsCreate: fields,

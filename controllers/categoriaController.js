@@ -7,7 +7,7 @@ const itemNamePlural = 'categorias';
 const fields = [{ req: 'nome', col: 'cateNome' }];
 
 const validationRules = {
-  nome: { required: true, type: 'string', minLength: 3, maxLength: 100 },
+  nome: { required: true, type: 'string', minLength: 3, maxLength: 30 },
 };
 
 const { getAll, createItem } = basicCrudController({
