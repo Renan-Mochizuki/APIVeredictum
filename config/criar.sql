@@ -1,3 +1,5 @@
+CREATE TYPE tipoUsuario AS ENUM ('comum', 'critico', 'moderador');
+
 CREATE TABLE Obra (
     obraId serial PRIMARY KEY,
     obraTitulo varchar(150) not null,
@@ -225,7 +227,7 @@ ALTER TABLE Obra_ListaUsuario ADD CONSTRAINT FK_Obra_ListaUsuario_2
 -- Função trigger que define o campo updatedAt apropriado por tabela
 CREATE OR REPLACE FUNCTION set_updated_timestamp()
 RETURNS trigger AS $$
-BEGIN=
+BEGIN
   IF TG_TABLE_NAME = 'obra' THEN
     NEW.obraupdatedat := now();
   ELSIF TG_TABLE_NAME = 'listausuario' THEN
