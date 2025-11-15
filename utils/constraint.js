@@ -12,6 +12,14 @@ function constraintUser(error) {
   return null;
 }
 
+function constraintUnique(error) {
+  // Verifica se é erro de violação de constraint unique
+  if (error.code === '23505') {
+    return { status: 409, message: 'Valor já em uso' };
+  }
+}
+
 module.exports = {
-  constraintUser
+  constraintUser,
+  constraintUnique
 };

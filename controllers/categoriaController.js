@@ -1,13 +1,24 @@
 const pool = require('../config/db');
+const { basicCrudController } = require('./factory');
 
-async function getCategorias(req, res) {
-  try {
-    const result = await pool.query('SELECT * FROM Categoria');
-    res.json(result.rows);
-  } catch (error) {
-    console.error('Erro ao buscar categorias:', error);
-    res.status(500).json({ error: 'Erro ao buscar categorias' });
-  }
-}
+const itemName = 'categoria';
+const itemNamePlural = 'categorias';
 
-module.exports = { getCategorias };
+const fields = [{ req: 'nome', col: 'cateNome' }];
+
+const validationRules = {
+  nome: { required: true, type: 'string', minLength: 3, maxLength: 30 },
+};
+
+const { getAll, createItem } = basicCrudController({
+  table: 'Categoria',
+  idCol: 'cateId',
+  itemName,
+  itemNamePlural,
+  fieldsCreate: fields,
+  fieldsUpdate: fields,
+  validationRulesCreate: validationRules,
+  validationRulesUpdate: validationRules,
+});
+
+module.exports = { getAll, createItem };

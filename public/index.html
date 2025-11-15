@@ -26,14 +26,23 @@
         <a href="/categorias">Categorias</a>
         <a href="/tipoobras">Tipo de Obras</a>
         <a href="/paises">Paises</a>
+        <a href="/funcoes">Funções</a>
+        <a href="/profissionais">Profissionais</a>
+        <a href="/criticos">Críticos</a>
+        <a href="/moderadores">Moderadores</a>
+        <a href="/participacoes">Participações</a>
+        <a href="/organizacoes">Organizações</a>
+        <a href="/listasusuario">Lista de Usuários</a>
       </div>
     </div>
+    <hr />
     <div class="box">
       <h2 class="title">Selects com join:</h2>
       <div class="buttons">
         <a href="/avaliacoes/avaliacoesobras">Avaliações de obras</a>
       </div>
     </div>
+    <hr />
     <div class="box">
       <h2 class="title">Selects por id:</h2>
       <div class="buttons">
@@ -59,9 +68,11 @@
         </div>
       </div>
     </div>
+    <hr />
     <div class="box">
       <h2 class="title">Inserir:</h2>
       <div class="boxarea">
+        <!-- Inserir Usuário -->
         <div class="buttons">
           <div class="subbox">
             <h3>Usuário</h3>
@@ -69,10 +80,14 @@
             <input type="email" data-field="email" placeholder="Digite o email" />
             <input type="password" data-field="senha" placeholder="Digite a senha" />
             <button data-route="/usuarios" data-method="post" data-fields="apelido,email,senha">Criar Usuário</button>
+          </div>
+          <div class="subbox">
             <p>Resposta:</p>
             <div class="responseArea"></div>
           </div>
         </div>
+
+        <!-- Inserir Obra -->
         <div class="buttons">
           <div class="subbox">
             <h3>Obra</h3>
@@ -80,10 +95,27 @@
             <input type="text" data-field="descricao" placeholder="Digite a descrição" />
             <input type="text" data-field="tipoObraNome" placeholder="Digite o tipo da obra" />
             <button data-route="/obras" data-method="post" data-fields="titulo,descricao,tipoObraNome">Criar Obra</button>
+          </div>
+          <div class="subbox">
             <p>Resposta:</p>
             <div class="responseArea"></div>
           </div>
         </div>
+
+        <!-- Inserir Função -->
+        <div class="buttons">
+          <div class="subbox">
+            <h3>Função</h3>
+            <input type="text" data-field="tipo" placeholder="Digite o tipo" />
+            <button data-route="/funcoes" data-method="post" data-fields="tipo">Criar Função</button>
+          </div>
+          <div class="subbox">
+            <p>Resposta:</p>
+            <div class="responseArea"></div>
+          </div>
+        </div>
+
+        <!-- Inserir Temporada -->
         <div class="buttons">
           <div class="subbox">
             <h3>Temporada</h3>
@@ -94,10 +126,14 @@
             <input type="text" data-field="descricao" placeholder="Descrição (opcional)" />
             <input type="text" data-field="obraId" placeholder="ID da Obra" />
             <button data-route="/temporadas" data-method="post" data-fields="numero,titulo,dataInicio,dataFim,descricao,obraId">Criar Temporada</button>
+          </div>
+          <div class="subbox">
             <p>Resposta:</p>
             <div class="responseArea"></div>
           </div>
         </div>
+
+        <!-- Inserir Episódio -->
         <div class="buttons">
           <div class="subbox">
             <h3>Episódio</h3>
@@ -107,11 +143,14 @@
             <input type="text" data-field="descricao" placeholder="Descrição" />
             <input type="text" data-field="temporadaId" placeholder="ID da Temporada" />
             <button data-route="/episodios" data-method="post" data-fields="numero,dataLancamento,titulo,descricao,temporadaId">Criar Episódio</button>
+          </div>
+          <div class="subbox">
             <p>Resposta:</p>
             <div class="responseArea"></div>
           </div>
         </div>
 
+        <!-- Inserir Avaliação -->
         <div class="buttons">
           <div class="subbox">
             <h3>Avaliação</h3>
@@ -121,15 +160,111 @@
             <input type="number" data-field="nota" placeholder="Nota (0+)" />
             <input type="text" data-field="comentario" placeholder="Comentário (opcional)" />
             <button data-route="/avaliacoes" data-method="post" data-fields="usuarioId,obraId,episodioId,nota,comentario">Criar Avaliação</button>
+          </div>
+          <div class="subbox">
+            <p>Resposta:</p>
+            <div class="responseArea"></div>
+          </div>
+        </div>
+
+        <!-- Inserir Profissional -->
+        <div class="buttons">
+          <div class="subbox">
+            <h3>Profissional</h3>
+            <input type="text" data-field="nome" placeholder="Nome do profissional" />
+            <button data-route="/profissionais" data-method="post" data-fields="nome">Criar Profissional</button>
+          </div>
+          <div class="subbox">
+            <p>Resposta:</p>
+            <div class="responseArea"></div>
+          </div>
+        </div>
+
+        <!-- Inserir Organização -->
+        <div class="buttons">
+          <div class="subbox">
+            <h3>Organização</h3>
+            <input type="text" data-field="nome" placeholder="Nome da organização" />
+            <button data-route="/organizacoes" data-method="post" data-fields="nome">Criar Organização</button>
+          </div>
+          <div class="subbox">
+            <p>Resposta:</p>
+            <div class="responseArea"></div>
+          </div>
+        </div>
+
+        <!-- Inserir Participação -->
+        <div class="buttons">
+          <div class="subbox">
+            <h3>Participação</h3>
+            <input type="text" data-field="obraId" placeholder="ID da Obra" />
+            <input type="text" data-field="funcaoId" placeholder="ID da Função (tipo)" />
+            <input type="text" data-field="organizacaoId" placeholder="ID da Organização (nome)" />
+            <input type="text" data-field="profissionalId" placeholder="ID do Profissional (nome)" />
+            <button data-route="/participacoes" data-method="post" data-fields="obraId,funcaoId,organizacaoId,profissionalId">Criar Participação</button>
+          </div>
+          <div class="subbox">
+            <p>Resposta:</p>
+            <div class="responseArea"></div>
+          </div>
+        </div>
+
+        <!-- Inserir Lista de Usuário -->
+        <div class="buttons">
+          <div class="subbox">
+            <h3>Lista de Usuário</h3>
+            <input type="text" data-field="titulo" placeholder="Título da lista" />
+            <input type="text" data-field="descricao" placeholder="Descrição (opcional)" />
+            <input type="text" data-field="privado" placeholder="Privado (true/false)" />
+            <input type="text" data-field="usuarioId" placeholder="ID do Usuário" />
+            <button data-route="/listasusuario" data-method="post" data-fields="titulo,descricao,privado,usuarioId">Criar Lista</button>
+          </div>
+          <div class="subbox">
+            <p>Resposta:</p>
+            <div class="responseArea"></div>
+          </div>
+        </div>
+
+        <!-- Inserir Crítico -->
+        <div class="buttons">
+          <div class="subbox">
+            <h3>Crítico</h3>
+            <input type="text" data-field="id" placeholder="ID do usuário (usuaId)" />
+            <input type="text" data-field="nome" placeholder="Nome completo" />
+            <input type="text" data-field="bio" placeholder="Bio" />
+            <input type="text" data-field="linkWebsite" placeholder="Website (opcional)" />
+            <input type="text" data-field="linkRedeSocial" placeholder="Rede social (opcional)" />
+            <input type="text" data-field="emailProfissional" placeholder="Email profissional (opcional)" />
+            <button data-route="/criticos" data-method="post" data-fields="id,nome,bio,linkWebsite,linkRedeSocial,emailProfissional">Criar Crítico</button>
+          </div>
+          <div class="subbox">
+            <p>Resposta:</p>
+            <div class="responseArea"></div>
+          </div>
+        </div>
+
+        <!-- Inserir Moderador -->
+        <div class="buttons">
+          <div class="subbox">
+            <h3>Moderador</h3>
+            <input type="text" data-field="id" placeholder="ID do usuário (usuaId)" />
+            <input type="text" data-field="permissaoCatalogo" placeholder="Permissão catálogo (true/false)" />
+            <input type="text" data-field="permissaoComunidade" placeholder="Permissão comunidade (true/false)" />
+            <input type="text" data-field="permissaoVerificacao" placeholder="Permissão verificação (true/false)" />
+            <button data-route="/moderadores" data-method="post" data-fields="id,permissaoCatalogo,permissaoComunidade,permissaoVerificacao">Criar Moderador</button>
+          </div>
+          <div class="subbox">
             <p>Resposta:</p>
             <div class="responseArea"></div>
           </div>
         </div>
       </div>
     </div>
+    <hr />
     <div class="box">
       <h2 class="title">Alterar:</h2>
       <div class="boxarea">
+        <!-- Alterar Usuário -->
         <div class="buttons">
           <div class="subbox">
             <h3>Usuário</h3>
@@ -137,10 +272,14 @@
             <input type="text" data-field="apelido" placeholder="Digite o apelido" />
             <input type="email" data-field="email" placeholder="Digite o email" />
             <button data-route="/usuarios" data-method="put" data-fields="apelido,email">Alterar Usuário</button>
+          </div>
+          <div class="subbox">
             <p>Resposta:</p>
             <div class="responseArea"></div>
           </div>
         </div>
+
+        <!-- Alterar Obra -->
         <div class="buttons">
           <div class="subbox">
             <h3>Obras</h3>
@@ -149,10 +288,14 @@
             <input type="text" data-field="descricao" placeholder="Digite a descrição" />
             <input type="text" data-field="tipoObraNome" placeholder="Digite o tipo da obra" />
             <button data-route="/obras" data-method="put" data-fields="titulo,descricao,tipoObraNome">Alterar Obra</button>
+          </div>
+          <div class="subbox">
             <p>Resposta:</p>
             <div class="responseArea"></div>
           </div>
         </div>
+
+        <!-- Alterar Temporada -->
         <div class="buttons">
           <div class="subbox">
             <h3>Temporada</h3>
@@ -164,10 +307,14 @@
             <input type="text" data-field="descricao" placeholder="Descrição" />
             <input type="text" data-field="obraId" placeholder="ID da Obra" />
             <button data-route="/temporadas" data-method="put" data-fields="numero,titulo,dataInicio,dataFim,descricao,obraId">Alterar Temporada</button>
+          </div>
+          <div class="subbox">
             <p>Resposta:</p>
             <div class="responseArea"></div>
           </div>
         </div>
+
+        <!-- Alterar Avaliação -->
         <div class="buttons">
           <div class="subbox">
             <h3>Avaliação</h3>
@@ -178,56 +325,172 @@
             <input type="number" data-field="nota" placeholder="Nota" />
             <input type="text" data-field="comentario" placeholder="Comentário" />
             <button data-route="/avaliacoes" data-method="put" data-fields="usuarioId,obraId,episodioId,nota,comentario">Alterar Avaliação</button>
+          </div>
+          <div class="subbox">
+            <p>Resposta:</p>
+            <div class="responseArea"></div>
+          </div>
+        </div>
+
+        <!-- Alterar Participação -->
+        <div class="buttons">
+          <div class="subbox">
+            <h3>Participação</h3>
+            <input type="text" data-field="id" placeholder="ID da Participação" />
+            <input type="text" data-field="obraId" placeholder="ID da Obra" />
+            <input type="text" data-field="funcaoId" placeholder="ID da Função (tipo)" />
+            <input type="text" data-field="organizacaoId" placeholder="ID da Organização (nome)" />
+            <input type="text" data-field="profissionalId" placeholder="ID do Profissional (nome)" />
+            <button data-route="/participacoes" data-method="put" data-fields="obraId,funcaoId,organizacaoId,profissionalId">Alterar Participação</button>
+          </div>
+          <div class="subbox">
+            <p>Resposta:</p>
+            <div class="responseArea"></div>
+          </div>
+        </div>
+
+        <!-- Alterar Lista de Usuário -->
+        <div class="buttons">
+          <div class="subbox">
+            <h3>Lista de Usuário</h3>
+            <input type="text" data-field="id" placeholder="ID da Lista" />
+            <input type="text" data-field="titulo" placeholder="Título" />
+            <input type="text" data-field="descricao" placeholder="Descrição" />
+            <input type="text" data-field="privado" placeholder="Privado (true/false)" />
+            <input type="text" data-field="usuarioId" placeholder="ID do Usuário" />
+            <button data-route="/listasusuario" data-method="put" data-fields="titulo,descricao,privado,usuarioId">Alterar Lista</button>
+          </div>
+          <div class="subbox">
+            <p>Resposta:</p>
+            <div class="responseArea"></div>
+          </div>
+        </div>
+
+        <!-- Alterar Crítico -->
+        <div class="buttons">
+          <div class="subbox">
+            <h3>Crítico</h3>
+            <input type="text" data-field="id" placeholder="ID do Usuário (usuaId)" />
+            <input type="text" data-field="nome" placeholder="Nome completo" />
+            <input type="text" data-field="bio" placeholder="Bio" />
+            <input type="text" data-field="linkWebsite" placeholder="Website (opcional)" />
+            <input type="text" data-field="linkRedeSocial" placeholder="Rede social (opcional)" />
+            <input type="text" data-field="emailProfissional" placeholder="Email profissional (opcional)" />
+            <button data-route="/criticos" data-method="put" data-fields="nome,bio,linkWebsite,linkRedeSocial,emailProfissional">Alterar Crítico</button>
+          </div>
+          <div class="subbox">
+            <p>Resposta:</p>
+            <div class="responseArea"></div>
+          </div>
+        </div>
+
+        <!-- Alterar Moderador -->
+        <div class="buttons">
+          <div class="subbox">
+            <h3>Moderador</h3>
+            <input type="text" data-field="id" placeholder="ID do Usuário (usuaId)" />
+            <input type="text" data-field="permissaoCatalogo" placeholder="Permissão catálogo (true/false)" />
+            <input type="text" data-field="permissaoComunidade" placeholder="Permissão comunidade (true/false)" />
+            <input type="text" data-field="permissaoVerificacao" placeholder="Permissão verificação (true/false)" />
+            <button data-route="/moderadores" data-method="put" data-fields="permissaoCatalogo,permissaoComunidade,permissaoVerificacao">Alterar Moderador</button>
+          </div>
+          <div class="subbox">
             <p>Resposta:</p>
             <div class="responseArea"></div>
           </div>
         </div>
       </div>
     </div>
+    <hr />
     <div class="box">
       <h2 class="title">Excluir:</h2>
       <div class="boxarea">
+        <!-- Excluir Usuário -->
         <div class="buttons">
           <div class="subbox">
             <h3>Usuário</h3>
             <input type="text" data-field="id" placeholder="Digite o id" />
             <button data-route="/usuarios" data-method="delete" data-fields="id">Excluir Usuário</button>
+          </div>
+          <div class="subbox">
             <p>Resposta:</p>
             <div class="responseArea"></div>
           </div>
         </div>
+
+        <!-- Excluir Obra -->
         <div class="buttons">
           <div class="subbox">
             <h3>Obra</h3>
             <input type="text" data-field="id" placeholder="Digite o id da obra" />
             <button data-route="/obras" data-method="delete">Excluir Obra</button>
+          </div>
+          <div class="subbox">
             <p>Resposta:</p>
             <div class="responseArea"></div>
           </div>
         </div>
+
+        <!-- Excluir Temporada -->
         <div class="buttons">
           <div class="subbox">
             <h3>Temporada</h3>
             <input type="text" data-field="id" placeholder="ID da Temporada" />
             <button data-route="/temporadas" data-method="delete">Excluir Temporada</button>
+          </div>
+          <div class="subbox">
             <p>Resposta:</p>
             <div class="responseArea"></div>
           </div>
         </div>
+
+        <!-- Excluir Episódio -->
         <div class="buttons">
           <div class="subbox">
             <h3>Episódio</h3>
             <input type="text" data-field="id" placeholder="ID do Episódio" />
             <button data-route="/episodios" data-method="delete">Excluir Episódio</button>
+          </div>
+          <div class="subbox">
             <p>Resposta:</p>
             <div class="responseArea"></div>
           </div>
         </div>
+
+        <!-- Excluir Avaliação -->
         <div class="buttons">
           <div class="subbox">
             <h3>Avaliação</h3>
             <input type="text" data-field="id" placeholder="ID da Avaliação" />
             <button data-route="/avaliacoes" data-method="delete">Excluir Avaliação</button>
+          </div>
+          <div class="subbox">
+            <p>Resposta:</p>
+            <div class="responseArea"></div>
+          </div>
+        </div>
+
+        <!-- Excluir Função -->
+        <div class="buttons">
+          <div class="subbox">
+            <h3>Função</h3>
+            <input type="text" data-field="id" placeholder="ID da Função" />
+            <button data-route="/funcoes" data-method="delete">Excluir Função</button>
+          </div>
+          <div class="subbox">
+            <p>Resposta:</p>
+            <div class="responseArea"></div>
+          </div>
+        </div>
+
+        <!-- Excluir Profissional -->
+        <div class="buttons">
+          <div class="subbox">
+            <h3>Profissional</h3>
+            <input type="text" data-field="id" placeholder="ID do Profissional" />
+            <button data-route="/profissionais" data-method="delete">Excluir Profissional</button>
+          </div>
+          <div class="subbox">
             <p>Resposta:</p>
             <div class="responseArea"></div>
           </div>

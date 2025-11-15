@@ -1,6 +1,4 @@
-
 CREATE TYPE tipoUsuario AS ENUM ('comum', 'critico', 'moderador');
-/* MER v7: */
 
 CREATE TABLE Obra (
     obraId serial PRIMARY KEY,
@@ -25,7 +23,7 @@ CREATE TABLE Funcao (
 
 CREATE TABLE Participacao (
     partId serial PRIMARY KEY,
-    partObraId serial not null,
+    partObraId integer not null,
     partFuncaoId varchar(100) not null,
     partOrganizacaoId varchar(100),
     partProfissionalId varchar(100)
@@ -48,7 +46,7 @@ CREATE TABLE ListaUsuario (
     listTitulo varchar(100) not null,
     listDescricao varchar(200),
     listPrivado boolean default true,
-    listUsuarioId serial not null,
+    listUsuarioId integer not null,
     listCreatedAt timestamptz default now(),
     listUpdatedAt timestamptz default now()
 );
@@ -73,7 +71,7 @@ CREATE TABLE Temporada (
     tempDataFim date not null,
     tempDescricao varchar(150),
     tempImg bytea,
-    tempObraId serial not null,
+    tempObraId integer not null,
     tempCreatedAt timestamptz default now(),
     tempUpdatedAt timestamptz default now()
 );
@@ -84,7 +82,7 @@ CREATE TABLE Episodio (
     episDataLancamento date not null,
     episTitulo varchar(100) not null,
     episDescricao varchar(200) not null,
-    episTemporadaId serial not null,
+    episTemporadaId integer not null,
     episCreatedAt timestamptz default now(),
     episUpdatedAt timestamptz default now()
 );
@@ -93,9 +91,9 @@ CREATE TABLE Avaliacao (
     avalId serial PRIMARY KEY,
     avalNota integer not null check (avalNota >= 0),
     avalComentario varchar(500),
-    avalUsuarioId serial not null,
-    avalObraId serial,
-    avalEpisodioId serial,
+    avalUsuarioId integer not null,
+    avalObraId integer,
+    avalEpisodioId integer,
     avalCreatedAt timestamptz default now(),
     avalUpdatedAt timestamptz default now()
 );
@@ -117,18 +115,18 @@ CREATE TABLE Moderador (
 );
 
 CREATE TABLE Obra_Categoria (
-    obraId serial not null,
+    obraId integer not null,
     categoriaId varchar(30) not null
 );
 
 CREATE TABLE Obra_PaisOrigem (
-    obraId serial not null,
+    obraId integer not null,
     paisOrigemId varchar(47) not null
 );
 
 CREATE TABLE Obra_ListaUsuario (
-    obraId serial not null,
-    listaUsuarioId serial not null
+    obraId integer not null,
+    listaUsuarioId integer not null
 );
  
 ALTER TABLE Obra ADD CONSTRAINT FK_Obra_2
@@ -226,25 +224,62 @@ ALTER TABLE Obra_ListaUsuario ADD CONSTRAINT FK_Obra_ListaUsuario_2
     REFERENCES Obra (obraId)
     ON DELETE SET NULL;
 
-ALTER TABLE Participacao ALTER COLUMN partObraId DROP DEFAULT;
-ALTER TABLE Participacao ALTER COLUMN partObraId TYPE integer;
-ALTER TABLE ListaUsuario ALTER COLUMN listUsuarioId DROP DEFAULT;
-ALTER TABLE ListaUsuario ALTER COLUMN listUsuarioId TYPE integer;
-ALTER TABLE Temporada ALTER COLUMN tempObraId DROP DEFAULT;
-ALTER TABLE Temporada ALTER COLUMN tempObraId TYPE integer;
-ALTER TABLE Episodio ALTER COLUMN episTemporadaId DROP DEFAULT;
-ALTER TABLE Episodio ALTER COLUMN episTemporadaId TYPE integer;
-ALTER TABLE Avaliacao ALTER COLUMN avalUsuarioId DROP DEFAULT;
-ALTER TABLE Avaliacao ALTER COLUMN avalUsuarioId TYPE integer;
-ALTER TABLE Avaliacao ALTER COLUMN avalObraId DROP DEFAULT;
-ALTER TABLE Avaliacao ALTER COLUMN avalObraId TYPE integer;
-ALTER TABLE Avaliacao ALTER COLUMN avalEpisodioId DROP DEFAULT;
-ALTER TABLE Avaliacao ALTER COLUMN avalEpisodioId TYPE integer;
-ALTER TABLE Obra_Categoria ALTER COLUMN obraId DROP DEFAULT;
-ALTER TABLE Obra_Categoria ALTER COLUMN obraId TYPE integer;
-ALTER TABLE Obra_PaisOrigem ALTER COLUMN obraId DROP DEFAULT;
-ALTER TABLE Obra_PaisOrigem ALTER COLUMN obraId TYPE integer;
-ALTER TABLE Obra_ListaUsuario ALTER COLUMN obraId DROP DEFAULT;
-ALTER TABLE Obra_ListaUsuario ALTER COLUMN obraId TYPE integer;
-ALTER TABLE Obra_ListaUsuario ALTER COLUMN listaUsuarioId DROP DEFAULT;
-ALTER TABLE Obra_ListaUsuario ALTER COLUMN listaUsuarioId TYPE integer;
+-- Função trigger que define o campo updatedAt apropriado por tabela
+CREATE OR REPLACE FUNCTION set_updated_timestamp()
+RETURNS trigger AS $$
+BEGIN
+  IF TG_TABLE_NAME = 'obra' THEN
+    NEW.obraupdatedat := now();
+  ELSIF TG_TABLE_NAME = 'listausuario' THEN
+    NEW.listupdatedat := now();
+  ELSIF TG_TABLE_NAME = 'usuario' THEN
+    NEW.usuaupdatedat := now();
+  ELSIF TG_TABLE_NAME = 'temporada' THEN
+    NEW.tempupdatedat := now();
+  ELSIF TG_TABLE_NAME = 'episodio' THEN
+    NEW.episupdatedat := now();
+  ELSIF TG_TABLE_NAME = 'avaliacao' THEN
+    NEW.avalupdatedat := now();
+  END IF;
+
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Triggers por tabela updatedAt
+CREATE TRIGGER trg_obra_updated_at
+BEFORE UPDATE ON obra
+FOR EACH ROW
+EXECUTE FUNCTION set_updated_timestamp();
+
+CREATE TRIGGER trg_listausuario_updated_at
+BEFORE UPDATE ON listausuario
+FOR EACH ROW
+EXECUTE FUNCTION set_updated_timestamp();
+
+CREATE TRIGGER trg_usuario_updated_at
+BEFORE UPDATE ON usuario
+FOR EACH ROW
+EXECUTE FUNCTION set_updated_timestamp();
+
+CREATE TRIGGER trg_temporada_updated_at
+BEFORE UPDATE ON temporada
+FOR EACH ROW
+EXECUTE FUNCTION set_updated_timestamp();
+
+CREATE TRIGGER trg_episodio_updated_at
+BEFORE UPDATE ON episodio
+FOR EACH ROW
+EXECUTE FUNCTION set_updated_timestamp();
+
+CREATE TRIGGER trg_avaliacao_updated_at
+BEFORE UPDATE ON avaliacao
+FOR EACH ROW
+EXECUTE FUNCTION set_updated_timestamp();
+
+-- Remove a constraint atual se existir
+ALTER TABLE Usuario DROP CONSTRAINT IF EXISTS usuario_apelido_key;
+
+-- Cria um índice único usando LOWER()
+CREATE UNIQUE INDEX idx_usuario_apelido_unique 
+ON Usuario (LOWER(usuaApelido));

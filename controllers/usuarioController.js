@@ -3,32 +3,19 @@ const crypto = require('crypto');
 const { validateUserData, validateData } = require('../utils/validation');
 const { constraintUser } = require('../utils/constraint');
 const { normalizeData } = require('../utils/normalize');
+const { basicCrudController } = require('./factory');
 
-async function getUsuarios(req, res) {
-  try {
-    const result = await pool.query('SELECT * FROM Usuario');
-    res.json(result.rows);
-  } catch (error) {
-    console.error('Erro ao buscar usuários:', error);
-    res.status(500).json({ error: 'Erro ao buscar usuários' });
-  }
-}
+const itemName = 'usuário';
+const itemNamePlural = 'usuários';
 
-async function getUsuarioById(req, res) {
-  const { id } = req.params;
-  try {
-    const result = await pool.query('SELECT * FROM Usuario WHERE usuaId = $1', [id]);
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Usuário não encontrado' });
-    }
-    res.json(result.rows[0]);
-  } catch (error) {
-    console.error('Erro ao buscar usuário:', error);
-    res.status(500).json({ error: 'Erro ao buscar usuário' });
-  }
-}
+const { getAll, getById, deleteItem } = basicCrudController({
+  table: 'Usuario',
+  idCol: 'usuaId',
+  itemName,
+  itemNamePlural,
+});
 
-async function createUsuario(req, res) {
+async function createItem(req, res) {
   let { apelido, email, senha } = req.body;
 
   try {
@@ -50,7 +37,7 @@ async function createUsuario(req, res) {
     const result = await pool.query('INSERT INTO Usuario (usuaApelido, usuaEmail, usuaHash, usuaSalt) VALUES ($1, $2, $3, $4) RETURNING *', [apelido, email, hash, salt]);
     res.status(201).json(result.rows[0]);
   } catch (error) {
-    console.error('Erro ao criar usuário:', error);
+    console.error('Erro ao criar ' + itemName + ':', error);
 
     // Lidando com constraint violations (e.g., email ou apelido já existentes)
     const constraintError = constraintUser(error);
@@ -58,11 +45,11 @@ async function createUsuario(req, res) {
       return res.status(constraintError.status).json({ error: constraintError.message });
     }
 
-    res.status(500).json({ error: 'Erro ao criar usuário' });
+    res.status(500).json({ error: 'Erro ao criar ' + itemName });
   }
 }
 
-async function updateUsuario(req, res) {
+async function updateItem(req, res) {
   const { id } = req.params;
   let { apelido, email } = req.body;
   // TODO: Implementar envio do perfilImg
@@ -108,11 +95,11 @@ async function updateUsuario(req, res) {
     const result = await pool.query(query, values);
 
     // Se não for retornado nenhuma linha, o usuário não foi encontrado
-    if (result.rowCount === 0) return res.status(404).json({ error: 'Usuário não encontrado' });
+    if (result.rowCount === 0) return res.status(404).json({ error: itemName + ' não encontrado' });
 
     res.json(result.rows[0]);
   } catch (error) {
-    console.error('Erro ao atualizar usuário:', error);
+    console.error('Erro ao atualizar ' + itemName + ':', error);
 
     // Lidando com constraint violations (e.g., email ou apelido já existentes)
     const constraintError = constraintUser(error);
@@ -120,24 +107,8 @@ async function updateUsuario(req, res) {
       return res.status(constraintError.status).json({ error: constraintError.message });
     }
 
-    res.status(500).json({ error: 'Erro ao atualizar usuário' });
+    res.status(500).json({ error: 'Erro ao atualizar ' + itemName });
   }
 }
 
-async function deleteUsuario(req, res) {
-  const { id } = req.params;
-
-  try {
-    const result = await pool.query('DELETE FROM Usuario WHERE usuaId = $1 RETURNING *', [id]);
-
-    // Se não for retornado nenhuma linha, o usuário não foi encontrado
-    if (result.rowCount === 0) return res.status(404).json({ error: 'Usuário não encontrado' });
-
-    res.json({ message: 'Usuário deletado com sucesso' });
-  } catch (error) {
-    console.error('Erro ao deletar usuário:', error);
-    res.status(500).json({ error: 'Erro ao deletar usuário' });
-  }
-}
-
-module.exports = { getUsuarios, getUsuarioById, createUsuario, updateUsuario, deleteUsuario };
+module.exports = { getAll, getById, createItem, updateItem, deleteItem };

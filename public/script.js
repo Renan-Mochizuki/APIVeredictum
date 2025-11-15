@@ -26,8 +26,8 @@ document.addEventListener('click', (e) => {
     const fieldsString = button.getAttribute('data-fields');
     const fields = fieldsString.split(',');
 
-    // Encontra a área de resposta dentro do mesmo subbox
-    const responseArea = button.parentElement.querySelector('.responseArea');
+    // Encontra a área de resposta dentro do mesmo .buttons (pode estar em outra subbox)
+    const responseArea = button.closest && button.closest('.buttons') ? button.closest('.buttons').querySelector('.responseArea') : button.parentElement.querySelector('.responseArea');
 
     // Coleta dados dos campos
     const data = {};
@@ -52,8 +52,8 @@ document.addEventListener('click', (e) => {
     const fieldsString = button.getAttribute('data-fields');
     const fields = fieldsString.split(',');
 
-    // Encontra a área de resposta dentro do mesmo subbox
-    const responseArea = button.parentElement.querySelector('.responseArea');
+    // Encontra a área de resposta dentro do mesmo .buttons (pode estar em outra subbox)
+    const responseArea = button.closest && button.closest('.buttons') ? button.closest('.buttons').querySelector('.responseArea') : button.parentElement.querySelector('.responseArea');
 
     // Coleta dados dos campos
     const data = {};
@@ -91,7 +91,8 @@ document.addEventListener('click', (e) => {
     e.preventDefault();
 
     const route = button.getAttribute('data-route');
-    const responseArea = button.parentElement.querySelector('.responseArea');
+    // Encontra a área de resposta dentro do mesmo .buttons (pode estar em outra subbox)
+    const responseArea = button.closest && button.closest('.buttons') ? button.closest('.buttons').querySelector('.responseArea') : button.parentElement.querySelector('.responseArea');
     const container = button.parentElement;
     let id = null;
 
