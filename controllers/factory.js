@@ -2,7 +2,18 @@ const pool = require('../config/db');
 const { validateData } = require('../utils/validation');
 const { constraints } = require('../utils/constraint');
 
-function basicCrudController({ table, idCol, itemName, itemNamePlural, fieldsCreate = [], fieldsUpdate = [], validationRulesCreate = {}, validationRulesUpdate = {} }) {
+function basicCrudController({
+  table,
+  idCol,
+  itemName,
+  itemNamePlural,
+  fieldsCreate = [],
+  fieldsUpdate = [],
+  fieldsDelete = [],
+  validationRulesCreate = {},
+  validationRulesUpdate = {},
+  validationRulesDelete = {},
+}) {
   async function getAll(req, res) {
     try {
       const result = await pool.query(`SELECT * FROM ${table}`);
@@ -218,7 +229,86 @@ function basicCrudController({ table, idCol, itemName, itemNamePlural, fieldsCre
     }
   }
 
-  return { getAll, getById, createItem, updateItem, deleteItem };
+  async function deleteAssociative(req, res) {
+    try {
+      const { isValid, errors } = validateData(req.body, validationRulesDelete);
+
+      if (!isValid) {
+        const message = `Dados inválidos: ${errors.join(', ')}`;
+        res.status(400).json({ error: message });
+        return { ok: false, status: 400, message };
+      }
+
+      const conditions = [];
+      const values = [];
+
+      for (const f of fieldsDelete || []) {
+        const reqKey = typeof f === 'string' ? f : f.req;
+        const col = typeof f === 'string' ? f : f.col;
+        const val = req.body[reqKey];
+        const isEmptyString = typeof val === 'string' && val.toString().trim() === '';
+
+        if (typeof val !== 'undefined' && val !== null && !isEmptyString) {
+          const rule = validationRulesDelete ? validationRulesDelete[reqKey] : undefined;
+          let toPush = val;
+          if (rule) {
+            if (rule.type === 'number') {
+              const num = Number(val);
+              if (Number.isNaN(num)) {
+                const message = `Campo '${reqKey}' deve ser um número`;
+                res.status(400).json({ error: message });
+                return { ok: false, status: 400, message };
+              }
+              toPush = num;
+            }
+            if (rule.type === 'string') {
+              if ((typeof val === 'number' && !isNaN(val)) || /^[-+]?\d*\.?\d+$/.test(val.toString().trim())) {
+                const message = `Campo '${reqKey}' deve ser uma string`;
+                res.status(400).json({ error: message });
+                return { ok: false, status: 400, message };
+              }
+            }
+          }
+
+          values.push(toPush);
+          conditions.push(`${col} = $${values.length}`);
+        }
+      }
+
+      if (conditions.length === 0) {
+        const message = 'Nenhum dado para deletar';
+        res.status(400).json({ error: message });
+        return { ok: false, status: 400, message };
+      }
+
+      const query = `DELETE FROM ${table} WHERE ${conditions.join(' AND ')} RETURNING *`;
+      const result = await pool.query(query, values);
+
+      if (result.rowCount === 0) {
+        const message = itemName + ' não encontrado';
+        res.status(404).json({ error: message });
+        return { ok: false, status: 404, message };
+      }
+
+      const message = itemName + ' deletado com sucesso';
+      res.json({ message });
+      return { ok: true, status: 200, data: result.rows[0], message };
+    } catch (error) {
+      const constraintError = constraints(error, 'delete');
+      if (constraintError) {
+        const message = constraintError.message;
+        res.status(constraintError.status).json({ error: message });
+        return { ok: false, status: constraintError.status, message };
+      }
+
+      console.error('Erro ao deletar ' + itemName + ':', error);
+      const message = 'Erro ao deletar ' + itemName;
+      res.status(500).json({ error: message });
+      return { ok: false, status: 500, message };
+    }
+  }
+
+  return { getAll, getById, createItem, updateItem, deleteItem, deleteAssociative };
 }
 
 module.exports = { basicCrudController };

@@ -94,15 +94,39 @@ document.addEventListener('click', (e) => {
     // Encontra a área de resposta dentro do mesmo .buttons (pode estar em outra subbox)
     const responseArea = button.closest && button.closest('.buttons') ? button.closest('.buttons').querySelector('.responseArea') : button.parentElement.querySelector('.responseArea');
     const container = button.parentElement;
-    let id = null;
+    
+    // Se o botão tiver a classe 'associative', faz a requisição DELETE com corpo JSON
+    if (button.classList && button.classList.contains('associative')) {
+      const inputs = container.querySelectorAll('input[data-field]');
+      if (!inputs || inputs.length === 0) {
+        if (responseArea) responseArea.textContent = 'Erro: Nenhum campo para exclusão associativa';
+        return;
+      }
 
-    // Coleta o ID
+      const data = {};
+      let missing = false;
+      inputs.forEach((input) => {
+        const key = input.getAttribute('data-field');
+        const val = input.value != null ? input.value.toString().trim() : '';
+        if (!val) missing = true;
+        data[key] = val;
+      });
+
+      if (missing) {
+        if (responseArea) responseArea.textContent = 'Erro: Preencha todos os campos para excluir';
+        return;
+      }
+
+      makeRequest('DELETE', route, data, responseArea);
+      return;
+    }
+
+    let id = null;
     const idInput = container.querySelector(`input[data-field="id"]`);
     if (idInput) {
       id = idInput.value.trim();
     }
 
-    // Verifica se o ID foi fornecido
     if (!id) {
       if (responseArea) {
         responseArea.textContent = 'Erro: ID é obrigatório para excluir';
