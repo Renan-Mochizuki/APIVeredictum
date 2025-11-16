@@ -69,23 +69,9 @@ function basicCrudController({
         if (typeof val !== 'undefined' && val !== null && !isEmptyString) {
           const rule = validationRulesCreate[reqKey];
           let toPush = val;
-          if (rule) {
-            if (rule.type === 'number') {
-              const num = Number(val);
-              if (Number.isNaN(num)) {
-                const message = `Campo '${reqKey}' deve ser um número`;
-                res.status(400).json({ error: message });
-                return { ok: false, status: 400, message };
-              }
-              toPush = num;
-            }
-            if (rule.type === 'string') {
-              if ((typeof val === 'number' && !isNaN(val)) || /^[-+]?\d*\.?\d+$/.test(val.trim())) {
-                const message = `Campo '${reqKey}' deve ser uma string`;
-                res.status(400).json({ error: message });
-                return { ok: false, status: 400, message };
-              }
-            }
+          if (rule && rule.type === 'number') {
+            // Coerce numeric strings to Number (validateData already checks type)
+            toPush = Number(val);
           }
 
           cols.push(col);
@@ -142,23 +128,8 @@ function basicCrudController({
           // Coerce numbers when validation rule says so
           const rule = validationRulesUpdate[reqKey];
           let toPush = val;
-          if (rule) {
-            if (rule.type === 'number') {
-              const num = Number(val);
-              if (Number.isNaN(num)) {
-                const message = `Campo '${reqKey}' deve ser um número`;
-                res.status(400).json({ error: message });
-                return { ok: false, status: 400, message };
-              }
-              toPush = num;
-            }
-            if (rule.type === 'string') {
-              if ((typeof val === 'number' && !isNaN(val)) || /^[-+]?\d*\.?\d+$/.test(val.trim())) {
-                const message = `Campo '${reqKey}' deve ser uma string`;
-                res.status(400).json({ error: message });
-                return { ok: false, status: 400, message };
-              }
-            }
+          if (rule && rule.type === 'number') {
+            toPush = Number(val);
           }
 
           updates.push(`${col} = $${values.length + 1}`);
@@ -251,23 +222,8 @@ function basicCrudController({
         if (typeof val !== 'undefined' && val !== null && !isEmptyString) {
           const rule = validationRulesDelete ? validationRulesDelete[reqKey] : undefined;
           let toPush = val;
-          if (rule) {
-            if (rule.type === 'number') {
-              const num = Number(val);
-              if (Number.isNaN(num)) {
-                const message = `Campo '${reqKey}' deve ser um número`;
-                res.status(400).json({ error: message });
-                return { ok: false, status: 400, message };
-              }
-              toPush = num;
-            }
-            if (rule.type === 'string') {
-              if ((typeof val === 'number' && !isNaN(val)) || /^[-+]?\d*\.?\d+$/.test(val.toString().trim())) {
-                const message = `Campo '${reqKey}' deve ser uma string`;
-                res.status(400).json({ error: message });
-                return { ok: false, status: 400, message };
-              }
-            }
+          if (rule && rule.type === 'number') {
+            toPush = Number(val);
           }
 
           values.push(toPush);

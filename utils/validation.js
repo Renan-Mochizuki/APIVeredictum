@@ -1,18 +1,18 @@
 // Verifica se os campos obrigatórios estão presentes e não estão vazios
 function validateRequiredFields(body, requiredFields) {
   const errors = [];
-  
+
   // Percorre todos os campos obrigatórios e insere mensagem de erro para cada um faltante
-  requiredFields.forEach(field => {
+  requiredFields.forEach((field) => {
     if (!body[field] || body[field].toString().trim() === '') {
       errors.push(`Campo '${field}' é obrigatório`);
     }
   });
-  
+
   // isValid será true se não houver erros
   return {
     isValid: errors.length === 0,
-    errors
+    errors,
   };
 }
 
@@ -56,7 +56,7 @@ function validateUserData(userData) {
 
   return {
     isValid: errors.length === 0,
-    errors
+    errors,
   };
 }
 
@@ -65,7 +65,7 @@ function validateUserData(userData) {
 function validateData(data, rules) {
   const errors = [];
 
-  Object.keys(rules).forEach(field => {
+  Object.keys(rules).forEach((field) => {
     const value = data[field];
     const rule = rules[field];
 
@@ -80,6 +80,24 @@ function validateData(data, rules) {
     // Outras validações
     else {
       const fieldValue = value.toString().trim();
+
+      // Type validation: 'number' or 'string'
+      if (rule.type) {
+        if (rule.type === 'number') {
+          const num = Number(value);
+          if (Number.isNaN(num)) {
+            errors.push(`Campo '${field}' deve ser um número`);
+            return;
+          }
+        }
+
+        if (rule.type === 'string') {
+          if ((typeof value === 'number' && !isNaN(value)) || /^[-+]?\d*\.?\d+$/.test(value.toString().trim())) {
+            errors.push(`Campo '${field}' deve ser uma string`);
+            return;
+          }
+        }
+      }
 
       // Comprimento mínimo
       if (rule.minLength && fieldValue.length < rule.minLength) {
@@ -108,12 +126,12 @@ function validateData(data, rules) {
 
   return {
     isValid: errors.length === 0,
-    errors
+    errors,
   };
 }
 
 module.exports = {
   validateRequiredFields,
   validateUserData,
-  validateData
+  validateData,
 };
