@@ -16,7 +16,7 @@ const validationRulesCreate = {
   usuarioId: { required: true, type: 'number' },
   obraId: { required: false, type: 'number' },
   episodioId: { required: false, type: 'number' },
-  nota: { required: true, type: 'number' },
+  nota: { required: true, type: 'number', minValue: 0, maxValue: 10 },
   comentario: { required: false, type: 'string', maxLength: 500 },
 };
 
@@ -24,7 +24,7 @@ const validationRulesUpdate = {
   usuarioId: { required: false, type: 'number' },
   obraId: { required: false, type: 'number' },
   episodioId: { required: false, type: 'number' },
-  nota: { required: false, type: 'number' },
+  nota: { required: false, type: 'number', minValue: 0, maxValue: 10 },
   comentario: { required: false, type: 'string', maxLength: 500 },
 };
 

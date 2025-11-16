@@ -4,21 +4,21 @@ const { basicCrudController } = require('./factory');
 const itemName = 'categoria';
 const itemNamePlural = 'categorias';
 
-const fields = [{ req: 'nome', col: 'cateNome' }];
+const fieldsCreate = [{ req: 'nome', col: 'cateNome' }];
 
-const validationRules = {
+const validationRulesCreate = {
   nome: { required: true, type: 'string', minLength: 3, maxLength: 30 },
 };
 
-const { getAll, createItem } = basicCrudController({
+const { getAll, createItem, deleteItem } = basicCrudController({
   table: 'Categoria',
-  idCol: 'cateId',
+  idCol: 'cateNome',
   itemName,
   itemNamePlural,
-  fieldsCreate: fields,
-  fieldsUpdate: fields,
-  validationRulesCreate: validationRules,
-  validationRulesUpdate: validationRules,
+  fieldsCreate,
+  fieldsUpdate: null,
+  validationRulesCreate,
+  validationRulesUpdate: null,
 });
 
-module.exports = { getAll, createItem };
+module.exports = { getAll, createItem, deleteItem };

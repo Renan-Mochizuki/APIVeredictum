@@ -14,8 +14,7 @@ const fields = [
 
 const validationRulesCreate = {
   numero: { required: true, type: 'number' },
-  // TODO Validar data
-  // dataLancamento: { required: false, type: 'string', format: 'date' },
+  dataLancamento: { required: false, type: 'date' },
   titulo: { required: false, type: 'string', maxLength: 100 },
   descricao: { required: false, type: 'string', maxLength: 200 },
   temporadaId: { required: true, type: 'number' },
@@ -23,8 +22,7 @@ const validationRulesCreate = {
 
 const validationRulesUpdate = {
   numero: { required: false, type: 'number' },
-  // TODO Validar data
-  // dataLancamento: { required: false, type: 'string', format: 'date' },
+  dataLancamento: { required: false, type: 'date' },
   titulo: { required: false, type: 'string', maxLength: 100 },
   descricao: { required: false, type: 'string', maxLength: 200 },
   temporadaId: { required: false, type: 'number' },

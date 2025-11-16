@@ -4,9 +4,9 @@ const { basicCrudController } = require('./factory');
 const itemName = 'função';
 const itemNamePlural = 'funções';
 
-const fields = [{ req: 'tipo', col: 'funcTipo' }];
+const fieldsCreate = [{ req: 'tipo', col: 'funcTipo' }];
 
-const validationRules = {
+const validationRulesCreate = {
   tipo: { required: true, type: 'string', minLength: 2, maxLength: 100 },
 };
 
@@ -15,12 +15,10 @@ const { getAll, createItem, deleteItem } = basicCrudController({
   idCol: 'funcTipo',
   itemName,
   itemNamePlural,
-  fieldsCreate: fields,
-  fieldsUpdate: fields,
-  validationRulesCreate: validationRules,
-  validationRulesUpdate: validationRules,
+  fieldsCreate,
+  fieldsUpdate: null,
+  validationRulesCreate,
+  validationRulesUpdate: null,
 });
-
-// TODO: Implementar updateFuncao e deleteFuncao se necessário
 
 module.exports = { getAll, createItem, deleteItem };

@@ -165,15 +165,37 @@ INSERT INTO Usuario (usuaApelido, usuaEmail, usuaSalt, usuaHash, usuaTipo) VALUE
 INSERT INTO Critico (usuaId, critNome, critBio) VALUES (4, 'Roberto dos Santos Menezes', 'Crítico de uma revista muito renomada');
 INSERT INTO Moderador (usuaId, modePermissaoCatalogo, modePermissaoComunidade, modePermissaoVerificacao) VALUES (5, true, false, false);
 
-INSERT INTO ListaUsuario (listUsuarioId, listTitulo, listDescricao, listPrivado) VALUES (1, 'Fav', NULL, false);
+INSERT INTO ListaUsuario (listUsuarioId, listTitulo, listDescricao, listPrivado) VALUES (1, 'Favoritos', NULL, false);
+INSERT INTO ListaUsuario (listUsuarioId, listTitulo, listDescricao, listPrivado) VALUES (2, 'Legais', NULL, false);
 
-INSERT INTO Organizacao (orgaNome) VALUES ('Organização 1'), ('Organização 2');
-INSERT INTO Profissional (profNome) VALUES ('Profissional 1'), ('Profissional 2');
+INSERT INTO Organizacao (orgaNome) VALUES ('Organização 1'), ('Organização 2'), ('Organização 3'), ('Organização 4');
+INSERT INTO Profissional (profNome) VALUES ('Profissional 1'), ('Profissional 2'), ('Profissional 3'), ('Profissional 4');
 
 INSERT INTO Obra (obraTitulo, obraDescricao, obraTipoObraNome) VALUES ('Um filme 1', 'Descrição desse filme', 'Filme');
 
-INSERT INTO Participacao (partObraId, partFuncaoId, partOrganizacaoId, partProfissionalId) VALUES (1, 'Ator', NULL, 'Profissional 1'), (1, 'Produtora', 'Organização 1', NULL);
+INSERT INTO Participacao (partObraId, partFuncaoId, partOrganizacaoId, partProfissionalId) VALUES (1, 'Ator', NULL, 'Profissional 1'), (1, 'Produtora', 'Organização 1', NULL), (1, 'Diretor', NULL, 'Profissional 2');
 
-INSERT INTO Temporada (tempNumero, tempTitulo, tempDataInicio, tempDataFim, tempObraId) VALUES (0, NULL, NOW(), NOW(), 1);
+INSERT INTO Obra (obraTitulo, obraDescricao, obraTipoObraNome) VALUES ('Uma série 1', 'Descrição dessa série', 'Série');
 
-INSERT INTO Avaliacao (avalUsuarioId, avalObraId, avalEpisodioId, avalNota, avalComentario) VALUES (1, 1, NULL, 4, 'Comentário da avaliação');
+INSERT INTO Participacao (partObraId, partFuncaoId, partOrganizacaoId, partProfissionalId) VALUES (2, 'Produtora', 'Organização 1', NULL), (2, 'Distribuidora', 'Organização 2', NULL), (2, 'Ator', NULL, 'Profissional 3');
+
+INSERT INTO Temporada (tempNumero, tempTitulo, tempDataInicio, tempDataFim, tempObraId) VALUES (1, 'Temporada 1', NOW(), NOW(), 2);
+
+INSERT INTO Episodio (episNumero, episDataLancamento, episTitulo, episDescricao, episTemporadaId) VALUES (1, NOW(), 'Titulo desse episódio', 'Descrição desse episódio', 1);
+INSERT INTO Episodio (episNumero, episDataLancamento, episTitulo, episDescricao, episTemporadaId) VALUES (2, NOW(), 'Titulo desse episódio', 'Descrição desse episódio', 1);
+INSERT INTO Episodio (episNumero, episDataLancamento, episTitulo, episDescricao, episTemporadaId) VALUES (3, NOW(), 'Titulo desse episódio', 'Descrição desse episódio', 1);
+
+INSERT INTO Avaliacao (avalUsuarioId, avalObraId, avalEpisodioId, avalNota, avalComentario) VALUES (1, 1, NULL, 4, 'Comentário da avaliação desse filme');
+INSERT INTO Avaliacao (avalUsuarioId, avalObraId, avalEpisodioId, avalNota, avalComentario) VALUES (4, 2, NULL, 4, 'Como crítico achei essa série boa');
+INSERT INTO Avaliacao (avalUsuarioId, avalObraId, avalEpisodioId, avalNota, avalComentario) VALUES (4, NULL, 1, 4, 'O primeiro episódio da série foi o pior de todos');
+
+INSERT INTO Obra_ListaUsuario (obraId, listaUsuarioId) VALUES (1, 1);
+INSERT INTO Obra_ListaUsuario (obraId, listaUsuarioId) VALUES (2, 1);
+INSERT INTO Obra_ListaUsuario (obraId, listaUsuarioId) VALUES (2, 2);
+
+INSERT INTO Obra_Categoria (obraId, categoriaId) VALUES (1, 'Aventura');
+INSERT INTO Obra_Categoria (obraId, categoriaId) VALUES (1, 'Comédia');
+INSERT INTO Obra_Categoria (obraId, categoriaId) VALUES (2, 'Fantasia');
+
+INSERT INTO Obra_PaisOrigem (obraId, paisOrigemId) VALUES (1, 'Brasil');
+INSERT INTO Obra_PaisOrigem (obraId, paisOrigemId) VALUES (2, 'Estados Unidos');

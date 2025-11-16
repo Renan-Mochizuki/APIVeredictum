@@ -37,7 +37,7 @@ const validationRulesUpdate = {
   emailProfissional: { required: false, type: 'string', maxLength: 255 },
 };
 
-const { getAll, createItem, updateItem, deleteItem } = basicCrudController({
+const { getAll, getById, createItem, updateItem, deleteItem } = basicCrudController({
   table: 'Critico',
   idCol: 'usuaId',
   itemName,
@@ -48,4 +48,44 @@ const { getAll, createItem, updateItem, deleteItem } = basicCrudController({
   validationRulesUpdate,
 });
 
-module.exports = { getAll, createItem, updateItem, deleteItem };
+const createCritico = async (req, res) => {
+  const result = await createItem(req, res);
+
+  if (!result.ok) {
+    return;
+  }
+
+  // Uma entrada na tabela critico foi criada, agora precisamos atualizar a tabela usuario para definir o tipo de usuário como 'critico'
+  const usuarioId = result.data.usuaid;
+
+  try {
+    await pool.query('UPDATE Usuario SET usuaTipo = $1 WHERE usuaId = $2', ['critico', usuarioId]);
+  } catch (error) {
+    console.error('Erro ao atualizar o tipo de usuário para crítico:', error);
+    const message = 'Erro ao atualizar o tipo de usuário para crítico';
+    res.status(500).json({ error: message });
+    return;
+  }
+};
+
+const deleteCritico = async (req, res) => {
+  const result = await deleteItem(req, res);
+
+  if (!result.ok) {
+    return;
+  }
+
+  // A entrada na tabela critico foi deletada, agora precisamos atualizar a tabela usuario para definir o tipo de usuário como 'comum'
+  const usuarioId = result.data.usuaid;
+
+  try {
+    await pool.query('UPDATE Usuario SET usuaTipo = $1 WHERE usuaId = $2', ['comum', usuarioId]);
+  } catch (error) {
+    console.error('Erro ao atualizar o tipo de usuário para comum:', error);
+    const message = 'Erro ao atualizar o tipo de usuário para comum';
+    res.status(500).json({ error: message });
+    return;
+  }
+};
+
+module.exports = { getAll, getById, createCritico, updateItem, deleteCritico };

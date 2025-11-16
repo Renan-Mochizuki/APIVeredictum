@@ -19,6 +19,9 @@ const moderadorRoutes = require('./routes/moderadorRoute');
 const participacaoRoutes = require('./routes/participacaoRoute');
 const organizacaoRoutes = require('./routes/organizacaoRoute');
 const listausuarioRoutes = require('./routes/listausuarioRoute');
+const obraCategoriaRoutes = require('./routes/obracategoriaRoute');
+const obrapaisRoutes = require('./routes/obrapaisRoute');
+const obralistausuarioRoutes = require('./routes/obralistausuarioRoute');
 
 // Configuração do Express
 const app = express();
@@ -47,6 +50,9 @@ app.use('/moderadores', moderadorRoutes);
 app.use('/participacoes', participacaoRoutes);
 app.use('/organizacoes', organizacaoRoutes);
 app.use('/listasusuario', listausuarioRoutes);
+app.use('/obrascategorias', obraCategoriaRoutes);
+app.use('/obraspaises', obrapaisRoutes);
+app.use('/obraslistasusuario', obralistausuarioRoutes);
 
 // Iniciando servidor
 const port = config.port || 3000;
