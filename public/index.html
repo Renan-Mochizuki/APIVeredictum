@@ -290,6 +290,48 @@
             <div class="responseArea"></div>
           </div>
         </div>
+
+        <!-- Inserir Obra-Categoria -->
+        <div class="buttons">
+          <div class="subbox">
+            <h3>Obra-Categoria</h3>
+            <input type="text" data-field="obraId" placeholder="ID da Obra" />
+            <input type="text" data-field="categoriaId" placeholder="Nome da Categoria" />
+            <button data-route="/obrascategorias" data-method="post" data-fields="obraId,categoriaId">Criar Categoria</button>
+          </div>
+          <div class="subbox">
+            <p>Resposta:</p>
+            <div class="responseArea"></div>
+          </div>
+        </div>
+
+        <!-- Inserir Obra-Pais -->
+        <div class="buttons">
+          <div class="subbox">
+            <h3>Obra-Pais</h3>
+            <input type="text" data-field="obraId" placeholder="ID da Obra" />
+            <input type="text" data-field="paisId" placeholder="Nome do País" />
+            <button data-route="/obraspaises" data-method="post" data-fields="obraId,paisId">Criar País</button>
+          </div>
+          <div class="subbox">
+            <p>Resposta:</p>
+            <div class="responseArea"></div>
+          </div>
+        </div>
+
+        <!-- Inserir Obra-ListaUsuario -->
+        <div class="buttons">
+          <div class="subbox">
+            <h3>Obra-ListaUsuario</h3>
+            <input type="text" data-field="obraId" placeholder="ID da Obra" />
+            <input type="text" data-field="listaUsuarioId" placeholder="ID da Lista de Usuário" />
+            <button data-route="/obraslistasusuario" data-method="post" data-fields="obraId,listaUsuarioId">Criar Lista de Usuário</button>
+          </div>
+          <div class="subbox">
+            <p>Resposta:</p>
+            <div class="responseArea"></div>
+          </div>
+        </div>
       </div>
     </div>
     <hr />
@@ -611,7 +653,6 @@
     <div class="box">
       <h2 class="title">Excluir Associativas sem PKs:</h2>
       <div class="boxarea">
-        
         <!-- Excluir Obra-Categoria -->
         <div class="buttons">
           <div class="subbox">
