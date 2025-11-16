@@ -51,6 +51,14 @@
           <a href="#" data-route="/usuarios" data-input="usuario" data-method="get">UsuarioId</a>
         </div>
         <div class="subbox">
+          <input type="text" data-input="critico" placeholder="Digite o id do crítico" />
+          <a href="#" data-route="/criticos" data-input="critico" data-method="get">CríticoId</a>
+        </div>
+        <div class="subbox">
+          <input type="text" data-input="moderador" placeholder="Digite o id do moderador" />
+          <a href="#" data-route="/moderadores" data-input="moderador" data-method="get">ModeradorId</a>
+        </div>
+        <div class="subbox">
           <input type="text" data-input="temporada" placeholder="Digite o id da temporada" />
           <a href="#" data-route="/temporadas" data-input="temporada" data-method="get">TemporadaId</a>
         </div>
@@ -102,12 +110,15 @@
           </div>
         </div>
 
-        <!-- Inserir Função -->
+        <!-- Inserir Lista de Usuário -->
         <div class="buttons">
           <div class="subbox">
-            <h3>Função</h3>
-            <input type="text" data-field="tipo" placeholder="Digite o tipo" />
-            <button data-route="/funcoes" data-method="post" data-fields="tipo">Criar Função</button>
+            <h3>Lista de Usuário</h3>
+            <input type="text" data-field="titulo" placeholder="Título da lista" />
+            <input type="text" data-field="descricao" placeholder="Descrição (opcional)" />
+            <input type="text" data-field="privado" placeholder="Privado (true/false)" />
+            <input type="text" data-field="usuarioId" placeholder="ID do Usuário" />
+            <button data-route="/listasusuario" data-method="post" data-fields="titulo,descricao,privado,usuarioId">Criar Lista</button>
           </div>
           <div class="subbox">
             <p>Resposta:</p>
@@ -193,6 +204,19 @@
           </div>
         </div>
 
+        <!-- Inserir Função -->
+        <div class="buttons">
+          <div class="subbox">
+            <h3>Função</h3>
+            <input type="text" data-field="tipo" placeholder="Digite o tipo" />
+            <button data-route="/funcoes" data-method="post" data-fields="tipo">Criar Função</button>
+          </div>
+          <div class="subbox">
+            <p>Resposta:</p>
+            <div class="responseArea"></div>
+          </div>
+        </div>
+
         <!-- Inserir Participação -->
         <div class="buttons">
           <div class="subbox">
@@ -202,22 +226,6 @@
             <input type="text" data-field="organizacaoId" placeholder="ID da Organização (nome)" />
             <input type="text" data-field="profissionalId" placeholder="ID do Profissional (nome)" />
             <button data-route="/participacoes" data-method="post" data-fields="obraId,funcaoId,organizacaoId,profissionalId">Criar Participação</button>
-          </div>
-          <div class="subbox">
-            <p>Resposta:</p>
-            <div class="responseArea"></div>
-          </div>
-        </div>
-
-        <!-- Inserir Lista de Usuário -->
-        <div class="buttons">
-          <div class="subbox">
-            <h3>Lista de Usuário</h3>
-            <input type="text" data-field="titulo" placeholder="Título da lista" />
-            <input type="text" data-field="descricao" placeholder="Descrição (opcional)" />
-            <input type="text" data-field="privado" placeholder="Privado (true/false)" />
-            <input type="text" data-field="usuarioId" placeholder="ID do Usuário" />
-            <button data-route="/listasusuario" data-method="post" data-fields="titulo,descricao,privado,usuarioId">Criar Lista</button>
           </div>
           <div class="subbox">
             <p>Resposta:</p>

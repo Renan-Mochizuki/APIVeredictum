@@ -37,7 +37,7 @@ const validationRulesUpdate = {
   emailProfissional: { required: false, type: 'string', maxLength: 255 },
 };
 
-const { getAll, createItem, updateItem, deleteItem } = basicCrudController({
+const { getAll, getById, createItem, updateItem, deleteItem } = basicCrudController({
   table: 'Critico',
   idCol: 'usuaId',
   itemName,
@@ -48,4 +48,14 @@ const { getAll, createItem, updateItem, deleteItem } = basicCrudController({
   validationRulesUpdate,
 });
 
-module.exports = { getAll, createItem, updateItem, deleteItem };
+const createCritico = async (req, res) => {
+  const result = await createItem(req, res);
+
+  if (!result.ok) {
+    return;
+  }
+
+  // código que só deve ser executado se createItem for bem-sucedido
+};
+
+module.exports = { getAll, getById, createCritico, updateItem, deleteItem };

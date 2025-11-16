@@ -30,7 +30,7 @@ const validationRulesUpdate = {
   permissaoVerificacao: { required: false, type: 'boolean' },
 };
 
-const { getAll, createItem, updateItem, deleteItem } = basicCrudController({
+const { getAll, getById, createItem, updateItem, deleteItem } = basicCrudController({
   table: 'Moderador',
   idCol: 'usuaId',
   itemName,
@@ -41,4 +41,4 @@ const { getAll, createItem, updateItem, deleteItem } = basicCrudController({
   validationRulesUpdate,
 });
 
-module.exports = { getAll, createItem, updateItem, deleteItem };
+module.exports = { getAll, getById, createItem, updateItem, deleteItem };
