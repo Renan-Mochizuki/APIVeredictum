@@ -68,7 +68,7 @@ CREATE TABLE Temporada (
     tempNumero integer not null,
     tempTitulo varchar(100),
     tempDataInicio date not null,
-    tempDataFim date not null,
+    tempDataFim date,
     tempDescricao varchar(150),
     tempImg bytea,
     tempObraId integer not null,

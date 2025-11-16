@@ -16,9 +16,8 @@ const fields = [
 const validationRulesCreate = {
   numero: { required: true, type: 'number' },
   titulo: { required: false, type: 'string', maxLength: 100 },
-  // TODO Validar data
-  // dataInicio: { required: false, type: 'string', format: 'date' },
-  // dataFim: { required: false, type: 'string', format: 'date' },
+  dataInicio: { required: false, type: 'date' },
+  dataFim: { required: false, type: 'date' },
   descricao: { required: false, type: 'string', maxLength: 150 },
   obraId: { required: true, type: 'number' },
 };
@@ -26,9 +25,8 @@ const validationRulesCreate = {
 const validationRulesUpdate = {
   numero: { required: false, type: 'number' },
   titulo: { required: false, type: 'string', maxLength: 100 },
-  // TODO Validar data
-  // dataInicio: { required: false, type: 'string', format: 'date' },
-  // dataFim: { required: false, type: 'string', format: 'date' },
+  dataInicio: { required: false, type: 'date' },
+  dataFim: { required: false, type: 'date' },
   descricao: { required: false, type: 'string', maxLength: 150 },
   obraId: { required: false, type: 'number' },
 };

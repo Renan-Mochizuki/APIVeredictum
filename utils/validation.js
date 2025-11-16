@@ -81,20 +81,50 @@ function validateData(data, rules) {
     else {
       const fieldValue = value.toString().trim();
 
-      // Type validation: 'number' or 'string'
+      // Tipo de dado
       if (rule.type) {
         if (rule.type === 'number') {
           const num = Number(value);
           if (Number.isNaN(num)) {
             errors.push(`Campo '${field}' deve ser um número`);
-            return;
           }
         }
 
         if (rule.type === 'string') {
           if ((typeof value === 'number' && !isNaN(value)) || /^[-+]?\d*\.?\d+$/.test(value.toString().trim())) {
             errors.push(`Campo '${field}' deve ser uma string`);
-            return;
+          }
+        }
+
+        if (rule.type === 'date') {
+          const parsed = value instanceof Date ? value.getTime() : Date.parse(value.toString().trim());
+          if (Number.isNaN(parsed)) {
+            errors.push(`Campo '${field}' deve ser uma data válida`);
+          }
+
+          const date = new Date(parsed);
+
+          if (!rule.minDate) {
+            rule.minDate = new Date('1895-01-01');
+          }
+
+          const minParsed = rule.minDate instanceof Date ? rule.minDate.getTime() : Date.parse(rule.minDate);
+          if (!Number.isNaN(minParsed)) {
+            const minDate = new Date(minParsed);
+            if (date.getTime() < minDate.getTime()) {
+              errors.push(rule.minDateMessage || `Campo '${field}' não está em um intervalo permitido`);
+            }
+          }
+
+          if (rule.maxDate) {
+            const maxParsed = rule.maxDate instanceof Date ? rule.maxDate.getTime() : Date.parse(rule.maxDate);
+            if (!Number.isNaN(maxParsed)) {
+              const maxDate = new Date(maxParsed);
+              if (date.getTime() > maxDate.getTime()) {
+                errors.push(rule.maxDateMessage || `Campo '${field}' não está em um intervalo permitido`);
+
+              }
+            }
           }
         }
       }
@@ -107,6 +137,14 @@ function validateData(data, rules) {
       // Comprimento máximo
       if (rule.maxLength && fieldValue.length > rule.maxLength) {
         errors.push(`Campo '${field}' deve ter no máximo ${rule.maxLength} caracteres`);
+      }
+
+      if (rule.minValue && Number(value) < rule.minValue) {
+        errors.push(`Campo '${field}' deve ser no mínimo ${rule.minValue}`);
+      }
+
+      if (rule.maxValue && Number(value) > rule.maxValue) {
+        errors.push(`Campo '${field}' deve ser no máximo ${rule.maxValue}`);
       }
 
       // Regex personalizado
