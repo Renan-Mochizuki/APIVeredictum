@@ -55,7 +55,37 @@ const createCritico = async (req, res) => {
     return;
   }
 
-  // código que só deve ser executado se createItem for bem-sucedido
+  // Uma entrada na tabela critico foi criada, agora precisamos atualizar a tabela usuario para definir o tipo de usuário como 'critico'
+  const usuarioId = result.data.usuaid;
+
+  try {
+    await pool.query('UPDATE Usuario SET usuaTipo = $1 WHERE usuaId = $2', ['critico', usuarioId]);
+  } catch (error) {
+    console.error('Erro ao atualizar o tipo de usuário para crítico:', error);
+    const message = 'Erro ao atualizar o tipo de usuário para crítico';
+    res.status(500).json({ error: message });
+    return;
+  }
 };
 
-module.exports = { getAll, getById, createCritico, updateItem, deleteItem };
+const deleteCritico = async (req, res) => {
+  const result = await deleteItem(req, res);
+
+  if (!result.ok) {
+    return;
+  }
+
+  // A entrada na tabela critico foi deletada, agora precisamos atualizar a tabela usuario para definir o tipo de usuário como 'comum'
+  const usuarioId = result.data.usuaid;
+
+  try {
+    await pool.query('UPDATE Usuario SET usuaTipo = $1 WHERE usuaId = $2', ['comum', usuarioId]);
+  } catch (error) {
+    console.error('Erro ao atualizar o tipo de usuário para comum:', error);
+    const message = 'Erro ao atualizar o tipo de usuário para comum';
+    res.status(500).json({ error: message });
+    return;
+  }
+};
+
+module.exports = { getAll, getById, createCritico, updateItem, deleteCritico };

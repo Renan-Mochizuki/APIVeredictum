@@ -185,7 +185,7 @@ function basicCrudController({ table, idCol, itemName, itemNamePlural, fieldsCre
 
       const message = itemName + ' deletado com sucesso';
       res.json({ message });
-      return { ok: true, status: 200, message };
+      return { ok: true, status: 200, data: result.rows[0], message };
     } catch (error) {
       console.error('Erro ao deletar ' + itemName + ':', error);
       const message = 'Erro ao deletar ' + itemName;

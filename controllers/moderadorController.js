@@ -1,8 +1,8 @@
 const pool = require('../config/db');
 const { basicCrudController } = require('./factory');
 
-const itemName = 'crítico';
-const itemNamePlural = 'críticos';
+const itemName = 'moderador';
+const itemNamePlural = 'moderadores';
 
 const fieldsCreate = [
   { req: 'id', col: 'usuaId' },
@@ -41,4 +41,44 @@ const { getAll, getById, createItem, updateItem, deleteItem } = basicCrudControl
   validationRulesUpdate,
 });
 
-module.exports = { getAll, getById, createItem, updateItem, deleteItem };
+const createModerador = async (req, res) => {
+  const result = await createItem(req, res);
+
+  if (!result.ok) {
+    return;
+  }
+
+  // Uma entrada na tabela moderador foi criada, agora precisamos atualizar a tabela usuario para definir o tipo de usuário como 'moderador'
+  const usuarioId = result.data.usuaid;
+
+  try {
+    await pool.query('UPDATE Usuario SET usuaTipo = $1 WHERE usuaId = $2', ['moderador', usuarioId]);
+  } catch (error) {
+    console.error('Erro ao atualizar o tipo de usuário para moderador:', error);
+    const message = 'Erro ao atualizar o tipo de usuário para moderador';
+    res.status(500).json({ error: message });
+    return;
+  }
+};
+
+const deleteModerador = async (req, res) => {
+  const result = await deleteItem(req, res);
+
+  if (!result.ok) {
+    return;
+  }
+
+  // A entrada na tabela moderador foi deletada, agora precisamos atualizar a tabela usuario para definir o tipo de usuário como 'comum'
+  const usuarioId = result.data.usuaid;
+
+  try {
+    await pool.query('UPDATE Usuario SET usuaTipo = $1 WHERE usuaId = $2', ['comum', usuarioId]);
+  } catch (error) {
+    console.error('Erro ao atualizar o tipo de usuário para comum:', error);
+    const message = 'Erro ao atualizar o tipo de usuário para comum';
+    res.status(500).json({ error: message });
+    return;
+  }
+};
+
+module.exports = { getAll, getById, createModerador, updateItem, deleteModerador };
