@@ -1,6 +1,6 @@
 const pool = require('../config/db');
 const { validateData } = require('../utils/validation');
-const { constraintUnique } = require('../utils/constraint');
+const { constraints } = require('../utils/constraint');
 
 function basicCrudController({ table, idCol, itemName, itemNamePlural, fieldsCreate = [], fieldsUpdate = [], validationRulesCreate = {}, validationRulesUpdate = {} }) {
   async function getAll(req, res) {
@@ -85,7 +85,7 @@ function basicCrudController({ table, idCol, itemName, itemNamePlural, fieldsCre
       res.status(201).json(result.rows[0]);
       return { ok: true, status: 201, data: result.rows[0] };
     } catch (error) {
-      const constraintError = constraintUnique(error);
+      const constraintError = constraints(error);
       if (constraintError) {
         const message = constraintError.message;
         res.status(constraintError.status).json({ error: message });
@@ -157,7 +157,7 @@ function basicCrudController({ table, idCol, itemName, itemNamePlural, fieldsCre
       res.json(result.rows[0]);
       return { ok: true, status: 200, data: result.rows[0] };
     } catch (error) {
-      const constraintError = constraintUnique(error);
+      const constraintError = constraints(error);
       if (constraintError) {
         const message = constraintError.message;
         res.status(constraintError.status).json({ error: message });
@@ -187,7 +187,7 @@ function basicCrudController({ table, idCol, itemName, itemNamePlural, fieldsCre
       res.json({ message });
       return { ok: true, status: 200, data: result.rows[0], message };
     } catch (error) {
-      const constraintError = constraintUnique(error, 'delete');
+      const constraintError = constraints(error, 'delete');
       if (constraintError) {
         const message = constraintError.message;
         res.status(constraintError.status).json({ error: message });
