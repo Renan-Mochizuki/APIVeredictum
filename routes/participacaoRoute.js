@@ -3,6 +3,7 @@ const router = express.Router();
 const participacaoController = require('../controllers/participacaoController');
 
 router.get('/', participacaoController.getAll);
+router.get('/:id', participacaoController.getById);
 router.post('/', participacaoController.createItem);
 router.put('/:id', participacaoController.updateItem);
 router.delete('/:id', participacaoController.deleteItem);

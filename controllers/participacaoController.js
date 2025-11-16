@@ -11,24 +11,29 @@ const fields = [
   { req: 'profissionalId', col: 'partProfissionalId' },
 ];
 
-const validationRules = {
-  obraId: { required: true, type: 'number'},
+const validationRulesCreate = {
+  obraId: { required: true, type: 'number' },
   funcaoId: { required: true, type: 'string' },
   organizacaoId: { required: false, type: 'string' },
   profissionalId: { required: false, type: 'string' },
 };
 
-const { getAll, createItem, updateItem, deleteItem } = basicCrudController({
-  table: 'Organizacao',
-  idCol: 'orgaId',
+const validationRulesUpdate = {
+  obraId: { required: false, type: 'number' },
+  funcaoId: { required: false, type: 'string' },
+  organizacaoId: { required: false, type: 'string' },
+  profissionalId: { required: false, type: 'string' },
+};
+
+const { getAll, getById, createItem, updateItem, deleteItem } = basicCrudController({
+  table: 'Participacao',
+  idCol: 'partId',
   itemName,
   itemNamePlural,
   fieldsCreate: fields,
   fieldsUpdate: fields,
-  validationRulesCreate: validationRules,
-  validationRulesUpdate: validationRules,
+  validationRulesCreate,
+  validationRulesUpdate,
 });
 
-// TODO: Implementar updateFuncao e deleteFuncao se necessário
-
-module.exports = { getAll, createItem, updateItem,deleteItem };
+module.exports = { getAll, getById, createItem, updateItem, deleteItem };

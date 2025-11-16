@@ -78,6 +78,10 @@
           <input type="text" data-input="lista" placeholder="Digite o id da lista" />
           <a href="#" data-route="/listasusuario" data-input="lista" data-method="get">ListaId</a>
         </div>
+        <div class="subbox">
+          <input type="text" data-input="participacao" placeholder="Digite o id da participação" />
+          <a href="#" data-route="/participacoes" data-input="participacao" data-method="get">ParticipacaoId</a>
+        </div>
       </div>
     </div>
     <hr />
@@ -508,6 +512,19 @@
           </div>
         </div>
 
+        <!-- Excluir Organização -->
+        <div class="buttons">
+          <div class="subbox">
+            <h3>Organização</h3>
+            <input type="text" data-field="id" placeholder="ID da Organização" />
+            <button data-route="/organizacoes" data-method="delete">Excluir Organização</button>
+          </div>
+          <div class="subbox">
+            <p>Resposta:</p>
+            <div class="responseArea"></div>
+          </div>
+        </div>
+
         <!-- Excluir Profissional -->
         <div class="buttons">
           <div class="subbox">
@@ -566,6 +583,19 @@
             <h3>Categoria</h3>
             <input type="text" data-field="id" placeholder="Nome da Categoria" />
             <button data-route="/categorias" data-method="delete">Excluir Categoria</button>
+          </div>
+          <div class="subbox">
+            <p>Resposta:</p>
+            <div class="responseArea"></div>
+          </div>
+        </div>
+
+        <!-- Excluir Participação -->
+        <div class="buttons">
+          <div class="subbox">
+            <h3>Participação</h3>
+            <input type="text" data-field="id" placeholder="ID da Participação" />
+            <button data-route="/participacoes" data-method="delete">Excluir Participação</button>
           </div>
           <div class="subbox">
             <p>Resposta:</p>

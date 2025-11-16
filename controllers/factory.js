@@ -49,7 +49,7 @@ function basicCrudController({ table, idCol, itemName, itemNamePlural, fieldsCre
       const placeholders = [];
       const values = [];
 
-      fieldsCreate.forEach((f) => {
+      for (const f of fieldsCreate) {
         const reqKey = typeof f === 'string' ? f : f.req;
         const col = typeof f === 'string' ? f : f.col;
         const val = req.body[reqKey];
@@ -58,21 +58,30 @@ function basicCrudController({ table, idCol, itemName, itemNamePlural, fieldsCre
         if (typeof val !== 'undefined' && val !== null && !isEmptyString) {
           const rule = validationRulesCreate[reqKey];
           let toPush = val;
-          if (rule && rule.type === 'number') {
-            const num = Number(val);
-            if (Number.isNaN(num)) {
-              const message = `Campo '${reqKey}' deve ser um número`;
-              res.status(400).json({ error: message });
-              return { ok: false, status: 400, message };
+          if (rule) {
+            if (rule.type === 'number') {
+              const num = Number(val);
+              if (Number.isNaN(num)) {
+                const message = `Campo '${reqKey}' deve ser um número`;
+                res.status(400).json({ error: message });
+                return { ok: false, status: 400, message };
+              }
+              toPush = num;
             }
-            toPush = num;
+            if (rule.type === 'string') {
+              if ((typeof val === 'number' && !isNaN(val)) || /^[-+]?\d*\.?\d+$/.test(val.trim())) {
+                const message = `Campo '${reqKey}' deve ser uma string`;
+                res.status(400).json({ error: message });
+                return { ok: false, status: 400, message };
+              }
+            }
           }
 
           cols.push(col);
           placeholders.push(`$${values.length + 1}`);
           values.push(toPush);
         }
-      });
+      }
 
       if (cols.length === 0) {
         const message = 'Nenhum dado para inserir';
@@ -113,7 +122,7 @@ function basicCrudController({ table, idCol, itemName, itemNamePlural, fieldsCre
       const updates = [];
       const values = [];
 
-      fieldsUpdate.forEach((f) => {
+      for (const f of fieldsUpdate) {
         const reqKey = typeof f === 'string' ? f : f.req;
         const col = typeof f === 'string' ? f : f.col;
         const val = req.body[reqKey];
@@ -122,20 +131,29 @@ function basicCrudController({ table, idCol, itemName, itemNamePlural, fieldsCre
           // Coerce numbers when validation rule says so
           const rule = validationRulesUpdate[reqKey];
           let toPush = val;
-          if (rule && rule.type === 'number') {
-            const num = Number(val);
-            if (Number.isNaN(num)) {
-              const message = `Campo '${reqKey}' deve ser um número`;
-              res.status(400).json({ error: message });
-              return { ok: false, status: 400, message };
+          if (rule) {
+            if (rule.type === 'number') {
+              const num = Number(val);
+              if (Number.isNaN(num)) {
+                const message = `Campo '${reqKey}' deve ser um número`;
+                res.status(400).json({ error: message });
+                return { ok: false, status: 400, message };
+              }
+              toPush = num;
             }
-            toPush = num;
+            if (rule.type === 'string') {
+              if ((typeof val === 'number' && !isNaN(val)) || /^[-+]?\d*\.?\d+$/.test(val.trim())) {
+                const message = `Campo '${reqKey}' deve ser uma string`;
+                res.status(400).json({ error: message });
+                return { ok: false, status: 400, message };
+              }
+            }
           }
 
           updates.push(`${col} = $${values.length + 1}`);
           values.push(toPush);
         }
-      });
+      }
 
       if (updates.length === 0) {
         const message = 'Nenhum dado para atualizar';
@@ -153,7 +171,6 @@ function basicCrudController({ table, idCol, itemName, itemNamePlural, fieldsCre
         return { ok: false, status: 404, message };
       }
 
-      
       res.json(result.rows[0]);
       return { ok: true, status: 200, data: result.rows[0] };
     } catch (error) {
