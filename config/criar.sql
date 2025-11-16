@@ -197,7 +197,7 @@ ALTER TABLE Moderador ADD CONSTRAINT FK_Moderador_2
 ALTER TABLE Obra_Categoria ADD CONSTRAINT FK_Obra_Categoria_1
     FOREIGN KEY (categoriaId)
     REFERENCES Categoria (cateNome)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
  
 ALTER TABLE Obra_Categoria ADD CONSTRAINT FK_Obra_Categoria_2
     FOREIGN KEY (obraId)
@@ -207,7 +207,7 @@ ALTER TABLE Obra_Categoria ADD CONSTRAINT FK_Obra_Categoria_2
 ALTER TABLE Obra_PaisOrigem ADD CONSTRAINT FK_Obra_PaisOrigem_1
     FOREIGN KEY (paisOrigemId)
     REFERENCES PaisOrigem (paisNome)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
  
 ALTER TABLE Obra_PaisOrigem ADD CONSTRAINT FK_Obra_PaisOrigem_2
     FOREIGN KEY (obraId)
