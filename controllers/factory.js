@@ -187,6 +187,13 @@ function basicCrudController({ table, idCol, itemName, itemNamePlural, fieldsCre
       res.json({ message });
       return { ok: true, status: 200, data: result.rows[0], message };
     } catch (error) {
+      const constraintError = constraintUnique(error, 'delete');
+      if (constraintError) {
+        const message = constraintError.message;
+        res.status(constraintError.status).json({ error: message });
+        return { ok: false, status: constraintError.status, message };
+      }
+
       console.error('Erro ao deletar ' + itemName + ':', error);
       const message = 'Erro ao deletar ' + itemName;
       res.status(500).json({ error: message });

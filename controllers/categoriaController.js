@@ -10,9 +10,9 @@ const validationRules = {
   nome: { required: true, type: 'string', minLength: 3, maxLength: 30 },
 };
 
-const { getAll, createItem } = basicCrudController({
+const { getAll, createItem, deleteItem } = basicCrudController({
   table: 'Categoria',
-  idCol: 'cateId',
+  idCol: 'cateNome',
   itemName,
   itemNamePlural,
   fieldsCreate: fields,
@@ -21,4 +21,4 @@ const { getAll, createItem } = basicCrudController({
   validationRulesUpdate: validationRules,
 });
 
-module.exports = { getAll, createItem };
+module.exports = { getAll, createItem, deleteItem };

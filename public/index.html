@@ -270,6 +270,19 @@
             <div class="responseArea"></div>
           </div>
         </div>
+
+        <!-- Inserir Categoria -->
+        <div class="buttons">
+          <div class="subbox">
+            <h3>Categoria</h3>
+            <input type="text" data-field="nome" placeholder="Nome da Categoria" />
+            <button data-route="/categorias" data-method="post" data-fields="nome">Criar Categoria</button>
+          </div>
+          <div class="subbox">
+            <p>Resposta:</p>
+            <div class="responseArea"></div>
+          </div>
+        </div>
       </div>
     </div>
     <hr />
@@ -547,6 +560,18 @@
           </div>
         </div>
 
+        <!-- Excluir Categoria -->
+        <div class="buttons">
+          <div class="subbox">
+            <h3>Categoria</h3>
+            <input type="text" data-field="id" placeholder="Nome da Categoria" />
+            <button data-route="/categorias" data-method="delete">Excluir Categoria</button>
+          </div>
+          <div class="subbox">
+            <p>Resposta:</p>
+            <div class="responseArea"></div>
+          </div>
+        </div>
       </div>
     </div>
     <script src="script.js"></script>
