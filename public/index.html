@@ -32,7 +32,7 @@
         <a href="/moderadores">Moderadores</a>
         <a href="/participacoes">Participações</a>
         <a href="/organizacoes">Organizações</a>
-        <a href="/listasusuario">Lista de Usuários</a>
+        <a href="/listasusuario">Listas de Usuários</a>
       </div>
     </div>
     <hr />
@@ -73,6 +73,10 @@
         <div class="subbox">
           <input type="text" data-input="avaliacao" placeholder="Digite o id da avaliação" />
           <a href="#" data-route="/avaliacoes" data-input="avaliacao" data-method="get">AvaliacaoId</a>
+        </div>
+        <div class="subbox">
+          <input type="text" data-input="lista" placeholder="Digite o id da lista" />
+          <a href="#" data-route="/listasusuario" data-input="lista" data-method="get">ListaId</a>
         </div>
       </div>
     </div>
@@ -529,6 +533,20 @@
             <div class="responseArea"></div>
           </div>
         </div>
+
+        <!-- Excluir Lista de Usuário -->
+        <div class="buttons">
+          <div class="subbox">
+            <h3>Lista de Usuário</h3>
+            <input type="text" data-field="id" placeholder="ID da Lista de Usuário" />
+            <button data-route="/listasusuario" data-method="delete">Excluir Lista de Usuário</button>
+          </div>
+          <div class="subbox">
+            <p>Resposta:</p>
+            <div class="responseArea"></div>
+          </div>
+        </div>
+
       </div>
     </div>
     <script src="script.js"></script>

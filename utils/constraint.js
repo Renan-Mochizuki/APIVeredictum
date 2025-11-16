@@ -17,6 +17,10 @@ function constraintUnique(error) {
   if (error.code === '23505') {
     return { status: 409, message: 'Valor já em uso' };
   }
+  // Verifica se é erro de violação de constraint unique
+  if (error.code === '23503') {
+    return { status: 404, message: 'ID de FK não encontrado' };
+  }
 }
 
 module.exports = {
