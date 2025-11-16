@@ -132,12 +132,12 @@ CREATE TABLE Obra_ListaUsuario (
 ALTER TABLE Obra ADD CONSTRAINT FK_Obra_2
     FOREIGN KEY (obraTipoObraNome)
     REFERENCES TipoObra (tipoNome)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
  
 ALTER TABLE Participacao ADD CONSTRAINT FK_Participacao_2
     FOREIGN KEY (partObraId)
     REFERENCES Obra (obraId)
-    ON DELETE RESTRICT;
+    ON DELETE CASCADE;
  
 ALTER TABLE Participacao ADD CONSTRAINT FK_Participacao_3
     FOREIGN KEY (partOrganizacaoId)
@@ -147,7 +147,7 @@ ALTER TABLE Participacao ADD CONSTRAINT FK_Participacao_3
 ALTER TABLE Participacao ADD CONSTRAINT FK_Participacao_4
     FOREIGN KEY (partFuncaoId)
     REFERENCES Funcao (funcTipo)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
  
 ALTER TABLE Participacao ADD CONSTRAINT FK_Participacao_5
     FOREIGN KEY (partProfissionalId)
@@ -197,32 +197,32 @@ ALTER TABLE Moderador ADD CONSTRAINT FK_Moderador_2
 ALTER TABLE Obra_Categoria ADD CONSTRAINT FK_Obra_Categoria_1
     FOREIGN KEY (categoriaId)
     REFERENCES Categoria (cateNome)
-    ON DELETE RESTRICT;
+    ON DELETE CASCADE;
  
 ALTER TABLE Obra_Categoria ADD CONSTRAINT FK_Obra_Categoria_2
     FOREIGN KEY (obraId)
     REFERENCES Obra (obraId)
-    ON DELETE SET NULL;
+    ON DELETE CASCADE;
  
 ALTER TABLE Obra_PaisOrigem ADD CONSTRAINT FK_Obra_PaisOrigem_1
     FOREIGN KEY (paisOrigemId)
     REFERENCES PaisOrigem (paisNome)
-    ON DELETE RESTRICT;
+    ON DELETE CASCADE;
  
 ALTER TABLE Obra_PaisOrigem ADD CONSTRAINT FK_Obra_PaisOrigem_2
     FOREIGN KEY (obraId)
     REFERENCES Obra (obraId)
-    ON DELETE SET NULL;
+    ON DELETE CASCADE;
  
 ALTER TABLE Obra_ListaUsuario ADD CONSTRAINT FK_Obra_ListaUsuario_1
     FOREIGN KEY (listaUsuarioId)
     REFERENCES ListaUsuario (listId)
-    ON DELETE SET NULL;
+    ON DELETE CASCADE;
  
 ALTER TABLE Obra_ListaUsuario ADD CONSTRAINT FK_Obra_ListaUsuario_2
     FOREIGN KEY (obraId)
     REFERENCES Obra (obraId)
-    ON DELETE SET NULL;
+    ON DELETE CASCADE;
 
 -- Função trigger que define o campo updatedAt apropriado por tabela
 CREATE OR REPLACE FUNCTION set_updated_timestamp()
@@ -276,9 +276,6 @@ CREATE TRIGGER trg_avaliacao_updated_at
 BEFORE UPDATE ON avaliacao
 FOR EACH ROW
 EXECUTE FUNCTION set_updated_timestamp();
-
--- Remove a constraint atual se existir
-ALTER TABLE Usuario DROP CONSTRAINT IF EXISTS usuario_apelido_key;
 
 -- Cria um índice único usando LOWER()
 CREATE UNIQUE INDEX idx_usuario_apelido_unique 
