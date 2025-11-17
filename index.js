@@ -23,10 +23,22 @@ const obraCategoriaRoutes = require('./routes/obracategoriaRoute');
 const obrapaisRoutes = require('./routes/obrapaisRoute');
 const obralistausuarioRoutes = require('./routes/obralistausuarioRoute');
 const participacaoObraRoutes = require('./routes/participacaoObraRoute');
+const participacaoOrganizacaoRoutes = require('./routes/participacaoOrganizacaoRoute');
+const participacaoFuncaoRoutes = require('./routes/participacaoFuncaoRoute');
+const participacaoProfissionalRoutes = require('./routes/participacaoProfissionalRoute');
 const listausuarioUsuarioRoutes = require('./routes/listausuarioUsuarioRoute');
 const avaliacaoEpisodioRoutes = require('./routes/avaliacaoEpisodioRoute');
 const avaliacaoObraRoutes = require('./routes/avaliacaoObraRoute');
 const avaliacaoUsuarioRoutes = require('./routes/avaliacaoUsuarioRoute');
+const temporadaObraRoutes = require('./routes/temporadaObraRoute');
+const episodioTemporadaRoutes = require('./routes/episodioTemporadaRoute');
+const obraTipoobraRoutes = require('./routes/obraTipoobraRoute');
+const obracategoriaObraRoutes = require('./routes/obracategoriaObraRoute');
+const obracategoriaCategoriaRoutes = require('./routes/obracategoriaCategoriaRoute');
+const obrapaisObraRoutes = require('./routes/obrapaisObraRoute');
+const obrapaisPaisRoutes = require('./routes/obrapaisPaisRoute');
+const obralistausuarioObraRoutes = require('./routes/obralistausuarioObraRoute');
+const obralistausuarioListaRoutes = require('./routes/obralistausuarioListaRoute');
 
 // Configuração do Express
 const app = express();
@@ -59,10 +71,22 @@ app.use('/obrascategorias', obraCategoriaRoutes);
 app.use('/obraspaises', obrapaisRoutes);
 app.use('/obraslistasusuario', obralistausuarioRoutes);
 app.use('/participacoesobras', participacaoObraRoutes);
+app.use('/participacoesorganizacao', participacaoOrganizacaoRoutes);
+app.use('/participacoesfuncao', participacaoFuncaoRoutes);
+app.use('/participacoesprofissional', participacaoProfissionalRoutes);
 app.use('/listasusuariousuario', listausuarioUsuarioRoutes);
 app.use('/avaliacoesepisodio', avaliacaoEpisodioRoutes);
 app.use('/avaliacoesobra', avaliacaoObraRoutes);
 app.use('/avaliacoesusuario', avaliacaoUsuarioRoutes);
+app.use('/temporadasobra', temporadaObraRoutes);
+app.use('/episodiostemporada', episodioTemporadaRoutes);
+app.use('/obrastipoobra', obraTipoobraRoutes);
+app.use('/obrascategoriasobra', obracategoriaObraRoutes);
+app.use('/obrascategoriascategoria', obracategoriaCategoriaRoutes);
+app.use('/obraspaisesobra', obrapaisObraRoutes);
+app.use('/obraspaisespais', obrapaisPaisRoutes);
+app.use('/obraslistasusuarioobra', obralistausuarioObraRoutes);
+app.use('/obraslistasusuariolista', obralistausuarioListaRoutes);
 
 // Iniciando servidor
 const port = config.port || 3000;

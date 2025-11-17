@@ -45,4 +45,28 @@ const { getByFk: getByObraId } = getByFks({
   fkCol: 'partObraId',
 });
 
-module.exports = { getAll, getById, getByObraId, createItem, updateItem, deleteItem };
+const { getByFk: getByOrganizacaoId } = getByFks({
+  table: 'Participacao',
+  idCol: 'partId',
+  itemName,
+  itemNamePlural,
+  fkCol: 'partOrganizacaoId',
+});
+
+const { getByFk: getByFuncaoId } = getByFks({
+  table: 'Participacao',
+  idCol: 'partId',
+  itemName,
+  itemNamePlural,
+  fkCol: 'partFuncaoId',
+});
+
+const { getByFk: getByProfissionalId } = getByFks({
+  table: 'Participacao',
+  idCol: 'partId',
+  itemName,
+  itemNamePlural,
+  fkCol: 'partProfissionalId',
+});
+
+module.exports = { getAll, getById, getByObraId, getByOrganizacaoId, getByFuncaoId, getByProfissionalId, createItem, updateItem, deleteItem };

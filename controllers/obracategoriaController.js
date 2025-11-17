@@ -6,7 +6,7 @@ const itemNamePlural = 'obras categorias';
 
 const fields = [
   { req: 'obraId', col: 'obraId' },
-  { req: 'categoriaId', col: 'categoriaId' }
+  { req: 'categoriaId', col: 'categoriaId' },
 ];
 
 const validationRules = {
@@ -27,4 +27,22 @@ const { getAll, createItem, deleteAssociative } = basicCrudController({
   validationRulesDelete: validationRules,
 });
 
-module.exports = { getAll, createItem, deleteAssociative };
+const { getByFks } = require('./getByFks');
+
+const { getByFk: getByObraId } = getByFks({
+  table: 'Obra_Categoria',
+  idCol: null,
+  itemName,
+  itemNamePlural,
+  fkCol: 'obraId',
+});
+
+const { getByFk: getByCategoriaId } = getByFks({
+  table: 'Obra_Categoria',
+  idCol: null,
+  itemName,
+  itemNamePlural,
+  fkCol: 'categoriaId',
+});
+
+module.exports = { getAll, createItem, deleteAssociative, getByObraId, getByCategoriaId };
