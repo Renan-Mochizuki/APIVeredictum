@@ -22,6 +22,11 @@ const listausuarioRoutes = require('./routes/listausuarioRoute');
 const obraCategoriaRoutes = require('./routes/obracategoriaRoute');
 const obrapaisRoutes = require('./routes/obrapaisRoute');
 const obralistausuarioRoutes = require('./routes/obralistausuarioRoute');
+const participacaoObraRoutes = require('./routes/participacaoObraRoute');
+const listausuarioUsuarioRoutes = require('./routes/listausuarioUsuarioRoute');
+const avaliacaoEpisodioRoutes = require('./routes/avaliacaoEpisodioRoute');
+const avaliacaoObraRoutes = require('./routes/avaliacaoObraRoute');
+const avaliacaoUsuarioRoutes = require('./routes/avaliacaoUsuarioRoute');
 
 // Configuração do Express
 const app = express();
@@ -53,6 +58,11 @@ app.use('/listasusuario', listausuarioRoutes);
 app.use('/obrascategorias', obraCategoriaRoutes);
 app.use('/obraspaises', obrapaisRoutes);
 app.use('/obraslistasusuario', obralistausuarioRoutes);
+app.use('/participacoesobras', participacaoObraRoutes);
+app.use('/listasusuariousuario', listausuarioUsuarioRoutes);
+app.use('/avaliacoesepisodio', avaliacaoEpisodioRoutes);
+app.use('/avaliacoesobra', avaliacaoObraRoutes);
+app.use('/avaliacoesusuario', avaliacaoUsuarioRoutes);
 
 // Iniciando servidor
 const port = config.port || 3000;

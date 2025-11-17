@@ -1,5 +1,6 @@
 const pool = require('../config/db');
 const { basicCrudController } = require('./factory');
+const { getByFks } = require('./getByFks');
 
 const itemName = 'avaliação';
 const itemNamePlural = 'avaliações';
@@ -58,4 +59,28 @@ async function getAvaliacoesObras(req, res) {
   }
 }
 
-module.exports = { getAll, getById, createItem, updateItem, deleteItem, getAvaliacoesObras };
+const { getByFk: getByUsuarioId } = getByFks({
+  table: 'Avaliacao',
+  idCol: 'avalId',
+  itemName,
+  itemNamePlural,
+  fkCol: 'avalUsuarioId',
+});
+
+const { getByFk: getByObraId } = getByFks({
+  table: 'Avaliacao',
+  idCol: 'avalId',
+  itemName,
+  itemNamePlural,
+  fkCol: 'avalObraId',
+});
+
+const { getByFk: getByEpisodioId } = getByFks({
+  table: 'Avaliacao',
+  idCol: 'avalId',
+  itemName,
+  itemNamePlural,
+  fkCol: 'avalEpisodioId',
+});
+
+module.exports = { getAll, getById, createItem, updateItem, deleteItem, getAvaliacoesObras, getByUsuarioId, getByObraId, getByEpisodioId };

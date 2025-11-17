@@ -1,5 +1,6 @@
 const pool = require('../config/db');
 const { basicCrudController } = require('./factory');
+const { getByFks } = require('./getByFks');
 
 const itemName = 'lista de usuário';
 const itemNamePlural = 'listas de usuários';
@@ -36,4 +37,12 @@ const { getAll, getById, createItem, updateItem, deleteItem } = basicCrudControl
   validationRulesUpdate,
 });
 
-module.exports = { getAll, getById, createItem, updateItem, deleteItem };
+const { getByFk: getByUsuarioId } = getByFks({
+  table: 'ListaUsuario',
+  idCol: 'listId',
+  itemName,
+  itemNamePlural,
+  fkCol: 'listUsuarioId',
+});
+
+module.exports = { getAll, getById, getByUsuarioId, createItem, updateItem, deleteItem };
