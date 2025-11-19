@@ -33,7 +33,7 @@ const validationRulesUpdate = {
   imgUrl: { required: false, type: 'string', minLength: 30, maxLength: 255 },
 };
 
-const { getAll, getById, createItem, updateItem, deleteItem } = basicCrudController({
+const { getById, createItem, updateItem, deleteItem } = basicCrudController({
   table: 'Obra',
   idCol: 'obraId',
   itemName,
@@ -44,6 +44,21 @@ const { getAll, getById, createItem, updateItem, deleteItem } = basicCrudControl
   validationRulesUpdate,
 });
 
+async function getAll(req, res) {
+  try {
+    const result = await pool.query(
+      `SELECT o.*, (SELECT ROUND(AVG(a.avalNota), 1) FROM Avaliacao a WHERE a.avalObraId = o.obraId) AS obranota FROM Obra o ORDER BY o.obraDataLancamento DESC`
+    );
+    res.json(result.rows);
+    return { ok: true, status: 200, data: result.rows };
+  } catch (err) {
+    console.error(`Erro ao buscar ${itemNamePlural}:`, err);
+    const message = `Erro ao buscar ${itemNamePlural}`;
+    res.status(500).json({ error: message });
+    return { ok: false, status: 500, message };
+  }
+}
+
 const { getByFk: getByTipoObraNome } = getByFks({
   table: 'Obra',
   idCol: 'obraId',
@@ -52,7 +67,7 @@ const { getByFk: getByTipoObraNome } = getByFks({
   fkCol: 'obraTipoObraNome',
 });
 
-const colunasGetTipo = 'obraid, obratitulo, obracreatedat';
+const colunasGetTipo = 'obraid, obratitulo, obraduracao, obradatalancamento, obraimgurl';
 
 const { getByTipoObra: getFilmes } = getObra({
   colunasGetTipo,

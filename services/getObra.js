@@ -3,7 +3,7 @@ const pool = require('../config/db');
 function getObra({ colunasGetTipo, tipoObra, itemNamePlural }) {
   async function getByTipoObra(req, res) {
     try {
-      const result = await pool.query(`SELECT ${colunasGetTipo}, (SELECT ROUND(AVG(avalNota), 2) FROM Avaliacao WHERE avalObraId = obraId) AS obranota FROM Obra WHERE obratipoobranome = $1 ORDER BY obracreatedat DESC`, [tipoObra]);
+      const result = await pool.query(`SELECT ${colunasGetTipo}, (SELECT ROUND(AVG(avalNota), 1) FROM Avaliacao WHERE avalObraId = obraId) AS obranota FROM Obra WHERE obratipoobranome = $1 ORDER BY obraDataLancamento DESC`, [tipoObra]);
       res.json(result.rows);
       return { ok: true, status: 200, data: result.rows };
     } catch (err) {
