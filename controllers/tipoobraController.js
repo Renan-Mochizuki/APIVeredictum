@@ -1,5 +1,5 @@
 const pool = require('../config/db');
-const { basicCrudController } = require('./factory');
+const { basicCrudController } = require('../services/factory');
 
 const itemName = 'tipo de obra';
 const itemNamePlural = 'tipo de obras';

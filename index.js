@@ -40,6 +40,7 @@ const obrapaisPaisRoutes = require('./routes/obrapaisPaisRoute');
 const obralistausuarioObraRoutes = require('./routes/obralistausuarioObraRoute');
 const obralistausuarioListaRoutes = require('./routes/obralistausuarioListaRoute');
 const loginRoutes = require('./routes/loginRoute');
+const filmeRoutes = require('./routes/filmeRoute');
 
 // Configuração do Express
 const app = express();
@@ -89,6 +90,7 @@ app.use('/obraspaisespais', obrapaisPaisRoutes);
 app.use('/obraslistasusuarioobra', obralistausuarioObraRoutes);
 app.use('/obraslistasusuariolista', obralistausuarioListaRoutes);
 app.use('/login', loginRoutes);
+app.use('/filmes', filmeRoutes);
 
 // Iniciando servidor
 const port = config.port || 3000;

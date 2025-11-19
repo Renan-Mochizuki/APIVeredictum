@@ -1,5 +1,5 @@
 const pool = require('../config/db');
-const { basicCrudController } = require('./factory');
+const { basicCrudController } = require('../services/factory');
 
 const itemName = 'pais';
 const itemNamePlural = 'paises';

@@ -1,6 +1,7 @@
 const pool = require('../config/db');
-const { basicCrudController } = require('./factory');
-const { getByFks } = require('./getByFks');
+const { basicCrudController } = require('../services/factory');
+const { getByFks } = require('../services/getByFks');
+const { getObra } = require('../services/getObra');
 
 const itemName = 'obra';
 const itemNamePlural = 'obras';
@@ -42,4 +43,36 @@ const { getByFk: getByTipoObraNome } = getByFks({
   fkCol: 'obraTipoObraNome',
 });
 
-module.exports = { getAll, getById, getByTipoObraNome, createItem, updateItem, deleteItem };
+const colunasGetTipo = 'obraid, obratitulo, obracreatedat';
+
+const { getByTipoObra: getFilmes } = getObra({
+  colunasGetTipo,
+  tipoObra: 'Filme',
+  itemNamePlural,
+});
+
+const { getByTipoObra: getSeries } = getObra({
+  colunasGetTipo,
+  tipoObra: 'Série',
+  itemNamePlural,
+});
+
+const { getByTipoObra: getAnimes } = getObra({
+  colunasGetTipo,
+  tipoObra: 'Anime',
+  itemNamePlural,
+});
+
+const { getByTipoObra: getCurtas } = getObra({
+  colunasGetTipo,
+  tipoObra: 'Curta',
+  itemNamePlural,
+});
+
+const { getByTipoObra: getDocumentarios } = getObra({
+  colunasGetTipo,
+  tipoObra: 'Documentário',
+  itemNamePlural,
+});
+
+module.exports = { getAll, getById, getByTipoObraNome, createItem, updateItem, deleteItem, getFilmes, getSeries, getAnimes, getCurtas, getDocumentarios };

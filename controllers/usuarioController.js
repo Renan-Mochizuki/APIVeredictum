@@ -4,9 +4,10 @@ const jwt = require('jsonwebtoken');
 const { validateUserData, validateData } = require('../utils/validation');
 const { constraintUser } = require('../utils/constraint');
 const { normalizeData } = require('../utils/normalize');
-const { basicCrudController } = require('./factory');
+const { basicCrudController } = require('../services/factory');
 const config = require('../config/index');
 const jwtSecret = config.jwtSecret;
+const validateToken = require('../services/validateToken');
 
 const itemName = 'usuário';
 const itemNamePlural = 'usuários';
@@ -65,20 +66,12 @@ async function updateItem(req, res) {
   // TODO: Implementar envio do perfilImg
 
   // Verificação de autenticação: apenas o próprio usuário pode atualizar
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'Token ausente' });
+  const validatedId = await validateToken(req, res);
+  if (validatedId === null) {
+    return res.status(401).json({ error: 'Token ausente ou inválido' });
   }
 
-  const token = authHeader.split(' ')[1];
-  let payload;
-  try {
-    payload = jwt.verify(token, jwtSecret);
-  } catch (err) {
-    return res.status(401).json({ error: 'Token inválido' });
-  }
-
-  if (Number(payload.id) !== Number(id)) {
+  if (Number(validatedId) !== Number(id)) {
     return res.status(403).json({ error: 'Acesso negado: só pode atualizar o próprio usuário' });
   }
 

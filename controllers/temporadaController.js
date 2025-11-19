@@ -1,6 +1,6 @@
 const pool = require('../config/db');
-const { basicCrudController } = require('./factory');
-const { getByFks } = require('./getByFks');
+const { basicCrudController } = require('../services/factory');
+const { getByFks } = require('../services/getByFks');
 
 const itemName = 'temporada';
 const itemNamePlural = 'temporadas';
