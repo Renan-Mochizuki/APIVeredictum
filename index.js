@@ -39,6 +39,7 @@ const obrapaisObraRoutes = require('./routes/obrapaisObraRoute');
 const obrapaisPaisRoutes = require('./routes/obrapaisPaisRoute');
 const obralistausuarioObraRoutes = require('./routes/obralistausuarioObraRoute');
 const obralistausuarioListaRoutes = require('./routes/obralistausuarioListaRoute');
+const loginRoutes = require('./routes/loginRoute');
 
 // Configuração do Express
 const app = express();
@@ -87,6 +88,7 @@ app.use('/obraspaisesobra', obrapaisObraRoutes);
 app.use('/obraspaisespais', obrapaisPaisRoutes);
 app.use('/obraslistasusuarioobra', obralistausuarioObraRoutes);
 app.use('/obraslistasusuariolista', obralistausuarioListaRoutes);
+app.use('/login', loginRoutes);
 
 // Iniciando servidor
 const port = config.port || 3000;

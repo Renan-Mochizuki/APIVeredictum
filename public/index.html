@@ -788,6 +788,24 @@
         </div>
       </div>
     </div>
+    <hr />
+    <div class="box">
+      <h2 class="title">Login</h2>
+      <div class="boxarea">
+        <!-- Login Usuário -->
+        <div class="buttons">
+          <div class="subbox">
+            <h3>Usuário</h3>
+            <input type="text" data-field="apelido" placeholder="Digite o apelido" />
+            <input type="password" data-field="senha" placeholder="Digite a senha" />
+            <button data-route="/login" data-method="post" data-fields="apelido,senha">Login</button>
+          </div>
+          <div class="subbox">
+            <p>Resposta:</p>
+            <div class="responseArea"></div>
+          </div>
+      </div>
+    </div>
     <script src="script.js"></script>
   </body>
 </html>
