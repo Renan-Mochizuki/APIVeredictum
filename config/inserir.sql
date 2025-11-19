@@ -161,9 +161,11 @@ INSERT INTO Usuario (usuaApelido, usuaEmail, usuaSalt, usuaHash) VALUES ('Joao',
 INSERT INTO Usuario (usuaApelido, usuaEmail, usuaSalt, usuaHash) VALUES ('Fernando', 'fernando@gmail.com', '650edaa2d45d2e9702fc2ab0c512f372', '98283cf11f480043024039f04e0991acf18c90bd4b7f415850d336be62992d0e');
 INSERT INTO Usuario (usuaApelido, usuaEmail, usuaSalt, usuaHash, usuaTipo) VALUES ('Roberto', 'roberto@gmail.com', 'a45ad34be840827fe86f2e7f3cd7a90b', 'a3225b8c245a2b44ac51d078fbbaad7a7819559961695f6ec1c904b994a90daa', 'critico');
 INSERT INTO Usuario (usuaApelido, usuaEmail, usuaSalt, usuaHash, usuaTipo) VALUES ('Aurelio', 'aurelio@gmail.com', '047735395be2ade402ed1fc4f1b7224d', '05718b47ec65ddd6f19fa4c5da11ac57155caa1eaf354140a9ac59146c2e7225', 'moderador');
+INSERT INTO Usuario (usuaApelido, usuaEmail, usuaSalt, usuaHash, usuaTipo) VALUES ('Admin', 'admin@dominio.com', '4f3fa022a40109114e5072a54bfa2b40', 'd97e100ddc5c37341cdf50465993b36617890330758d44728560d3dda071204b', 'moderador');
 
 INSERT INTO Critico (usuaId, critNome, critBio) VALUES (4, 'Roberto dos Santos Menezes', 'Crítico de uma revista muito renomada');
 INSERT INTO Moderador (usuaId, modePermissaoCatalogo, modePermissaoComunidade, modePermissaoVerificacao) VALUES (5, true, false, false);
+INSERT INTO Moderador (usuaId, modePermissaoCatalogo, modePermissaoComunidade, modePermissaoVerificacao) VALUES (6, true, true, true);
 
 INSERT INTO ListaUsuario (listUsuarioId, listTitulo, listDescricao, listPrivado) VALUES (1, 'Favoritos', NULL, false);
 INSERT INTO ListaUsuario (listUsuarioId, listTitulo, listDescricao, listPrivado) VALUES (2, 'Legais', NULL, false);
