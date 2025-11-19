@@ -65,7 +65,7 @@ async function updateItem(req, res) {
   let { apelido, email } = req.body;
   // TODO: Implementar envio do perfilImg
 
-  // Verificação de autenticação: apenas o próprio usuário pode atualizar
+  // Verificação do Token
   const validatedId = await validateToken(req, res);
   if (validatedId === null) {
     return res.status(401).json({ error: 'Token ausente ou inválido' });
