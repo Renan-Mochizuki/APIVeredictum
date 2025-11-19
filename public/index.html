@@ -188,7 +188,10 @@
             <input type="text" data-field="titulo" placeholder="Digite o título" />
             <input type="text" data-field="descricao" placeholder="Digite a descrição" />
             <input type="text" data-field="tipoObraNome" placeholder="Digite o tipo da obra" />
-            <button data-route="/obras" data-method="post" data-fields="titulo,descricao,tipoObraNome">Criar Obra</button>
+            <input type="date" data-field="dataLancamento" placeholder="Data de lançamento" />
+            <input type="number" data-field="duracao" placeholder="Duração (minutos)" />
+            <input type="text" data-field="imgUrl" placeholder="URL da imagem (opcional)" />
+            <button data-route="/obras" data-method="post" data-fields="titulo,descricao,tipoObraNome,dataLancamento,duracao,imgUrl">Criar Obra</button>
           </div>
           <div class="subbox">
             <p>Resposta:</p>
@@ -436,7 +439,10 @@
             <input type="text" data-field="titulo" placeholder="Digite o título" />
             <input type="text" data-field="descricao" placeholder="Digite a descrição" />
             <input type="text" data-field="tipoObraNome" placeholder="Digite o tipo da obra" />
-            <button data-route="/obras" data-method="put" data-fields="titulo,descricao,tipoObraNome">Alterar Obra</button>
+            <input type="date" data-field="dataLancamento" placeholder="Data de lançamento" />
+            <input type="number" data-field="duracao" placeholder="Duração (minutos)" />
+            <input type="text" data-field="imgUrl" placeholder="URL da imagem (opcional)" />
+            <button data-route="/obras" data-method="put" data-fields="titulo,descricao,tipoObraNome,dataLancamento,duracao,imgUrl">Alterar Obra</button>
           </div>
           <div class="subbox">
             <p>Resposta:</p>

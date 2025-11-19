@@ -171,11 +171,11 @@ INSERT INTO ListaUsuario (listUsuarioId, listTitulo, listDescricao, listPrivado)
 INSERT INTO Organizacao (orgaNome) VALUES ('Organização 1'), ('Organização 2'), ('Organização 3'), ('Organização 4');
 INSERT INTO Profissional (profNome) VALUES ('Profissional 1'), ('Profissional 2'), ('Profissional 3'), ('Profissional 4');
 
-INSERT INTO Obra (obraTitulo, obraDescricao, obraTipoObraNome) VALUES ('Um filme 1', 'Descrição desse filme', 'Filme');
+INSERT INTO Obra (obraTitulo, obraDescricao, obraTipoObraNome, obraDataLancamento, obraDuracao, obraImgUrl) VALUES ('Um filme 1', 'Descrição desse filme', 'Filme', '2023-01-01', 120, 'https://upload.wikimedia.org/wikipedia/pt/2/2a/The_Shape_of_Water_%28filme%29.png');
 
 INSERT INTO Participacao (partObraId, partFuncaoId, partOrganizacaoId, partProfissionalId) VALUES (1, 'Ator', NULL, 'Profissional 1'), (1, 'Produtora', 'Organização 1', NULL), (1, 'Diretor', NULL, 'Profissional 2');
 
-INSERT INTO Obra (obraTitulo, obraDescricao, obraTipoObraNome) VALUES ('Uma série 1', 'Descrição dessa série', 'Série');
+INSERT INTO Obra (obraTitulo, obraDescricao, obraTipoObraNome, obraDataLancamento, obraDuracao, obraImgUrl) VALUES ('Uma série 1', 'Descrição dessa série', 'Série', '2024-03-12', NULL, NULL);
 
 INSERT INTO Participacao (partObraId, partFuncaoId, partOrganizacaoId, partProfissionalId) VALUES (2, 'Produtora', 'Organização 1', NULL), (2, 'Distribuidora', 'Organização 2', NULL), (2, 'Ator', NULL, 'Profissional 3');
 

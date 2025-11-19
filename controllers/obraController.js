@@ -10,18 +10,27 @@ const fields = [
   { req: 'titulo', col: 'obraTitulo' },
   { req: 'descricao', col: 'obraDescricao' },
   { req: 'tipoObraNome', col: 'obraTipoObraNome' },
+  { req: 'dataLancamento', col: 'obraDataLancamento' },
+  { req: 'duracao', col: 'obraDuracao' },
+  { req: 'imgUrl', col: 'obraImgUrl' },
 ];
 
 const validationRulesCreate = {
   titulo: { required: true, type: 'string', minLength: 2, maxLength: 150 },
   descricao: { required: false, type: 'string', maxLength: 200 },
   tipoObraNome: { required: true, type: 'string', minLength: 4, maxLength: 12 },
+  dataLancamento: { required: false, type: 'date' },
+  duracao: { required: false, type: 'number' },
+  imgUrl: { required: false, type: 'string', minLength: 30, maxLength: 255 },
 };
 
 const validationRulesUpdate = {
   titulo: { required: false, type: 'string', minLength: 2, maxLength: 150 },
   descricao: { required: false, type: 'string', maxLength: 200 },
   tipoObraNome: { required: false, type: 'string', minLength: 4, maxLength: 12 },
+  dataLancamento: { required: false, type: 'date' },
+  duracao: { required: false, type: 'number' },
+  imgUrl: { required: false, type: 'string', minLength: 30, maxLength: 255 },
 };
 
 const { getAll, getById, createItem, updateItem, deleteItem } = basicCrudController({
