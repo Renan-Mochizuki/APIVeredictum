@@ -76,6 +76,34 @@ INSERT INTO Profissional (profNome) VALUES
 ('Meryl Streep'), ('Brad Pitt'), ('Scarlett Johansson'), ('Adam Driver'), ('Emma Stone'),
 ('Joaquim Phoenix'), ('Saoirse Ronan');
 
+-- Adiciona profissionais que aparecem em participações mas não estavam na lista acima
+INSERT INTO Profissional (profNome) VALUES
+('Robert Eggers'), ('Finn Wolfhard'), ('Jesse Eisenberg'), ('David Fincher'), ('Damien Chazelle'),
+('George Miller'), ('Lana Wachowski'), ('Alejandro González Iñárritu'), ('Barry Jenkins')
+ON CONFLICT DO NOTHING;
+
+-- Insere tipos de obra necessários
+INSERT INTO TipoObra (tipoNome) VALUES
+('Filme'), ('Série') ON CONFLICT DO NOTHING;
+
+-- Insere categorias referenciadas por Obra_Categoria
+INSERT INTO Categoria (cateNome) VALUES
+('Ficção Científica'), ('Thriller'), ('Drama'), ('Mistério'), ('Musical'), ('Ação'),
+('Crime'), ('Comédia'), ('Suspense'), ('Histórico') ON CONFLICT DO NOTHING;
+
+-- Insere funções usadas em Participacao
+INSERT INTO Funcao (funcTipo) VALUES
+('Diretor'), ('Produtora'), ('Trilha Sonora'), ('Ator') ON CONFLICT DO NOTHING;
+
+-- Insere países de origem usados em Obra_PaisOrigem
+INSERT INTO PaisOrigem (paisNome) VALUES
+('Coreia do Sul'), ('Reino Unido'), ('Estados Unidos'), ('França'), ('Canadá') ON CONFLICT DO NOTHING;
+
+-- Garante organizações extras citadas nas participações
+INSERT INTO Organizacao (orgaNome) VALUES
+('CJ Entertainment'), ('AMC'), ('Lucasfilm'), ('Paramount Pictures'), ('Netflix Studios'), ('Lionsgate')
+ON CONFLICT DO NOTHING;
+
 -- 5) Obras (55) - 40 Filmes + 15 Séries
 -- Filmes (40)
 INSERT INTO Obra (obraTitulo, obraDescricao, obraTipoObraNome, obraDataLancamento, obraDuracao, obraImgUrl) VALUES
@@ -370,40 +398,40 @@ INSERT INTO Avaliacao (avalUsuarioId, avalObraId, avalEpisodioId, avalNota, aval
 ((SELECT usuaId FROM Usuario WHERE usuaApelido='ricardo'), (SELECT obraId FROM Obra WHERE obraTitulo='Memento'), NULL, 9, 'Narrativa brilhante.'),
 
 -- Avaliações para episódios (aprox 20)
-((SELECT usuaId FROM Usuario WHERE usuaApelido='marina'), NULL, (SELECT episId FROM Episodio WHERE episTitulo='Dulcinea' AND episTemporadaId=(SELECT tempId FROM Temporada WHERE tempObraId=(SELECT obraId FROM Obra WHERE obraTitulo='The Expanse') AND tempNumero=1), 8, 'Excelente episódio piloto.'),
-((SELECT usuaId FROM Usuario WHERE usuaApelido='nelson'), NULL, (SELECT episId FROM Episodio WHERE episTitulo='The Upside Down' AND episTemporadaId=(SELECT tempId FROM Temporada WHERE tempObraId=(SELECT obraId FROM Obra WHERE obraTitulo='Stranger Things') AND tempNumero=1), 9, 'Tensão muito bem construída.'),
-((SELECT usuaId FROM Usuario WHERE usuaApelido='juliana'), NULL, (SELECT episId FROM Episodio WHERE episTitulo='Pilot' AND episTemporadaId=(SELECT tempId FROM Temporada WHERE tempObraId=(SELECT obraId FROM Obra WHERE obraTitulo='Breaking Bad') AND tempNumero=1), 10, 'Um começo brilhante.'),
-((SELECT usuaId FROM Usuario WHERE usuaApelido='diego'), NULL, (SELECT episId FROM Episodio WHERE episTitulo='1:23:45' AND episTemporadaId=(SELECT tempId FROM Temporada WHERE tempObraId=(SELECT obraId FROM Obra WHERE obraTitulo='Chernobyl') AND tempNumero=1), 9, 'Intenso e perturbador.'),
-((SELECT usuaId FROM Usuario WHERE usuaApelido='eduardo'), NULL, (SELECT episId FROM Episodio WHERE episTitulo='Chapter 1' AND episTemporadaId=(SELECT tempId FROM Temporada WHERE tempObraId=(SELECT obraId FROM Obra WHERE obraTitulo='The Mandalorian') AND tempNumero=1), 8, 'Aventura com estilo.'),
+((SELECT usuaId FROM Usuario WHERE usuaApelido='marina'), NULL, (SELECT episId FROM Episodio WHERE episTitulo='Dulcinea' AND episTemporadaId=(SELECT tempId FROM Temporada WHERE tempObraId=(SELECT obraId FROM Obra WHERE obraTitulo='The Expanse') AND tempNumero=1)), 8, 'Excelente episódio piloto.'),
+((SELECT usuaId FROM Usuario WHERE usuaApelido='nelson'), NULL, (SELECT episId FROM Episodio WHERE episTitulo='The Upside Down' AND episTemporadaId=(SELECT tempId FROM Temporada WHERE tempObraId=(SELECT obraId FROM Obra WHERE obraTitulo='Stranger Things') AND tempNumero=1)), 9, 'Tensão muito bem construída.'),
+((SELECT usuaId FROM Usuario WHERE usuaApelido='juliana'), NULL, (SELECT episId FROM Episodio WHERE episTitulo='Pilot' AND episTemporadaId=(SELECT tempId FROM Temporada WHERE tempObraId=(SELECT obraId FROM Obra WHERE obraTitulo='Breaking Bad') AND tempNumero=1)), 10, 'Um começo brilhante.'),
+((SELECT usuaId FROM Usuario WHERE usuaApelido='diego'), NULL, (SELECT episId FROM Episodio WHERE episTitulo='1:23:45' AND episTemporadaId=(SELECT tempId FROM Temporada WHERE tempObraId=(SELECT obraId FROM Obra WHERE obraTitulo='Chernobyl') AND tempNumero=1)), 9, 'Intenso e perturbador.'),
+((SELECT usuaId FROM Usuario WHERE usuaApelido='eduardo'), NULL, (SELECT episId FROM Episodio WHERE episTitulo='Chapter 1' AND episTemporadaId=(SELECT tempId FROM Temporada WHERE tempObraId=(SELECT obraId FROM Obra WHERE obraTitulo='The Mandalorian') AND tempNumero=1)), 8, 'Aventura com estilo.'),
 
 -- More mixed reviews for random obras and episodes to reach ~60 total entries
 ((SELECT usuaId FROM Usuario WHERE usuaApelido='paula'), (SELECT obraId FROM Obra WHERE obraTitulo='The Matrix'), NULL, 10, 'Revolucionário.'),
 ((SELECT usuaId FROM Usuario WHERE usuaApelido='karina'), (SELECT obraId FROM Obra WHERE obraTitulo='Nomadland'), NULL, 8, 'Impecável.'),
-((SELECT usuaId FROM Usuario WHERE usuaApelido='lucas'), NULL, (SELECT episId FROM Episodio WHERE episTitulo='The Finale' AND episTemporadaId=(SELECT tempId FROM Temporada WHERE tempObraId=(SELECT obraId FROM Obra WHERE obraTitulo='Stranger Things') AND tempNumero=1), 9, 'Grande final.'),
+((SELECT usuaId FROM Usuario WHERE usuaApelido='lucas'), NULL, (SELECT episId FROM Episodio WHERE episTitulo='The Finale' AND episTemporadaId=(SELECT tempId FROM Temporada WHERE tempObraId=(SELECT obraId FROM Obra WHERE obraTitulo='Stranger Things') AND tempNumero=1)), 9, 'Grande final.'),
 ((SELECT usuaId FROM Usuario WHERE usuaApelido='sofia'), (SELECT obraId FROM Obra WHERE obraTitulo='Spotlight'), NULL, 9, 'Jornalismo em destaque.'),
 ((SELECT usuaId FROM Usuario WHERE usuaApelido='thiago'), (SELECT obraId FROM Obra WHERE obraTitulo='Drive'), NULL, 8, 'Estética e tensão.'),
-((SELECT usuaId FROM Usuario WHERE usuaApelido='vanessa'), NULL, (SELECT episId FROM Episodio WHERE episTitulo='Pilot' AND episTemporadaId=(SELECT tempId FROM Temporada WHERE tempObraId=(SELECT obraId FROM Obra WHERE obraTitulo='Stranger Things') AND tempNumero=1), 8, 'Ótimo piloto.'),
+((SELECT usuaId FROM Usuario WHERE usuaApelido='vanessa'), NULL, (SELECT episId FROM Episodio WHERE episTitulo='Pilot' AND episTemporadaId=(SELECT tempId FROM Temporada WHERE tempObraId=(SELECT obraId FROM Obra WHERE obraTitulo='Stranger Things') AND tempNumero=1)), 8, 'Ótimo piloto.'),
 ((SELECT usuaId FROM Usuario WHERE usuaApelido='wagner'), (SELECT obraId FROM Obra WHERE obraTitulo='Pulp Fiction'), NULL, 10, 'Clássico moderno.'),
 ((SELECT usuaId FROM Usuario WHERE usuaApelido='ximena'), (SELECT obraId FROM Obra WHERE obraTitulo='The Farewell'), NULL, 8, 'Comovente.'),
 ((SELECT usuaId FROM Usuario WHERE usuaApelido='yuri'), (SELECT obraId FROM Obra WHERE obraTitulo='Get Out'), NULL, 9, 'Tenso e relevante.'),
-((SELECT usuaId FROM Usuario WHERE usuaApelido='zoe'), NULL, (SELECT episId FROM Episodio WHERE episTitulo='Dulcinea' AND episTemporadaId=(SELECT tempId FROM Temporada WHERE tempObraId=(SELECT obraId FROM Obra WHERE obraTitulo='The Expanse') AND tempNumero=1), 8, 'Piloto muito bom.'),
+((SELECT usuaId FROM Usuario WHERE usuaApelido='zoe'), NULL, (SELECT episId FROM Episodio WHERE episTitulo='Dulcinea' AND episTemporadaId=(SELECT tempId FROM Temporada WHERE tempObraId=(SELECT obraId FROM Obra WHERE obraTitulo='The Expanse') AND tempNumero=1)), 8, 'Piloto muito bom.'),
 ((SELECT usuaId FROM Usuario WHERE usuaApelido='alice'), (SELECT obraId FROM Obra WHERE obraTitulo='Birdman'), NULL, 8, 'Criativo e ousado.'),
 ((SELECT usuaId FROM Usuario WHERE usuaApelido='bruno'), (SELECT obraId FROM Obra WHERE obraTitulo='The Social Network'), NULL, 8, 'Ritmo e roteiro excelentes.'),
 ((SELECT usuaId FROM Usuario WHERE usuaApelido='camila'), (SELECT obraId FROM Obra WHERE obraTitulo='Boyhood'), NULL, 7, 'Experiência curiosa.'),
-((SELECT usuaId FROM Usuario WHERE usuaApelido='ricardo'), NULL, (SELECT episId FROM Episodio WHERE episTitulo='Pilot' AND episTemporadaId=(SELECT tempId FROM Temporada WHERE tempObraId=(SELECT obraId FROM Obra WHERE obraTitulo='The Expanse') AND tempNumero=1), 9, 'Ótimo começo.'),
+((SELECT usuaId FROM Usuario WHERE usuaApelido='ricardo'), NULL, (SELECT episId FROM Episodio WHERE episTitulo='Pilot' AND episTemporadaId=(SELECT tempId FROM Temporada WHERE tempObraId=(SELECT obraId FROM Obra WHERE obraTitulo='The Expanse') AND tempNumero=1)), 9, 'Ótimo começo.'),
 ((SELECT usuaId FROM Usuario WHERE usuaApelido='marina'), (SELECT obraId FROM Obra WHERE obraTitulo='Shoplifters'), NULL, 9, 'Imperdível.'),
 ((SELECT usuaId FROM Usuario WHERE usuaApelido='nelson'), (SELECT obraId FROM Obra WHERE obraTitulo='Oldboy'), NULL, 9, 'Impactante.'),
 ((SELECT usuaId FROM Usuario WHERE usuaApelido='juliana'), (SELECT obraId FROM Obra WHERE obraTitulo='The Truman Show'), NULL, 8, 'Reflexivo e atual.'),
 ((SELECT usuaId FROM Usuario WHERE usuaApelido='diego'), (SELECT obraId FROM Obra WHERE obraTitulo='Call Me By Your Name'), NULL, 8, 'Sensível e bem fotografado.'),
 ((SELECT usuaId FROM Usuario WHERE usuaApelido='eduardo'), (SELECT obraId FROM Obra WHERE obraTitulo='The Lighthouse'), NULL, 7, 'Atmosfera intensa.'),
 ((SELECT usuaId FROM Usuario WHERE usuaApelido='paula'), (SELECT obraId FROM Obra WHERE obraTitulo='The Wolf of Wall Street'), NULL, 7, 'Energia e excesso.'),
-((SELECT usuaId FROM Usuario WHERE usuaApelido='karina'), NULL, (SELECT episId FROM Episodio WHERE episTitulo='Chapter 1' AND episTemporadaId=(SELECT tempId FROM Temporada WHERE tempObraId=(SELECT obraId FROM Obra WHERE obraTitulo='The Mandalorian') AND tempNumero=1), 8, 'Boa introdução à série.'),
+((SELECT usuaId FROM Usuario WHERE usuaApelido='karina'), NULL, (SELECT episId FROM Episodio WHERE episTitulo='Chapter 1' AND episTemporadaId=(SELECT tempId FROM Temporada WHERE tempObraId=(SELECT obraId FROM Obra WHERE obraTitulo='The Mandalorian') AND tempNumero=1)), 8, 'Boa introdução à série.'),
 ((SELECT usuaId FROM Usuario WHERE usuaApelido='lucas'), (SELECT obraId FROM Obra WHERE obraTitulo='The Irishman'), NULL, 8, 'Cinema de contemplação.'),
 ((SELECT usuaId FROM Usuario WHERE usuaApelido='sofia'), (SELECT obraId FROM Obra WHERE obraTitulo='Eternal Sunshine of the Spotless Mind'), NULL, 9, 'Inesquecível.'),
 ((SELECT usuaId FROM Usuario WHERE usuaApelido='thiago'), (SELECT obraId FROM Obra WHERE obraTitulo='Memento'), NULL, 9, 'Estrutura brilhante.'),
 ((SELECT usuaId FROM Usuario WHERE usuaApelido='vanessa'), (SELECT obraId FROM Obra WHERE obraTitulo='City of God'), NULL, 9, 'Cru e visceral.'),
 ((SELECT usuaId FROM Usuario WHERE usuaApelido='wagner'), (SELECT obraId FROM Obra WHERE obraTitulo='Spotlight'), NULL, 9, 'Impecável.'),
-((SELECT usuaId FROM Usuario WHERE usuaApelido='ximena'), NULL, (SELECT episId FROM Episodio WHERE episTitulo='Pilot' AND episTemporadaId=(SELECT tempId FROM Temporada WHERE tempObraId=(SELECT obraId FROM Obra WHERE obraTitulo='Breaking Bad') AND tempNumero=1), 9, 'Pilot marcante.');
+((SELECT usuaId FROM Usuario WHERE usuaApelido='ximena'), NULL, (SELECT episId FROM Episodio WHERE episTitulo='Pilot' AND episTemporadaId=(SELECT tempId FROM Temporada WHERE tempObraId=(SELECT obraId FROM Obra WHERE obraTitulo='Breaking Bad') AND tempNumero=1)), 9, 'Pilot marcante.');
 
 -- Observação: o número total inserido está em torno de 60 avaliações (misturadas entre obras/episódios).
 -- Se quiser exatamente 60, posso ajustar contagem. Aqui há uma boa mistura de críticas de usuários e críticos.
