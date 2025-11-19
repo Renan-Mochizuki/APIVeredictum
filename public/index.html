@@ -36,6 +36,7 @@
         <a href="/obrascategorias">Obras-Categorias</a>
         <a href="/obraspaises">Obras-Paises</a>
         <a href="/obraslistasusuario">Obras-ListasUsuario</a>
+        <a href="/filmes">Filmes</a>
       </div>
     </div>
     <hr />
@@ -159,6 +160,14 @@
           <input type="text" data-input="obralistalista" placeholder="Digite o id da lista" />
           <a href="#" data-route="/obraslistasusuariolista" data-input="obralistalista" data-method="get">Obras-ListasUsuario por Lista</a>
         </div>
+        <div class="subbox">
+          <input type="text" data-input="avaliacaoobrausuario" placeholder="Digite o id do usuário" />
+          <a href="#" data-route="/avaliacoesobrausuario" data-input="avaliacaoobrausuario" data-method="get">Avaliações de Obras por Usuário</a>
+        </div>
+        <div class="subbox">
+          <input type="text" data-input="avaliacaoepisodiousuario" placeholder="Digite o id do usuário" />
+          <a href="#" data-route="/avaliacoesepisodiousuario" data-input="avaliacaoepisodiousuario" data-method="get">Avaliações de Episódios por Usuário</a>
+        </div>
       </div>
     </div>
     <hr />
@@ -187,7 +196,10 @@
             <input type="text" data-field="titulo" placeholder="Digite o título" />
             <input type="text" data-field="descricao" placeholder="Digite a descrição" />
             <input type="text" data-field="tipoObraNome" placeholder="Digite o tipo da obra" />
-            <button data-route="/obras" data-method="post" data-fields="titulo,descricao,tipoObraNome">Criar Obra</button>
+            <input type="date" data-field="dataLancamento" placeholder="Data de lançamento" />
+            <input type="number" data-field="duracao" placeholder="Duração (minutos)" />
+            <input type="text" data-field="imgUrl" placeholder="URL da imagem (opcional)" />
+            <button data-route="/obras" data-method="post" data-fields="titulo,descricao,tipoObraNome,dataLancamento,duracao,imgUrl">Criar Obra</button>
           </div>
           <div class="subbox">
             <p>Resposta:</p>
@@ -435,7 +447,10 @@
             <input type="text" data-field="titulo" placeholder="Digite o título" />
             <input type="text" data-field="descricao" placeholder="Digite a descrição" />
             <input type="text" data-field="tipoObraNome" placeholder="Digite o tipo da obra" />
-            <button data-route="/obras" data-method="put" data-fields="titulo,descricao,tipoObraNome">Alterar Obra</button>
+            <input type="date" data-field="dataLancamento" placeholder="Data de lançamento" />
+            <input type="number" data-field="duracao" placeholder="Duração (minutos)" />
+            <input type="text" data-field="imgUrl" placeholder="URL da imagem (opcional)" />
+            <button data-route="/obras" data-method="put" data-fields="titulo,descricao,tipoObraNome,dataLancamento,duracao,imgUrl">Alterar Obra</button>
           </div>
           <div class="subbox">
             <p>Resposta:</p>
@@ -786,6 +801,24 @@
             <div class="responseArea"></div>
           </div>
         </div>
+      </div>
+    </div>
+    <hr />
+    <div class="box">
+      <h2 class="title">Login</h2>
+      <div class="boxarea">
+        <!-- Login Usuário -->
+        <div class="buttons">
+          <div class="subbox">
+            <h3>Usuário</h3>
+            <input type="text" data-field="apelido" placeholder="Digite o apelido" />
+            <input type="password" data-field="senha" placeholder="Digite a senha" />
+            <button data-route="/login" data-method="post" data-fields="apelido,senha">Login</button>
+          </div>
+          <div class="subbox">
+            <p>Resposta:</p>
+            <div class="responseArea"></div>
+          </div>
       </div>
     </div>
     <script src="script.js"></script>

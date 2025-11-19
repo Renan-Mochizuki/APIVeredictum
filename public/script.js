@@ -94,7 +94,7 @@ document.addEventListener('click', (e) => {
     // Encontra a área de resposta dentro do mesmo .buttons (pode estar em outra subbox)
     const responseArea = button.closest && button.closest('.buttons') ? button.closest('.buttons').querySelector('.responseArea') : button.parentElement.querySelector('.responseArea');
     const container = button.parentElement;
-    
+
     // Se o botão tiver a classe 'associative', faz a requisição DELETE com corpo JSON
     if (button.classList && button.classList.contains('associative')) {
       const inputs = container.querySelectorAll('input[data-field]');
@@ -145,6 +145,7 @@ async function makeRequest(method, route, data, responseArea) {
       method: method,
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': 'Bearer admin',
       },
     };
 

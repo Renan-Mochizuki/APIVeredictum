@@ -1,9 +1,13 @@
 const pool = require('../config/db');
 const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
 const { validateUserData, validateData } = require('../utils/validation');
 const { constraintUser } = require('../utils/constraint');
 const { normalizeData } = require('../utils/normalize');
-const { basicCrudController } = require('./factory');
+const { basicCrudController } = require('../services/factory');
+const config = require('../config/index');
+const jwtSecret = config.jwtSecret;
+const validateToken = require('../services/validateToken');
 
 const itemName = 'usuário';
 const itemNamePlural = 'usuários';
@@ -35,7 +39,14 @@ async function createItem(req, res) {
     const hash = crypto.pbkdf2Sync(senha, salt, 1000, 32, 'sha256').toString('hex');
 
     const result = await pool.query('INSERT INTO Usuario (usuaApelido, usuaEmail, usuaHash, usuaSalt) VALUES ($1, $2, $3, $4) RETURNING *', [apelido, email, hash, salt]);
-    res.status(201).json(result.rows[0]);
+    const usuarioCriado = result.rows[0];
+
+    const payload = { id: usuarioCriado.usuaid };
+
+    // Gera token JWT simples com id do usuário
+    const token = jwt.sign(payload, jwtSecret, { expiresIn: '7d' });
+
+    res.status(201).json({ usuario: usuarioCriado, token });
   } catch (error) {
     console.error('Erro ao criar ' + itemName + ':', error);
 
@@ -53,6 +64,16 @@ async function updateItem(req, res) {
   const { id } = req.params;
   let { apelido, email } = req.body;
   // TODO: Implementar envio do perfilImg
+
+  // Verificação do Token
+  const validatedId = await validateToken(req, res);
+  if (validatedId === null) {
+    return res.status(401).json({ error: 'Token ausente ou inválido' });
+  }
+
+  if (Number(validatedId) !== Number(id)) {
+    return res.status(403).json({ error: 'Acesso negado: só pode atualizar o próprio usuário' });
+  }
 
   if (!apelido && !email) {
     return res.status(400).json({ error: 'Nenhum dado foi fornecido' });
@@ -111,4 +132,49 @@ async function updateItem(req, res) {
   }
 }
 
-module.exports = { getAll, getById, createItem, updateItem, deleteItem };
+async function loginUser(req, res) {
+  const { apelido, senha } = req.body || {};
+
+  if (!apelido || !senha) {
+    return res.status(400).json({ error: 'Apelido e senha são obrigatórios' });
+  }
+
+  try {
+    // Normaliza apelido
+    const { apelido: apelidoNorm } = normalizeData({ apelido });
+
+    const result = await pool.query('SELECT * FROM Usuario WHERE LOWER(usuaApelido) = LOWER($1)', [apelidoNorm]);
+    if (result.rowCount === 0) {
+      return res.status(401).json({ error: 'Credenciais inválidas' });
+    }
+
+    const user = result.rows[0];
+
+    const storedHash = user.usuahash;
+    const storedSalt = user.usuasalt;
+
+    const candidateHash = crypto.pbkdf2Sync(senha, storedSalt, 1000, 32, 'sha256').toString('hex');
+
+    // Comparação segura
+    const hashBuf = Buffer.from(candidateHash, 'hex');
+    const storedBuf = Buffer.from(storedHash, 'hex');
+    let match = false;
+    if (hashBuf.length === storedBuf.length) {
+      match = crypto.timingSafeEqual(hashBuf, storedBuf);
+    }
+
+    if (!match) {
+      return res.status(401).json({ error: 'Credenciais inválidas' });
+    }
+
+    const payload = { id: user.usuaid };
+    const token = jwt.sign(payload, jwtSecret, { expiresIn: '7d' });
+
+    return res.json({ usuario: user, token });
+  } catch (error) {
+    console.error('Erro no login:', error);
+    return res.status(500).json({ error: 'Erro ao processar login' });
+  }
+}
+
+module.exports = { getAll, getById, createItem, updateItem, deleteItem, loginUser };

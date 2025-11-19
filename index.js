@@ -39,6 +39,14 @@ const obrapaisObraRoutes = require('./routes/obrapaisObraRoute');
 const obrapaisPaisRoutes = require('./routes/obrapaisPaisRoute');
 const obralistausuarioObraRoutes = require('./routes/obralistausuarioObraRoute');
 const obralistausuarioListaRoutes = require('./routes/obralistausuarioListaRoute');
+const loginRoutes = require('./routes/loginRoute');
+const filmeRoutes = require('./routes/filmeRoute');
+const serieRoutes = require('./routes/serieRoute');
+const animeRoutes = require('./routes/animeRoute');
+const documentarioRoutes = require('./routes/documentarioRoute');
+const curtaRoutes = require('./routes/curtaRoute');
+const avaliacaoObraUsuarioRoutes = require('./routes/avaliacaoObraUsuarioRoute');
+const avaliacaoEpisodioUsuarioRoutes = require('./routes/avaliacaoEpisodioUsuarioRoute');
 
 // Configuração do Express
 const app = express();
@@ -87,6 +95,14 @@ app.use('/obraspaisesobra', obrapaisObraRoutes);
 app.use('/obraspaisespais', obrapaisPaisRoutes);
 app.use('/obraslistasusuarioobra', obralistausuarioObraRoutes);
 app.use('/obraslistasusuariolista', obralistausuarioListaRoutes);
+app.use('/login', loginRoutes);
+app.use('/filmes', filmeRoutes);
+app.use('/series', serieRoutes);
+app.use('/animes', animeRoutes);
+app.use('/documentarios', documentarioRoutes);
+app.use('/curtas', curtaRoutes);
+app.use('/avaliacoesobrausuario', avaliacaoObraUsuarioRoutes);
+app.use('/avaliacoesepisodiousuario', avaliacaoEpisodioUsuarioRoutes);
 
 // Iniciando servidor
 const port = config.port || 3000;

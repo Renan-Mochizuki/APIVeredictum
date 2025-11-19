@@ -1,6 +1,7 @@
 const pool = require('../config/db');
 const { validateData } = require('../utils/validation');
 const { constraints } = require('../utils/constraint');
+const validateToken = require('./validateToken');
 
 function basicCrudController({
   table,
@@ -13,6 +14,7 @@ function basicCrudController({
   validationRulesCreate = {},
   validationRulesUpdate = {},
   validationRulesDelete = {},
+  userIdCol,
 }) {
   async function getAll(req, res) {
     try {
@@ -59,6 +61,24 @@ function basicCrudController({
       const cols = [];
       const placeholders = [];
       const values = [];
+
+      // TODO: Finalizar verificação da autoria
+      let usuarioId = null;
+      if (userIdCol) {
+        // Verificação do Token
+        const validatedId = await validateToken(req, res);
+        if (validatedId === null) {
+          const message = 'Token ausente ou inválido';
+          res.status(401).json({ error: message });
+          return { ok: false, status: 401, message };
+        }
+        usuarioId = validatedId;
+
+        // Inserir coluna e valor do usuário
+        cols.push(userIdCol);
+        placeholders.push(`$${values.length + 1}`);
+        values.push(usuarioId);
+      }
 
       for (const f of fieldsCreate) {
         const reqKey = typeof f === 'string' ? f : f.req;

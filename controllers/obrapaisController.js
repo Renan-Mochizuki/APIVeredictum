@@ -1,5 +1,5 @@
 const pool = require('../config/db');
-const { basicCrudController } = require('./factory');
+const { basicCrudController } = require('../services/factory');
 
 const itemName = 'obra pais';
 const itemNamePlural = 'obras paises';
@@ -27,7 +27,7 @@ const { getAll, createItem, deleteAssociative } = basicCrudController({
   validationRulesDelete: validationRules,
 });
 
-const { getByFks } = require('./getByFks');
+const { getByFks } = require('../services/getByFks');
 
 const { getByFk: getByObraId } = getByFks({
   table: 'Obra_PaisOrigem',

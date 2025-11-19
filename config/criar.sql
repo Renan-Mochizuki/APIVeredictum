@@ -5,6 +5,9 @@ CREATE TABLE Obra (
     obraTitulo varchar(150) not null,
     obraDescricao varchar(200),
     obraTipoObraNome varchar(12) not null,
+    obraDataLancamento date,
+    obraDuracao integer,
+    obraImgUrl varchar(255),
     obraCreatedAt timestamptz default now(),
     obraUpdatedAt timestamptz default now()
 );
