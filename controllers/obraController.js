@@ -47,9 +47,7 @@ const { getById, createItem, updateItem, deleteItem } = basicCrudController({
 
 async function getAll(req, res) {
   try {
-    const result = await pool.query(
-      `SELECT o.*, (SELECT ROUND(AVG(a.avalNota), 1) FROM Avaliacao a WHERE a.avalObraId = o.obraId) AS obranota FROM Obra o ORDER BY o.obraDataLancamento DESC`
-    );
+    const result = await pool.query(`SELECT o.*, (SELECT ROUND(AVG(a.avalNota), 1) FROM Avaliacao a WHERE a.avalObraId = o.obraId) AS obranota FROM Obra o ORDER BY o.obraDataLancamento DESC`);
     res.json(result.rows);
     return { ok: true, status: 200, data: result.rows };
   } catch (err) {
@@ -60,7 +58,7 @@ async function getAll(req, res) {
   }
 }
 
-async function getByNome(req, res){
+async function getByNome(req, res) {
   const { nome } = req.params;
   try {
     const result = await pool.query(
@@ -77,13 +75,28 @@ async function getByNome(req, res){
   }
 }
 
-const { getByFk: getByTipoObraNome } = getByFks({
-  table: 'Obra',
-  idCol: 'obraId',
-  itemName,
-  itemNamePlural,
-  fkCol: 'obraTipoObraNome',
-});
+// custom getByTipoObraNome to ensure obranota is included
+async function getByTipoObraNome(req, res) {
+  try {
+    const { id } = req.params;
+    const result = await pool.query(
+      `SELECT o.*, (SELECT ROUND(AVG(a.avalNota), 1) FROM Avaliacao a WHERE a.avalObraId = o.obraId) AS obranota FROM Obra o WHERE o.obraTipoObraNome = $1 ORDER BY o.obraDataLancamento DESC`,
+      [id]
+    );
+    if (result.rows.length === 0) {
+      const message = `${itemNamePlural} não encontrado`;
+      res.status(404).json({ error: message });
+      return { ok: false, status: 404, message };
+    }
+    res.json(result.rows);
+    return { ok: true, status: 200, data: result.rows };
+  } catch (err) {
+    console.error(`Erro ao buscar ${itemNamePlural}:`, err);
+    const message = `Erro ao buscar ${itemNamePlural}`;
+    res.status(500).json({ error: message });
+    return { ok: false, status: 500, message };
+  }
+}
 
 const colunasGetTipo = 'obraid, obratitulo, obraduracao, obradatalancamento, obraimgurl';
 
@@ -117,4 +130,24 @@ const { getByTipoObra: getDocumentarios } = getObra({
   itemNamePlural,
 });
 
-module.exports = { getAll, getById, getByTipoObraNome, createItem, updateItem, deleteItem, getFilmes, getSeries, getAnimes, getCurtas, getDocumentarios, getByNome };
+// override getById to include obranota
+async function getByIdWithNota(req, res) {
+  try {
+    const { id } = req.params;
+    const result = await pool.query(`SELECT o.*, (SELECT ROUND(AVG(a.avalNota), 1) FROM Avaliacao a WHERE a.avalObraId = o.obraId) AS obranota FROM Obra o WHERE o.obraId = $1`, [id]);
+    if (result.rows.length === 0) {
+      const message = `${itemName} não encontrado`;
+      res.status(404).json({ error: message });
+      return { ok: false, status: 404, message };
+    }
+    res.json(result.rows[0]);
+    return { ok: true, status: 200, data: result.rows[0] };
+  } catch (err) {
+    console.error(`Erro ao buscar ${itemName}:`, err);
+    const message = `Erro ao buscar ${itemName}`;
+    res.status(500).json({ error: message });
+    return { ok: false, status: 500, message };
+  }
+}
+
+module.exports = { getAll, getById: getByIdWithNota, getByTipoObraNome, createItem, updateItem, deleteItem, getFilmes, getSeries, getAnimes, getCurtas, getDocumentarios, getByNome };
