@@ -47,6 +47,7 @@ const documentarioRoutes = require('./routes/documentarioRoute');
 const curtaRoutes = require('./routes/curtaRoute');
 const avaliacaoObraUsuarioRoutes = require('./routes/avaliacaoObraUsuarioRoute');
 const avaliacaoEpisodioUsuarioRoutes = require('./routes/avaliacaoEpisodioUsuarioRoute');
+const buscarObraRoutes = require('./routes/buscarobraRoute');
 
 // Configuração do Express
 const app = express();
@@ -103,6 +104,7 @@ app.use('/documentarios', documentarioRoutes);
 app.use('/curtas', curtaRoutes);
 app.use('/avaliacoesobrausuario', avaliacaoObraUsuarioRoutes);
 app.use('/avaliacoesepisodiousuario', avaliacaoEpisodioUsuarioRoutes);
+app.use('/buscarobra', buscarObraRoutes);
 
 // Iniciando servidor
 const port = config.port || 3000;

@@ -46,7 +46,7 @@ async function createItem(req, res) {
     // Gera token JWT simples com id do usuário
     const token = jwt.sign(payload, jwtSecret, { expiresIn: '7d' });
 
-    res.status(201).json({ usuario: usuarioCriado, token });
+    res.status(201).json({ usuario: usuarioCriado, tipo: usuarioCriado.usuaTipo ,token });
   } catch (error) {
     console.error('Erro ao criar ' + itemName + ':', error);
 
@@ -170,7 +170,7 @@ async function loginUser(req, res) {
     const payload = { id: user.usuaid };
     const token = jwt.sign(payload, jwtSecret, { expiresIn: '7d' });
 
-    return res.json({ usuario: user, token });
+    return res.json({ usuario: user, tipo: user.usuaTipo, token });
   } catch (error) {
     console.error('Erro no login:', error);
     return res.status(500).json({ error: 'Erro ao processar login' });

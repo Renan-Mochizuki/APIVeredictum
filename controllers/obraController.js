@@ -1,4 +1,5 @@
 const pool = require('../config/db');
+const { get } = require('../routes/episodioRoute');
 const { basicCrudController } = require('../services/factory');
 const { getByFks } = require('../services/getByFks');
 const { getObra } = require('../services/getObra');
@@ -59,6 +60,23 @@ async function getAll(req, res) {
   }
 }
 
+async function getByNome(req, res){
+  const { nome } = req.params;
+  try {
+    const result = await pool.query(
+      `SELECT o.*, (SELECT ROUND(AVG(a.avalNota), 1) FROM Avaliacao a WHERE a.avalObraId = o.obraId) AS obranota FROM Obra o WHERE o.obraTitulo ILIKE $1 ORDER BY o.obraDataLancamento DESC`,
+      [`%${nome}%`]
+    );
+    res.json(result.rows);
+    return { ok: true, status: 200, data: result.rows };
+  } catch (err) {
+    console.error(`Erro ao buscar ${itemNamePlural} por nome:`, err);
+    const message = `Erro ao buscar ${itemNamePlural} por nome`;
+    res.status(500).json({ error: message });
+    return { ok: false, status: 500, message };
+  }
+}
+
 const { getByFk: getByTipoObraNome } = getByFks({
   table: 'Obra',
   idCol: 'obraId',
@@ -99,4 +117,4 @@ const { getByTipoObra: getDocumentarios } = getObra({
   itemNamePlural,
 });
 
-module.exports = { getAll, getById, getByTipoObraNome, createItem, updateItem, deleteItem, getFilmes, getSeries, getAnimes, getCurtas, getDocumentarios };
+module.exports = { getAll, getById, getByTipoObraNome, createItem, updateItem, deleteItem, getFilmes, getSeries, getAnimes, getCurtas, getDocumentarios, getByNome };
